@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Interview Alchemy - Ace Your Placement 🤝✨</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7fe; /* Light theme base */
+            margin: 0; padding: 0; overflow-x: hidden;
+            color: #374151; /* Default dark gray for text */
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* --- PAGE TRANSITION STYLES --- */
+        .page-wrapper { width: 100%; position: absolute; top: 0; left: 0; background-color: #f4f7fe; min-height: 100vh;}
+        @keyframes slideOutLeft { from { transform: translateX(0%); opacity: 1; } to { transform: translateX(-100%); opacity: 0; } }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0%); opacity: 1; } }
+        body.page-transition-out .page-wrapper { animation: slideOutLeft 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+        body.page-transition-in .page-wrapper { animation: slideInRight 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards 0.1s; }
+        body:not(.page-transition-in):not(.page-transition-out) .page-wrapper { opacity: 0; animation: initialFadeIn 0.5s ease-out forwards 0.1s; }
+        @keyframes initialFadeIn { to { opacity: 1; } }
+        /* --- END PAGE TRANSITION STYLES --- */
+
+        /* Gradient utilities (Light & Playful) */
+        .gradient-text-page-main { background: linear-gradient(125deg, #EC4899 0%, #D946EF 50%, #A855F7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } /* Pink to Purple */
+        .gradient-text-alt-hr { background: linear-gradient(125deg, #F472B6 0%, #EC4899 50%, #D946EF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } /* Lighter Pink to Fuchsia */
+
+
+        @keyframes subtle-float-icon-hr { 0%, 100% { transform: translateY(0px) rotate(-5deg); } 50% { transform: translateY(-7px) rotate(3deg); } }
+
+
+        /* Section & Card Styling for HR Page (Light Theme) */
+        .content-section-wrapper {
+            border-radius: 1.5rem;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 15px 40px -15px rgba(236, 72, 153, 0.15); /* Pinkish shadow */
+        }
+        .gradient-bg-hr-questions { background: linear-gradient(135deg, #fdf2f8 0%, #fae8ff 100%); } /* Light Pink to Light Purple */
+        .gradient-bg-hr-tips { background: linear-gradient(135deg, #fff7ed 0%, #fef9c3 100%); } /* Light Orange to Light Yellow */
+
+
+        .topic-card { /* General card style from aptitude/technical */
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 6px 15px -5px rgba(0,0,0,0.08);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            min-height: 220px; /* Ensure enough height */
+            display: flex;
+            flex-direction: column;
+        }
+        .topic-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 30px -8px rgba(236, 72, 153, 0.2); /* Pinkish shadow */
+        }
+        .topic-card .topic-header-hr { display: flex; align-items: center; margin-bottom: 1rem; }
+        .topic-card .topic-icon-hr {
+            font-size: 1.75rem;
+            margin-right: 0.75rem; width: 48px; height: 48px;
+            border-radius: 0.75rem;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+         .topic-card:hover .topic-icon-hr { transform: scale(1.1) rotate(-8deg); }
+
+        .topic-card .topic-title-hr {
+            font-size: 1.25rem;
+            font-weight: 700;
+            /* Color to be set by Tailwind utility, e.g., text-pink-700 */
+        }
+         .topic-card .topic-title-hr a.subtopic-link {
+            text-decoration: none; /* Remove underline from main title links */
+            transition: color 0.2s ease;
+        }
+        .topic-card .topic-title-hr a.subtopic-link:hover {
+             filter: brightness(1.1); /* Slight brightness on hover for title link */
+        }
+
+
+        .topic-card .content-area-hr {
+            margin-top: 0.5rem;
+            flex-grow: 1; /* Allows inner elements like pro-tip to be at bottom */
+            display: flex;
+            flex-direction: column;
+        }
+        .topic-card .content-area-hr p, .topic-card .content-area-hr ul {
+            font-size: 0.9rem; color: #4b5563; /* gray-600 */
+            line-height: 1.6;
+        }
+        .topic-card .content-area-hr ul { list-style-position: outside; padding-left: 1.25rem;}
+        .topic-card .content-area-hr .sub-section {
+            margin-top: 0.75rem; padding: 0.75rem; border-radius: 0.5rem;
+        }
+        .topic-card .content-area-hr .pro-tip-hr {
+            margin-top: auto; /* Pushes to bottom if .content-area-hr is flex col */
+            padding: 0.75rem; border-radius: 0.5rem;
+            font-style: italic; font-size: 0.85rem;
+            text-align: center;
+        }
+
+        /* Floating Checkbox (Pink accent for HR page) */
+        .floating-checkbox {
+            position: absolute; top: 1rem; right: 1rem; z-index: 10;
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(4px);
+            border-radius: 50%; width: 36px; height: 36px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s ease-out;
+        }
+        .floating-checkbox:hover { transform: scale(1.1); }
+        .floating-checkbox input[type="checkbox"].hr-interview-checkbox { /* Specific class */
+            width: 20px; height: 20px; accent-color: #ec4899; /* pink-500 */ cursor: pointer;
+            appearance: none; -webkit-appearance: none; border: 2px solid #cbd5e1; /* slate-300 */
+            border-radius: 50%; transition: background-color 0.2s, border-color 0.2s; position: relative;
+        }
+        .floating-checkbox input[type="checkbox"].hr-interview-checkbox:checked { background-color: #ec4899; border-color: #db2777; /* pink-600 */ }
+        .floating-checkbox input[type="checkbox"].hr-interview-checkbox:checked::after {
+            content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            color: white; font-size: 12px; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Navbar & Profile Dropdown Styles (from previous examples) */
+        .floating-navbar { background-color: rgba(31, 41, 55, 0.97); backdrop-filter: blur(16px); color: #e5e7eb; }
+        .floating-navbar-link { color: #d1d5db; transition: color 0.2s ease, transform 0.2s ease; }
+        .floating-navbar-link:hover, .floating-navbar-link.active-nav-link { color: #ffffff; transform: scale(1.05); text-shadow: 0 0 5px rgba(255,255,255,0.5);}
+        .nav-brand-text { background: linear-gradient(120deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        /* ... (Rest of navbar styles from previous, assumed to be the same) ... */
+        .profile-dropdown-tuf { position: relative; }
+        .dropdown-menu-tuf {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 12px); /* Spacing from the icon */
+            min-width: 200px;
+            z-index: 1050;
+            border-radius: 0.75rem;
+            padding: 0.5rem;
+            transform-origin: top right;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px) scale(0.95);
+            transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s;
+        }
+        .dropdown-menu-tuf.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        .dropdown-item-tuf {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.7rem 1rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            text-decoration: none; /* For the <a> tag */
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+         .dropdown-item-tuf i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* --- Dark Theme Dropdown Specifics --- */
+        .floating-navbar:not(.light-navbar) .dropdown-menu-tuf {
+            background-color: #1f2937; /* Dark gray */
+            color: #d1d5db; /* Light gray text */
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2), 0 20px 40px -20px rgba(0,0,0,0.3);
+        }
+        .floating-navbar:not(.light-navbar) .dropdown-item-tuf {
+            color: #d1d5db;
+        }
+        .floating-navbar:not(.light-navbar) .dropdown-item-tuf:hover {
+            background-color: #374151; /* Lighter dark gray */
+            color: #ffffff;
+        }
+        .floating-navbar:not(.light-navbar) .dropdown-item-tuf i {
+            color: #9ca3af;
+        }
+        .floating-navbar:not(.light-navbar) .dropdown-item-tuf:hover i {
+            color: #60a5fa; /* Blue accent */
+        }
+
+        /* --- Light Theme Dropdown Specifics --- */
+        .light-navbar .dropdown-menu-tuf {
+            background-color: #ffffff;
+            color: #374151; /* Dark text */
+            box-shadow: 0 12px 40px -10px rgba(79, 70, 229, 0.2);
+            border: 1px solid #e5e7eb;
+        }
+        .light-navbar .dropdown-item-tuf {
+            color: #374151;
+        }
+        .light-navbar .dropdown-item-tuf:hover {
+            background-color: #eef2ff; /* Light indigo */
+            color: #4f46e5; /* Indigo */
+        }
+        .light-navbar .dropdown-item-tuf i {
+            color: #6b7280;
+        }
+        .light-navbar .dropdown-item-tuf:hover i {
+            color: #4f46e5;
+        }
+
+        /* Progress Bar (Pink accent for HR page) */
+        .progress-bar-wrapper .text-lg { font-size: 1.125rem; }
+        .progress-bar-container { background-color: #e5e7eb; border-radius: 9999px; height: 1.25rem; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); }
+        #hrInterviewProgressBarFill.progress-bar { /* Pink gradient for HR */
+            background: linear-gradient(90deg, #f9a8d4 0%, #ec4899 100%); /* light-pink to pink-500 */
+            height: 100%; border-radius: 9999px; transition: width 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative; overflow: hidden;
+        }
+        #hrInterviewProgressBarFill.progress-bar::after { /* Shine effect */
+            content: ''; position: absolute;top: 0; left: 0; bottom: 0; right: 0;
+            background-image: linear-gradient( -45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent );
+            z-index: 1; background-size: 50px 50px; animation: progress-shine 2s linear infinite; opacity: 0.3;
+        }
+        @keyframes progress-shine { 0% { background-position: 0 0; } 100% { background-position: 50px 50px; } }
+
+        /* Section Header Styling */
+        .section-header-hr { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .section-header-hr .icon-bg { font-size: 2.25rem; padding: 0.75rem; border-radius: 0.75rem; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .section-title-hr { font-size: 2rem; font-weight: 800; }
+
+         /* Fun quote boxes (light theme for HR) */
+        .fun-quote-box-hr {
+            background: #fdf2f8; /* Light pink */
+            border: 1px solid #fbcfe8; /* Lighter pink border */
+            border-radius: 0.75rem; padding: 1.25rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .fun-quote-box-hr .main-quote { color: #be185d; /* Pink-700 */ }
+        .fun-quote-box-hr .sub-quote { color: #9d174d; /* Pink-800 */ font-size: 0.8rem; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased page-transition-in">
+
+<!-- ====================================================== -->
+<!-- === UNIVERSAL DARK NAVBAR === -->
+<!-- ====================================================== -->
+<nav class="floating-navbar py-3 px-4 sm:px-6 fixed top-4 left-1/2 transform -translate-x-1/2 rounded-xl shadow-2xl z-[1000] w-[90%]">
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Brand/Logo -->
+        <a href="index.html" class="nav-transition-link flex items-center space-x-2 group">
+            <img src="logo.png" alt="AceYourPlacement Logo" class="w-8 h-8 sm:w-9 sm:h-9 mr-2">
+            <span class="font-black text-lg sm:text-xl nav-brand-text hidden sm:inline tracking-tight group-hover:text-white transition-colors">AceYourPlacement</span>
+            <span class="font-black text-lg nav-brand-text sm:hidden group-hover:text-white transition-colors">AYP</span>
+        </a>
+
+        <!-- Main Navigation Links -->
+        <div class="hidden md:flex items-center space-x-4 lg:space-x-6">
+            <a href="index.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Home <i class="fas fa-home ml-1"></i></a>
+            <a href="aptitude.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Aptitude <i class="fas fa-calculator ml-1"></i></a>
+            <a href="coding.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Coding <i class="fas fa-laptop-code ml-1"></i></a>
+            <a href="technical.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Technical <i class="fas fa-book ml-1"></i></a>
+            <a href="roadmap.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Roadmaps <i class="fas fa-map-marked-alt ml-1"></i></a>
+            <a href="hr_interview.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">HR <i class="fas fa-handshake ml-1"></i></a>
+            <a href="assessment-home.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Assessment <i class="fas fa-clipboard-list ml-1"></i></a>
+        </div>
+
+        <!-- Right-side controls -->
+        <div class="flex items-center space-x-3 sm:space-x-4">
+            <!-- Profile Dropdown -->
+            <div class="profile-dropdown-tuf relative">
+                <!-- Trigger Button: The Profile Picture -->
+                <button aria-label="Profile Menu" id="profileDropdownBtn" class="focus:outline-none block">
+                    <img id="navProfileImg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-gray-700 hover:border-blue-400 transition-all object-cover" src="static/default-profile.jpg" alt="Profile" referrerpolicy="no-referrer">
+                </button>
+                
+                <!-- Dropdown Menu: Contains Profile Only -->
+                <div id="profileDropdownMenu" class="dropdown-menu-tuf">
+                    <a href="profile.html" class="nav-transition-link dropdown-item-tuf">
+                        <i class="fas fa-user-circle"></i> My Profile
+                    </a>
+                </div>
+            </div>
+        <button class="md:hidden text-xl text-gray-300 focus:outline-none hover:text-white" id="mobileMenuBtn" aria-label="Open Menu">
+            <i class="fas fa-bars-staggered"></i>
+        </button>
+        </div>
+    </div>
+</nav>
+
+<!-- ====================================================== -->
+<!-- === CORRECTED MOBILE MENU === -->
+<!-- ====================================================== -->
+<div id="mobileMenuTUF" class="fixed inset-0 bg-gray-900 bg-opacity-95 backdrop-blur-sm z-[999] p-6 text-white transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+    <div class="flex justify-between items-center mb-10">
+        <a href="index.html" class="nav-transition-link flex items-center space-x-2">
+            <i class="fas fa-rocket text-3xl nav-brand-text"></i>
+            <span class="font-black text-2xl nav-brand-text">AYP</span>
+        </a>
+        <button class="text-3xl text-gray-300 hover:text-white" id="closeMobileMenuBtnTUF" aria-label="Close menu">×</button>
+    </div>
+    <nav class="space-y-5 text-center">
+        <a href="index.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Home <i class="fas fa-house-chimney-user ml-2"></i></a>
+        <a href="aptitude.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Aptitude <i class="fas fa-calculator ml-2"></i></a>
+        <a href="coding.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Coding <i class="fas fa-code ml-2"></i></a>
+        <a href="technical.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Technical <i class="fas fa-book-open-reader ml-2"></i></a>
+        <a href="roadmap.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Roadmaps <i class="fas fa-road ml-2"></i></a>
+        <a href="hr_interview.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">HR Interview <i class="fas fa-user-tie ml-2"></i></a>
+        <a href="assessment-home.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Assessment <i class="fas fa-clipboard-list ml-2"></i></a>
+        <hr class="border-gray-700 my-4">
+        <a href="profile.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">My Profile <i class="fas fa-id-card ml-2"></i></a>
+        <div onclick="logoutUserWithTransition()" class="block text-xl py-3 rounded-lg hover:bg-red-700/50 cursor-pointer transition-colors">Sign Out <i class="fas fa-person-running ml-2"></i></div>
+    </nav>
+</div>
+
+
+    <div class="page-wrapper">
+    <main class="pt-28 sm:pt-32 pb-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <header class="text-center mb-16" data-aos="fade-down">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-black gradient-text-page-main mb-4 relative inline-block">
+                    HR Interview Alchemy
+                    <i class="fas fa-handshake text-pink-500 absolute -top-5 -right-12 text-4xl animate-subtle-float-icon-hr filter drop-shadow-[0_0_8px_#ec4899]"></i>
+                </h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Turn your personality and experience into interview gold. Let's charm your way to the offer!
+                </p>
+            </header>
+
+            <!-- Module Progress Bar -->
+            <div class="max-w-3xl mx-auto mt-4 mb-12 md:mb-16 progress-bar-wrapper" data-aos="fade-up" data-aos-delay="100">
+                <div class="mb-2 flex justify-between items-center">
+                    <span class="font-semibold text-lg text-pink-700">Your Charm-O-Meter Progress</span>
+                    <span id="hrInterviewModulePercent" class="text-pink-700 font-bold text-lg">0%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="hrInterviewProgressBarFill" class="progress-bar" data-module="hr_interview" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Motivational Quote -->
+            <div class="max-w-3xl mx-auto mb-12 fun-quote-box-hr text-center" data-aos="zoom-in-up" data-aos-delay="150">
+                <p class="text-2xl font-bold main-quote mb-2">🚀 Ready to Launch Your Charm Offensive?</p>
+                <p class="text-gray-700 italic sub-quote">"Authenticity is your superpower. Preparation is your launch sequence. Go get 'em!"</p>
+            </div>
+
+            <!-- Common HR Questions Section -->
+            <section class="mb-16 content-section-wrapper gradient-bg-hr-questions" data-aos="fade-up" data-aos-delay="200">
+                <div class="section-header-hr mb-8">
+                    <span class="icon-bg p-3 rounded-xl bg-gradient-to-br from-pink-500 to-fuchsia-600 text-white shadow-lg text-3xl"><i class="fas fa-comments-dollar"></i></span>
+                    <h2 class="section-title-hr gradient-text-alt-hr">Classic HR Conundrums (and how to solve 'em!)</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Tell Me About Yourself -->
+                    <div class="topic-card" data-aos="zoom-in-right" data-aos-delay="250">
+                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_tell_me_about_yourself"></span>
+                        <div class="topic-header-hr">
+                            <div class="topic-icon-hr bg-blue-500"><i class="fas fa-user-astronaut"></i></div>
+                            <h3 class="topic-title-hr text-blue-700">
+                                <a href="https://www.indeed.com/career-advice/interviewing/tell-me-about-yourself-interview-question" target="_blank" class="subtopic-link hover:text-blue-500" data-subtopic-id="hr_tell_me_link">
+                                "Tell Me About Yourself?"
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="content-area-hr">
+                            <p>Your elevator pitch to the stars! Focus on:</p>
+                            <ul class="list-disc mt-2">
+                                <li>Your current "mission" (role/studies).</li>
+                                <li>Key skills & "spaceflights" (achievements).</li>
+                                <li>Why this "galaxy" (company/role) excites you.</li>
+                            </ul>
+                            <div class="pro-tip-hr bg-blue-50 text-blue-700">
+                                ✨ Pro Tip: Keep it concise (1-2 mins) and relevant to the job description. Think of it as your "origin story"!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Strengths and Weaknesses -->
+                    <div class="topic-card" data-aos="zoom-in-left" data-aos-delay="300">
+                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_strengths_weaknesses"></span>
+                        <div class="topic-header-hr">
+                            <div class="topic-icon-hr bg-green-500"><i class="fas fa-meteor"></i></div>
+                             <h3 class="topic-title-hr text-green-700">
+                                <a href="https://www.indeed.com/career-advice/interviewing/strengths-and-weaknesses-interview-question" target="_blank" class="subtopic-link hover:text-green-500" data-subtopic-id="hr_strengths_weaknesses_link">
+                                "Strengths & Weaknesses?"
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="content-area-hr">
+                            <div class="sub-section bg-green-50">
+                                <h4 class="font-semibold text-green-700">Superpowers (Strengths):</h4>
+                                <ul class="list-disc"><li>Problem-solving agility</li> <li>Teamwork synergy</li> <li>Rapid learning warp drive</li></ul>
+                            </div>
+                            <div class="sub-section bg-red-50 mt-2">
+                                <h4 class="font-semibold text-red-700">Kryptonite (Weaknesses) <span class="text-xs">(but with a plan!)</span>:</h4>
+                                <ul class="list-disc"><li>"Sometimes I try to juggle too many asteroids... I'm learning to prioritize using a task manager."</li></ul>
+                            </div>
+                             <div class="pro-tip-hr bg-teal-50 text-teal-700">
+                                ✨ Pro Tip: Turn weaknesses into growth stories. Honesty + self-awareness = Hire!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Why Should We Hire You -->
+                    <div class="topic-card" data-aos="zoom-in-right" data-aos-delay="350">
+                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_why_hire_you"></span>
+                        <div class="topic-header-hr">
+                            <div class="topic-icon-hr bg-purple-500"><i class="fas fa-rocket"></i></div>
+                             <h3 class="topic-title-hr text-purple-700">
+                                <a href="https://www.indeed.com/career-advice/interviewing/why-should-we-hire-you" target="_blank" class="subtopic-link hover:text-purple-500" data-subtopic-id="hr_why_hire_you_link">
+                                "Why Should We Hire You?"
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="content-area-hr">
+                            <p>This is your moment to shine like a supernova! Highlight:</p>
+                            <ul class="list-disc mt-2">
+                                <li>Your unique "constellation" of skills.</li>
+                                <li>How you'll help their "starship" reach new heights.</li>
+                                <li>Your perfect alignment with their "galactic culture."</li>
+                            </ul>
+                             <div class="pro-tip-hr bg-purple-50 text-purple-700">
+                                ✨ Pro Tip: Connect your abilities directly to their needs. You're not just good, you're the *right kind* of good for *them*.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Where Do You See Yourself in 5 Years -->
+                    <div class="topic-card" data-aos="zoom-in-left" data-aos-delay="400">
+                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_5_year_plan"></span>
+                        <div class="topic-header-hr">
+                            <div class="topic-icon-hr bg-orange-500"><i class="fas fa-telescope"></i></div>
+                            <h3 class="topic-title-hr text-orange-700">
+                                <a href="https://www.indeed.com/career-advice/interviewing/where-do-you-see-yourself-in-5-years" target="_blank" class="subtopic-link hover:text-orange-500" data-subtopic-id="hr_5_year_plan_link">
+                                "Your 5-Year Trajectory?"
+                                </a>
+                            </h3>
+                        </div>
+                         <div class="content-area-hr">
+                            <p>Show them your "long-range scan" abilities:</p>
+                            <ul class="list-disc mt-2">
+                                <li>Growing with the company's fleet.</li>
+                                <li>Mastering new "technologies" & skills.</li>
+                                <li>Potentially leading your own "away missions."</li>
+                            </ul>
+                             <div class="pro-tip-hr bg-orange-50 text-orange-700">
+                                ✨ Pro Tip: Ambition is great, but show you're committed to growing *with them*, not just using them as a launchpad to another galaxy.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interview Tips Section -->
+            <section class="content-section-wrapper gradient-bg-hr-tips" data-aos="fade-up" data-aos-delay="450">
+                <div class="section-header-hr mb-8">
+                     <span class="icon-bg p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg text-3xl"><i class="fas-sparkles"></i></span> <!-- Using fas-sparkles for fun -->
+                    <h2 class="section-title-hr gradient-text-alt-hr">Pre-Flight, In-Flight & Post-Flight Checks</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Before Interview -->
+                    <div class="topic-card" data-aos="flip-left" data-aos-delay="500">
+                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_before_tips"></span>
+                        <div class="topic-header-hr">
+                            <div class="topic-icon-hr bg-sky-500"><i class="fas fa-clipboard-list-check"></i></div>
+                             <h3 class="topic-title-hr text-sky-700">
+                                <a href="https://www.indeed.com/career-advice/interviewing/how-to-prepare-for-an-interview" target="_blank" class="subtopic-link hover:text-sky-500" data-subtopic-id="hr_before_tips_link">
+                                Before the "Launch"
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="content-area-hr">
+                            <ul class="list-disc">
+                                <li>Scan their "star charts" (research company).</li>
+                                <li>Rehearse your "prime directives" (common Qs).</li>
+                                <li>Prepare your own "probe questions" to ask.</li>
+                                <li>Enter "stasis mode" (get good rest!).</li>
+                            </ul>
+                             <div class="pro-tip-hr bg-sky-50 text-sky-700">
+                                ✨ Pro Tip: "Proper planning prevents poor performance," especially when exploring new job galaxies!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- During Interview -->
+                     <div class="topic-card" data-aos="flip-up" data-aos-delay="550">
+                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_during_tips"></span>
+                        <div class="topic-header-hr">
+                            <div class="topic-icon-hr bg-lime-500"><i class="fas fa-user-tie"></i></div>
+                            <h3 class="topic-title-hr text-lime-700">
+                                <a href="https://www.indeed.com/career-advice/interviewing/interview-tips" target="_blank" class="subtopic-link hover:text-lime-500" data-subtopic-id="hr_during_tips_link">
+                                "Engage Warp Drive!" (During)
+                                </a>
+                            </h3>
+                        </div>
+                         <div class="content-area-hr">
+                            <ul class="list-disc">
+                                <li>Lock "tractor beam" (eye contact).</li>
+                                <li>Activate "universal translator" (listen actively).</li>
+                                <li>Project "confidence shields" (be cool, calm, collected).</li>
+                                <li>Use STAR method like a Jedi uses the Force.</li>
+                            </ul>
+                             <div class="pro-tip-hr bg-lime-50 text-lime-700">
+                                ✨ Pro Tip: Smile! It's the universal sign of "I'm friendly and not a space pirate."
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- After Interview -->
+                    <div class="topic-card" data-aos="flip-right" data-aos-delay="600">
+                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_after_tips"></span>
+                        <div class="topic-header-hr">
+                            <div class="topic-icon-hr bg-rose-500"><i class="fas fa-envelope-open-text"></i></div>
+                             <h3 class="topic-title-hr text-rose-700">
+                                <a href="https://www.indeed.com/career-advice/interviewing/after-interview" target="_blank" class="subtopic-link hover:text-rose-500" data-subtopic-id="hr_after_tips_link">
+                                "Transmission Complete" (After)
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="content-area-hr">
+                            <ul class="list-disc">
+                                <li>Send a "thank you transmission" (email).</li>
+                                <li>Ping their "comms channel" (follow up smartly).</li>
+                                <li>Log "mission data" (reflect and learn).</li>
+                                <li>Don't just stare at the "viewscreen" (move on if needed).</li>
+                            </ul>
+                             <div class="pro-tip-hr bg-rose-50 text-rose-700">
+                                ✨ Pro Tip: A thoughtful thank-you note can be the asteroid that tips the scales in your favor.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+    </div> <!-- End Page Wrapper -->
+
+    <!-- Floating Icon -->
+    <div class="fixed bottom-6 right-6 z-[500] animate-subtle-float" style="animation-duration: 5s;">
+      <div class="bg-gradient-to-tr from-pink-500 via-rose-500 to-fuchsia-600 p-4 rounded-full shadow-2xl shadow-rose-500/30 cursor-pointer hover:shadow-fuchsia-400/50 transition-all transform hover:scale-110 hover:rotate-[360deg] duration-500">
+          <i class="fas fa-gift text-white text-3xl"></i> <!-- A 'gift' of advice -->
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/progress.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/dark-mode.js"></script>
+    <script>
+        // --- PAGE TRANSITION SCRIPT ---
+        function handlePageTransition(event) {
+            const link = event.currentTarget;
+            const targetUrl = link.href;
+            if (targetUrl && (link.hostname === window.location.hostname || !link.hostname) && !link.getAttribute('target')) {
+                event.preventDefault();
+                document.body.classList.add('page-transition-out');
+                setTimeout(() => { window.location.href = targetUrl; }, 400);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({ duration: 800, once: true, offset: 70, easing: 'ease-out-cubic' });
+
+            document.querySelectorAll('.nav-transition-link').forEach(link => {
+                link.addEventListener('click', handlePageTransition);
+            });
+
+            // --- UNIVERSAL NAVBAR PROFILE DROPDOWN LOGIC ---
+            const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+            const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+
+            if (profileDropdownBtn && profileDropdownMenu) {
+                profileDropdownBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevents the window click from closing it immediately
+                    profileDropdownMenu.classList.toggle('open');
+                });
+            }
+
+            // Close dropdown if clicked outside
+            document.addEventListener('click', (e) => {
+                if (profileDropdownMenu && profileDropdownMenu.classList.contains('open') && !profileDropdownBtn.contains(e.target)) {
+                    profileDropdownMenu.classList.remove('open');
+                }
+            });
+            
+            // Universal function to handle sign out
+            function logoutUserWithTransition() {
+                console.log('Logging out...');
+                // Optional: Add a fade-out effect
+                document.body.style.transition = 'opacity 0.3s ease-out';
+                document.body.style.opacity = '0';
+
+                // Clear local storage
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('platformProgress');
+
+                // Redirect to login page after the fade-out
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 300);
+            }
+            
+            // Universal function to update the profile picture from localStorage
+            try {
+                const userString = localStorage.getItem('user');
+                if (userString) {
+                    const user = JSON.parse(userString);
+                    const profilePicUrl = user.profilePicture || 'static/default-profile.jpg';
+                    const navImg = document.getElementById('navProfileImg');
+                    if (navImg) {
+                        navImg.src = profilePicUrl;
+                        navImg.onerror = function() { this.src = 'static/default-profile.jpg'; };
+                    }
+                }
+            } catch(e) { console.error('Could not parse user data for profile picture.', e); }
+
+            // --- Mobile Menu Logic ---
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenuTUF');
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('-translate-x-full'));
+                document.getElementById('closeMobileMenuBtnTUF').addEventListener('click', () => mobileMenu.classList.add('-translate-x-full'));
+            }
+
+            // --- HR INTERVIEW PAGE Progress & Checkbox Logic ---
+            if (typeof ProgressTracker === 'undefined') {
+                console.error('ProgressTracker class is not defined. Make sure progress.js is loaded correctly.');
+                return;
+            }
+            const progressTrackerInstance = new ProgressTracker();
+
+            async function initializeHRPage() {
+                try {
+                    await progressTrackerInstance.init();
+                    const updateHRUI = () => {
+                        document.querySelectorAll('.hr-interview-checkbox').forEach(checkbox => {
+                            const subtopicId = checkbox.dataset.subtopicId;
+                            if (progressTrackerInstance.isCompleted) {
+                                checkbox.checked = progressTrackerInstance.isCompleted(subtopicId);
+                            }
+                        });
+
+                        const hrProgressData = progressTrackerInstance.progress;
+                        const hrModuleVal = hrProgressData && hrProgressData.hr_interview !== undefined ? hrProgressData.hr_interview : 0;
+
+                        const progressBarFill = document.getElementById('hrInterviewProgressBarFill');
+                        const percentText = document.getElementById('hrInterviewModulePercent');
+
+                        if(progressBarFill) {
+                            progressBarFill.style.width = hrModuleVal + '%';
+                        }
+                        if(percentText) {
+                            percentText.textContent = hrModuleVal + '%';
+                        }
+                    };
+                    updateHRUI();
+
+                    // Event listener for main category checkboxes
+                    document.querySelectorAll('.hr-interview-checkbox').forEach(checkbox => {
+                        checkbox.addEventListener('change', async () => {
+                            if(progressTrackerInstance.setCompleted) {
+                                await progressTrackerInstance.setCompleted(checkbox.dataset.subtopicId, checkbox.checked);
+                                updateHRUI();
+                            }
+                        });
+                    });
+
+                    // Event listener for resource links to also mark the main card's checkbox
+                    document.querySelectorAll('a.subtopic-link').forEach(link => {
+                        link.addEventListener('click', async (e) => {
+                            const subtopicIdForLink = link.dataset.subtopicId;
+                            if (progressTrackerInstance.setCompleted && subtopicIdForLink) {
+                                await progressTrackerInstance.setCompleted(subtopicIdForLink, true);
+                                updateHRUI();
+                                console.log(`Marked link ${subtopicIdForLink} as complete.`);
+                            }
+                        });
+                    });
+
+                } catch (error) {
+                    console.error("Error initializing HR Interview Page progress:", error);
+                    const progressBarFill = document.getElementById('hrInterviewProgressBarFill');
+                    const percentText = document.getElementById('hrInterviewModulePercent');
+                    if(progressBarFill) progressBarFill.style.width = '0%';
+                    if(percentText) percentText.textContent = 'Error';
+                }
+            }
+            initializeHRPage();
+        }); // End of DOMContentLoaded
+    </script>
+</body>
+</html>

@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Token handling script -->
+    <script>
+        (function() {
+            // Check if we already have a token in localStorage
+            const existingToken = localStorage.getItem('token');
+            if (existingToken) {
+                console.log('Token found in localStorage');
+                return;
+            }
+
+            // If no token in localStorage, check URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+
+            if (token) {
+                console.log('Token found in URL, saving to localStorage...');
+                localStorage.setItem('token', token);
+                
+                // Clean the URL by removing the token parameter
+                const newUrl = window.location.pathname;
+                window.history.replaceState({}, document.title, newUrl);
+                console.log('Token saved and URL cleaned.');
+            } else {
+                console.log('No token found in URL or localStorage.');
+            }
+        })();
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ace Your Placement | Grades Fade. Skills Stay.</title>
+
+<!-- TAILWIND JIT (required by navbar) & FONTS & ICONS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- ANIMATION LIBRARY (AOS) -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<!-- YOUR FAVICON -->
+<link rel="icon" href="logo.png" type="image/png">
+
+<style>
+    /* --- GLOBAL DESIGN SYSTEM & THEME VARIABLES --- */
+    :root {
+        /* Light Theme Variables */
+        --bg-light: #f4f7fe;
+        --card-light: #ffffff;
+        --text-primary-light: #1f2937;
+        --text-secondary-light: #4b5563;
+        --border-light: #e5e7eb;
+        --gradient-start: #4F46E5;
+        --gradient-mid: #A855F7;
+        --gradient-end: #EC4899;
+        --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        --shadow-strong: 0 20px 45px -15px rgba(79, 70, 229, 0.15);
+        --font-main: 'Poppins', sans-serif;
+    }
+
+    /* Dark Theme Variables */
+    [data-theme="dark"] {
+        --bg-light: #111827;
+        --card-light: #1f2937;
+        --text-primary-light: #f3f4f6;
+        --text-secondary-light: #d1d5db;
+        --border-light: #374151;
+    }
+
+    /* --- BASE & UTILITIES --- */
+    html { scroll-behavior: smooth; }
+    body {
+        background-color: var(--bg-light);
+        font-family: var(--font-main);
+        color: var(--text-secondary-light);
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .container { margin: 0 auto; }
+    .section { padding: 100px 0; }
+    .gradient-text {
+        background: linear-gradient(125deg, var(--gradient-start) 0%, var(--gradient-mid) 50%, var(--gradient-end) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text; /* Standard property */
+    }
+
+    /* --- YOUR NAVBAR STYLES (VERBATIM FROM REFERENCE) --- */
+    .floating-navbar { background-color: rgba(31, 41, 55, 0.97); backdrop-filter: blur(16px); color: #e5e7eb; }
+    .floating-navbar-link { color: #d1d5db; transition: color 0.2s ease, transform 0.2s ease; }
+    .floating-navbar-link:hover, .floating-navbar-link.active-nav-link { color: #ffffff; transform: scale(1.05); text-shadow: 0 0 5px rgba(255,255,255,0.5);}
+    .nav-brand-text { background: linear-gradient(120deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    /* --- UNIVERSAL DROPDOWN MENU CSS (Both Light & Dark) --- */
+    .profile-dropdown-tuf {
+        position: relative;
+    }
+
+    .dropdown-menu-tuf {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 12px); /* Spacing from the icon */
+        min-width: 200px;
+        z-index: 1050;
+        border-radius: 0.75rem;
+        padding: 0.5rem;
+        transform-origin: top right;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px) scale(0.95);
+        transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s;
+    }
+
+    .dropdown-menu-tuf.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+    }
+
+    .dropdown-item-tuf {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.7rem 1rem;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 500;
+        border-radius: 0.5rem;
+        text-decoration: none; /* For the <a> tag */
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    
+    .dropdown-item-tuf i {
+        width: 20px;
+        text-align: center;
+    }
+
+    /* --- Dark Theme Dropdown Specifics --- */
+    .floating-navbar:not(.light-navbar) .dropdown-menu-tuf {
+        background-color: #1f2937; /* Dark gray */
+        color: #d1d5db; /* Light gray text */
+        box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2), 0 20px 40px -20px rgba(0,0,0,0.3);
+    }
+    .floating-navbar:not(.light-navbar) .dropdown-item-tuf {
+        color: #d1d5db;
+    }
+    .floating-navbar:not(.light-navbar) .dropdown-item-tuf:hover {
+        background-color: #374151; /* Lighter dark gray */
+        color: #ffffff;
+    }
+    .floating-navbar:not(.light-navbar) .dropdown-item-tuf i {
+        color: #9ca3af;
+    }
+    .floating-navbar:not(.light-navbar) .dropdown-item-tuf:hover i {
+        color: #60a5fa; /* Blue accent */
+    }
+
+    /* --- Light Theme Dropdown Specifics --- */
+    .light-navbar .dropdown-menu-tuf {
+        background-color: #ffffff;
+        color: #374151; /* Dark text */
+        box-shadow: 0 12px 40px -10px rgba(79, 70, 229, 0.2);
+        border: 1px solid #e5e7eb;
+    }
+    .light-navbar .dropdown-item-tuf {
+        color: #374151;
+    }
+    .light-navbar .dropdown-item-tuf:hover {
+        background-color: #eef2ff; /* Light indigo */
+        color: #4f46e5; /* Indigo */
+    }
+    .light-navbar .dropdown-item-tuf i {
+        color: #6b7280;
+    }
+    .light-navbar .dropdown-item-tuf:hover i {
+        color: #4f46e5;
+    }
+
+    /* --- HERO SECTION (Light Theme) --- */
+    .hero {
+        padding: 180px 0 150px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: -20%; left: 50%;
+        transform: translateX(-50%);
+        width: 150%;
+        max-width: 1200px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(79, 70, 229, 0.08) 0%, rgba(244, 247, 254, 0) 60%);
+        z-index: 0;
+        pointer-events: none;
+    }
+    .hero .container { position: relative; z-index: 1; }
+    .hero-tagline {
+        font-size: clamp(3rem, 8vw, 6.5rem);
+        font-weight: 900;
+        line-height: 1.1;
+        letter-spacing: -0.04em;
+        color: var(--text-primary-light);
+    }
+    .hero-subtitle {
+        font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+        max-width: 700px;
+        margin: 2rem auto 3rem auto;
+        line-height: 1.7;
+        color: var(--text-secondary-light);
+    }
+    .hero-cta {
+        padding: 1rem 2.5rem;
+        background-color: var(--text-primary-light);
+        color: var(--card-light);
+        font-weight: 600;
+        font-size: 1.1rem;
+        border-radius: 50px;
+        text-decoration: none;
+        display: inline-block;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 15px rgba(31, 41, 55, 0.2);
+    }
+    .hero-cta:hover {
+        transform: translateY(-5px);
+        background-color: var(--gradient-start);
+        box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+    }
+
+    /* --- REVAMPED INTERACTIVE MODULES (ENHANCED & ANIMATED) --- */
+    .section-header { text-align: center; margin-bottom: 60px; }
+    .section-header h2 {
+        font-size: clamp(2.2rem, 5vw, 3.2rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: var(--text-primary-light);
+    }
+    .section-header p {
+        color: var(--text-secondary-light);
+    }
+    .module-tabs { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 40px; }
+    .tab-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        background-color: var(--card-light);
+        color: var(--text-secondary-light);
+        border: 2px solid var(--border-light);
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        top: 0;
+    }
+    .tab-btn:hover:not(.active) {
+        color: var(--gradient-start);
+        border-color: currentColor; /* Use the text color for the border */
+        transform: translateY(-4px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    }
+    .tab-btn.active {
+        color: white;
+        border-color: transparent;
+        background: linear-gradient(125deg, var(--gradient-start), var(--gradient-mid));
+        box-shadow: 0 8px 25px -5px rgba(79, 70, 229, 0.4);
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    /* NEW: Wrapper for positioning panes on top of each other */
+    .module-pane-wrapper {
+        position: relative;
+        min-height: 550px; /* Adjust as needed to prevent layout shift */
+        transition: min-height 0.3s ease-out; /* Smoothly adjust height */
+    }
+
+    /* NEW: Base styles for all panes (hidden state) */
+    .module-pane {
+        display: grid; /* Keep grid for layout */
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        gap: 4rem;
+        background-color: var(--card-light);
+        padding: 3rem 4rem;
+        border-radius: 24px;
+        /* Positioning for transition */
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        /* Animation properties */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(30px) scale(0.98);
+        transition: opacity 0.4s ease-out, transform 0.4s ease-out, visibility 0.4s;
+        box-shadow: var(--shadow-strong);
+    }
+
+    /* NEW: Active state for the visible pane */
+    .module-pane.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+        /* Add a colorful active shadow */
+        box-shadow: 0 25px 50px -12px rgba(168, 85, 247, 0.2); /* Purple Glow */
+        transition-delay: 0.1s; /* Allow old pane to fade out first */
+    }
+
+    /* NEW: Enhanced image hover effect with colorful glow */
+    .module-image {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+        transition: transform 0.4s ease, box-shadow 0.4s ease; /* Added box-shadow transition */
+    }
+    .module-pane:hover .module-image {
+        transform: translateY(-8px) scale(1.03); /* Lift and zoom */
+        box-shadow: 0 20px 40px -10px rgba(79, 70, 229, 0.3); /* Stronger, colorful shadow on hover */
+    }
+    .module-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease-out;
+    }
+    .module-pane:hover .module-image img {
+        transform: scale(1.1); /* More pronounced image zoom */
+    }
+
+    /* NEW: More attractive fonts for the description */
+    .module-description h3 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+        /* Add a subtle shadow to make the gradient text pop */
+        text-shadow: 2px 2px 20px rgba(0,0,0,0.05);
+    }
+    .module-description p { font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem; }
+    .module-cta {
+        color: var(--gradient-start);
+        font-weight: 600;
+        text-decoration: none;
+        position: relative;
+        font-size: 1.1rem;
+    }
+    .module-cta i { transition: transform 0.3s ease; }
+    .module-cta:hover i { transform: translateX(5px); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+
+    /* --- FOOTER SECTION (Light Theme) --- */
+    .site-footer {
+        background-color: black; /* Changed to black */
+        border-top: 1px solid #dbeafe;
+        padding: 80px 0 40px 0;
+        margin-top: 50px; /* Reduced margin-top as quote is removed */
+        color: white; /* Changed font color to white */
+    }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 50px; }
+    .footer-col .brand { display: flex; align-items: center; gap: 0.75rem; font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; text-decoration: none;}
+    .footer-col .brand .nav-brand-text { font-size: 1.2em; }
+    .footer-col p { line-height: 1.6; }
+    .footer-col h4 { font-size: 1.1rem; font-weight: 600; color: white; /* Ensure heading is white */ margin-bottom: 1.5rem; }
+    .footer-col ul { list-style: none; padding: 0; }
+    .footer-col ul li { margin-bottom: 0.75rem; }
+    .footer-col a:not(.brand) { text-decoration: none; transition: color 0.2s ease; color: white; /* Ensure links are white */ }
+    .footer-col a:not(.brand):hover { color: var(--gradient-start); }
+    .footer-socials { display: flex; gap: 1rem; }
+    .footer-socials a { font-size: 1.5rem; color: white; /* Ensure social icons are white */ transition: color 0.3s, transform 0.3s; }
+    .footer-socials a:hover { color: var(--gradient-start); transform: translateY(-3px); }
+    .footer-bottom {
+        text-align: center;
+        padding-top: 40px;
+        margin-top: 20px;
+        border-top: 1px solid #dbeafe;
+        font-size: 0.9rem;
+        color: white; /* Ensure bottom text is white */
+    }
+    /* NEW: Style for the relocated "Created with..." quote */
+    .footer-creation-note {
+        margin-top: 20px;
+        font-size: 0.85rem;
+        color: #9ca3af; /* Keep a slightly different shade for this note if desired, or change to white */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+    .footer-creation-note i {
+        background: linear-gradient(125deg, #a855f7, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* --- RESPONSIVENESS --- */
+    @media (max-width: 992px) {
+        .module-pane { grid-template-columns: 1fr; text-align: center; padding: 2.5rem 2rem; gap: 2rem; }
+        .module-image { order: -1; margin-bottom: 1rem; }
+        .module-description h3 { font-size: 2.2rem; }
+        .module-pane-wrapper { min-height: 750px !important; } /* Override for mobile to prevent jump */
+    }
+
+    /* Dark Mode Specific Styles */
+    [data-theme="dark"] .floating-navbar {
+        background-color: rgba(17, 24, 39, 0.97);
+    }
+
+    [data-theme="dark"] .module-pane {
+        background-color: var(--card-light);
+        border: 1px solid var(--border-light);
+    }
+
+    [data-theme="dark"] .tab-btn {
+        background-color: var(--card-light);
+        color: var(--text-secondary-light);
+        border-color: var(--border-light);
+    }
+
+    [data-theme="dark"] .tab-btn:hover:not(.active) {
+        background-color: #374151;
+    }
+
+    [data-theme="dark"] .hero-tagline {
+        color: var(--text-primary-light);
+    }
+
+    [data-theme="dark"] .hero-subtitle {
+        color: var(--text-secondary-light);
+    }
+
+    [data-theme="dark"] .section-header h2 {
+        color: var(--text-primary-light);
+    }
+
+    [data-theme="dark"] .section-header p {
+        color: var(--text-secondary-light);
+    }
+
+    [data-theme="dark"] .module-description p {
+        color: var(--text-secondary-light);
+    }
+</style>
+
+</head>
+<body>
+
+<!-- ====================================================== -->
+<!-- === UNIVERSAL DARK NAVBAR (PASTE THIS INTO 5 PAGES) === -->
+<!-- ====================================================== -->
+
+<nav class="floating-navbar py-3 px-4 sm:px-6 fixed top-4 left-1/2 transform -translate-x-1/2 rounded-xl shadow-2xl z-[1000] w-[90%]">
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Brand/Logo -->
+        <a href="index.html" class="nav-transition-link flex items-center space-x-2 group">
+            <img src="logo.png" alt="AceYourPlacement Logo" class="w-8 h-8 sm:w-9 sm:h-9 mr-2">
+            <span class="font-black text-lg sm:text-xl nav-brand-text hidden sm:inline tracking-tight group-hover:text-white transition-colors">AceYourPlacement</span>
+            <span class="font-black text-lg nav-brand-text sm:hidden group-hover:text-white transition-colors">AYP</span>
+        </a>
+
+        <!-- Main Navigation Links -->
+        <div class="hidden md:flex items-center space-x-4 lg:space-x-6">
+            <a href="index.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Home <i class="fas fa-home ml-1"></i></a>
+            <a href="aptitude.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Aptitude <i class="fas fa-calculator ml-1"></i></a>
+            <a href="coding.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Coding <i class="fas fa-laptop-code ml-1"></i></a>
+            <a href="technical.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Technical <i class="fas fa-book ml-1"></i></a>
+            <a href="roadmap.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Roadmaps <i class="fas fa-map-marked-alt ml-1"></i></a>
+            <a href="hr_interview.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">HR <i class="fas fa-handshake ml-1"></i></a>
+            <a href="assessment-home.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Assessment <i class="fas fa-clipboard-list ml-1"></i></a>
+        </div>
+
+        <!-- Right-side controls -->
+        <div class="flex items-center space-x-3 sm:space-x-4">
+            <!-- Dark Mode Toggle -->
+            <button aria-label="Toggle Dark Mode" id="darkModeToggle" class="text-xl text-gray-400 hover:text-yellow-300 transition-colors focus:outline-none">
+                <i class="fas fa-moon"></i>
+            </button>
+
+            <!-- NEW Profile Dropdown -->
+            <div class="profile-dropdown-tuf relative">
+                <!-- Trigger Button: The Profile Picture -->
+                <button aria-label="Profile Menu" id="profileDropdownBtn" class="focus:outline-none block">
+                    <img id="navProfileImg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-gray-700 hover:border-blue-400 transition-all object-cover" src="static/default-profile.jpg" alt="Profile" referrerpolicy="no-referrer">
+                </button>
+                
+                <!-- Dropdown Menu: Contains Profile Only -->
+                <div id="profileDropdownMenu" class="dropdown-menu-tuf">
+                    <a href="profile.html" class="nav-transition-link dropdown-item-tuf">
+                        <i class="fas fa-user-circle"></i> My Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Burger Icon -->
+        <button class="md:hidden text-xl text-gray-300 focus:outline-none hover:text-white" id="mobileMenuBtn" aria-label="Open Menu">
+            <i class="fas fa-bars-staggered"></i>
+        </button>
+    </div>
+</nav>
+
+<div id="mobileMenuTUF" class="fixed inset-0 bg-gray-900 bg-opacity-95 backdrop-blur-sm z-[999] p-6 text-white transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+    <div class="flex justify-between items-center mb-10">
+        <a href="index.html" class="nav-transition-link flex items-center space-x-2">
+            <i class="fas fa-rocket text-3xl nav-brand-text"></i>
+            <span class="font-black text-2xl nav-brand-text">AYP</span>
+        </a>
+        <button class="text-3xl text-gray-300 hover:text-white" id="closeMobileMenuBtnTUF" aria-label="Close menu">×</button>
+    </div>
+    <nav class="space-y-5 text-center">
+        <a href="index.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Home <i class="fas fa-house-chimney-user ml-2"></i></a>
+        <a href="aptitude.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Aptitude <i class="fas fa-calculator ml-2"></i></a>
+        <a href="coding.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Coding <i class="fas fa-code ml-2"></i></a>
+        <a href="technical.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Technical <i class="fas fa-book-open-reader ml-2"></i></a>
+        <a href="roadmap.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Roadmaps <i class="fas fa-road ml-2"></i></a>
+        <a href="hr_interview.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">HR Interview <i class="fas fa-user-tie ml-2"></i></a>
+        <a href="assessment-home.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Assessment <i class="fas fa-clipboard-list ml-2"></i></a>
+        <hr class="border-gray-700 my-4">
+        <a href="profile.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">My Profile <i class="fas fa-id-card ml-2"></i></a>
+        <div onclick="logoutUserWithTransition()" class="block text-xl py-3 rounded-lg hover:bg-red-700/50 cursor-pointer transition-colors">Sign Out <i class="fas fa-person-running ml-2"></i></div>
+    </nav>
+</div>
+
+<main>
+    <!-- ====================================================== -->
+    <!-- === HERO SECTION - HARD HITTING TAGLINE === -->
+    <!-- ====================================================== -->
+    <header class="hero">
+        <div class="max-w-7xl mx-auto px-4">
+            <h1 class="hero-tagline" data-aos="fade-down">
+                Grades Fade. Skills Stay. 
+                <span class="block gradient-text">Build What Matters.</span>
+            </h1>
+            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
+                The all-in-one platform engineered to transform you from a student into a top-tier candidate. Master every stage of the placement process and land the job you deserve.
+            </p>
+            <a href="#modules" class="hero-cta" data-aos="fade-up" data-aos-delay="400">Explore The Toolkit <i class="fas fa-arrow-down ml-2"></i></a>
+        </div>
+    </header>
+
+<!-- ====================================================== -->
+<!-- === INTERACTIVE MODULES SECTION === -->
+<!-- ====================================================== -->
+<section id="modules" class="section">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="section-header" data-aos="fade-up">
+            <h2>Your Complete Placement Arsenal</h2>
+            <p class="text-lg text-gray-500 max-w-3xl mx-auto">One platform to conquer every challenge. Click to explore each domain and unleash your potential.</p>
+        </div>
+
+        <div class="module-tabs" data-aos="fade-up" data-aos-delay="200">
+            <button class="tab-btn active" data-tab="aptitude"><i class="fas fa-calculator mr-2"></i>Aptitude</button>
+            <button class="tab-btn" data-tab="coding"><i class="fas fa-laptop-code mr-2"></i>Coding</button>
+            <button class="tab-btn" data-tab="technical"><i class="fas fa-book mr-2"></i>Technical</button>
+            <button class="tab-btn" data-tab="hr"><i class="fas fa-handshake mr-2"></i>HR Interview</button>
+        </div>
+
+        <div class="module-pane-wrapper mt-16">
+            <!-- APTITUDE PANE -->
+            <div id="aptitude" class="module-pane active">
+                <div class="module-image" data-aos="fade-right" data-aos-duration="600"><img src="895574.jpg" alt="Aptitude Preparation"></div>
+                <div class="module-description">
+                    <h3 class="gradient-text" data-aos="fade-left" data-aos-delay="100">Master the Numbers</h3>
+                    <p data-aos="fade-left" data-aos-delay="200">Quantitative, Logical, and Verbal. We break down the patterns and problems that gatekeep top companies. Build speed and accuracy with our vast, curated question bank.</p>
+                    <a href="aptitude.html" class="module-cta nav-transition-link" data-aos="fade-left" data-aos-delay="300">Start Practicing <i class="fas fa-arrow-right ml-2"></i></a>
+                </div>
+            </div>
+            <!-- CODING PANE -->
+            <div id="coding" class="module-pane">
+                <div class="module-image" data-aos="fade-right" data-aos-duration="600"><img src="codddd.jpg" alt="Coding Practice"></div>
+                <div class="module-description">
+                    <h3 class="gradient-text" data-aos="fade-left" data-aos-delay="100">Slay the Code</h3>
+                    <p data-aos="fade-left" data-aos-delay="200">From Data Structures to advanced Algorithms. Solve problems that mirror real interviews. Track your progress on key topics and turn your coding weaknesses into strengths.</p>
+                    <a href="coding.html" class="module-cta nav-transition-link" data-aos="fade-left" data-aos-delay="300">Enter the Dojo <i class="fas fa-arrow-right ml-2"></i></a>
+                </div>
+            </div>
+            <!-- TECHNICAL PANE -->
+            <div id="technical" class="module-pane">
+                <div class="module-image" data-aos="fade-right" data-aos-duration="600"><img src="cse.webp" alt="Technical Subjects"></div>
+                <div class="module-description">
+                    <h3 class="gradient-text" data-aos="fade-left" data-aos-delay="100">Fortify Your Core</h3>
+                    <p data-aos="fade-left" data-aos-delay="200">DBMS, OS, and Networking aren't just subjects; they're the foundation. We provide concise notes, key concepts, and frequently asked questions to ensure you're technically sound.</p>
+                    <a href="technical.html" class="module-cta nav-transition-link" data-aos="fade-left" data-aos-delay="300">Strengthen Knowledge <i class="fas fa-arrow-right ml-2"></i></a>
+                </div>
+            </div>
+            <!-- HR PANE -->
+            <div id="hr" class="module-pane">
+                <div class="module-image" data-aos="fade-right" data-aos-duration="600"><img src="hr.jpg" alt="HR Interview"></div>
+                <div class="module-description">
+                    <h3 class="gradient-text" data-aos="fade-left" data-aos-delay="100">Win the Room</h3>
+                    <p data-aos="fade-left" data-aos-delay="200">The final boss. Learn to articulate your journey, answer behavioral questions, and negotiate with confidence. We prepare you for the conversation that seals the deal.</p>
+                    <a href="hr_interview.html" class="module-cta nav-transition-link" data-aos="fade-left" data-aos-delay="300">Prepare Your Story <i class="fas fa-arrow-right ml-2"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+
+<!-- ====================================================== -->
+<!-- === STRUCTURED FOOTER SECTION === -->
+<!-- ====================================================== -->
+
+<footer class="site-footer">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="footer-grid">
+            <div class="footer-col" data-aos="fade-up"><a href="index.html" class="brand"><i class="fas fa-rocket nav-brand-text"></i><span class="nav-brand-text">A Y P </span></a><p class="mt-4">The definitive launchpad for ambitious students aiming for top-tier tech careers.</p></div>
+            <div class="footer-col" data-aos="fade-up" data-aos-delay="100"><h4>Quick Links</h4><ul><li><a href="aptitude.html" class="nav-transition-link">Aptitude</a></li><li><a href="coding.html" class="nav-transition-link">Coding</a></li><li><a href="technical.html" class="nav-transition-link">Technical</a></li><li><a href="roadmap.html" class="nav-transition-link">Roadmaps</a></li></ul></div>
+            <div class="footer-col" data-aos="fade-up" data-aos-delay="200"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Contact</a></li><li><a href="#">Privacy Policy</a></li></ul></div>
+            <div class="footer-col" data-aos="fade-up" data-aos-delay="300"><h4>Connect</h4><div class="footer-socials"><a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a><a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a><a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a></div></div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 AceYourPlacement. All Rights Reserved. Built for the next generation of innovators.</p>
+            <!-- Relocated and restyled quote -->
+            <p class="footer-creation-note">
+                <i class="fas fa-brain"></i>
+                Created with Mind
+                  ·  
+                <i class="fas fa-heart"></i>
+                Designed with Heart
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- Initialize AOS --- 
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 120,
+        easing: 'ease-out-cubic'
+    });
+
+    // --- UNIVERSAL NAVBAR PROFILE DROPDOWN LOGIC ---
+    const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+    const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+
+    if (profileDropdownBtn && profileDropdownMenu) {
+        profileDropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevents the window click from closing it immediately
+            profileDropdownMenu.classList.toggle('open');
+        });
+    }
+
+    // Close dropdown if clicked outside
+    document.addEventListener('click', (e) => {
+        if (profileDropdownMenu && profileDropdownMenu.classList.contains('open') && !profileDropdownBtn.contains(e.target)) {
+            profileDropdownMenu.classList.remove('open');
+        }
+    });
+    
+    // Universal function to handle sign out
+    function logoutUserWithTransition() {
+        console.log('Logging out...');
+        // Optional: Add a fade-out effect
+        document.body.style.transition = 'opacity 0.3s ease-out';
+        document.body.style.opacity = '0';
+
+        // Clear local storage
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('platformProgress');
+
+        // Redirect to login page after the fade-out
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 300);
+    }
+    
+    // Universal function to update the profile picture from localStorage
+    try {
+        const userString = localStorage.getItem('user');
+        if (userString) {
+            const user = JSON.parse(userString);
+            const profilePicUrl = user.profilePicture || 'static/default-profile.jpg';
+            const navImg = document.getElementById('navProfileImg');
+            if (navImg) {
+                navImg.src = profilePicUrl;
+                navImg.onerror = function() { this.src = 'static/default-profile.jpg'; };
+            }
+        }
+    } catch(e) { console.error('Could not parse user data for profile picture.', e); }
+
+    // --- Dummy Page Transition Logic ---
+    function handlePageTransition(event) {
+        console.log("Navigating via:", event.currentTarget.href);
+    }
+    document.querySelectorAll('.nav-transition-link').forEach(link => {
+        link.addEventListener('click', handlePageTransition);
+    });
+
+    // --- Mobile Menu Logic ---
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenuTUF');
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('-translate-x-full'));
+        document.getElementById('closeMobileMenuBtnTUF').addEventListener('click', () => mobileMenu.classList.add('-translate-x-full'));
+    }
+    
+    // --- REVAMPED LOGIC FOR INTERACTIVE MODULES SECTION ---
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const modulePanes = document.querySelectorAll('.module-pane');
+    const paneWrapper = document.querySelector('.module-pane-wrapper');
+
+    // Set the height of the wrapper to match the first active pane to prevent collapse
+    if (paneWrapper && modulePanes.length > 0) {
+        const activePane = document.querySelector('.module-pane.active');
+        if (activePane) {
+            // Use a timeout to ensure the element is fully rendered before getting its height
+            setTimeout(() => {
+                paneWrapper.style.minHeight = `${activePane.offsetHeight}px`;
+            }, 100);
+        }
+    }
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetTabId = button.getAttribute('data-tab');
+
+            // Update button active state
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            // Update pane active state - The CSS handles all the animation!
+            modulePanes.forEach(pane => {
+                pane.classList.remove('active');
+            });
+            
+            const targetPane = document.getElementById(targetTabId);
+            if (targetPane) {
+                targetPane.classList.add('active');
+                
+                // OPTIONAL: Adjust wrapper height for the new pane
+                // This ensures the footer doesn't jump up if panes have different heights
+                setTimeout(() => {
+                    paneWrapper.style.minHeight = `${targetPane.offsetHeight}px`;
+                }, 150); // Delay should be less than the transition time
+            }
+        });
+    });
+
+    // --- Dark Mode Toggle Functionality ---
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    
+    // Set default theme to light
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    // Apply the theme
+    if (currentTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    }
+
+    // Toggle theme function
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        // Update icon
+        darkModeToggle.innerHTML = newTheme === 'dark' ? 
+            '<i class="fas fa-sun"></i>' : 
+            '<i class="fas fa-moon"></i>';
+    }
+
+    // Add click event listener
+    darkModeToggle.addEventListener('click', toggleTheme);
+
+    // Listen for system theme changes
+    prefersDarkScheme.addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+            const newTheme = e.matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            darkModeToggle.innerHTML = newTheme === 'dark' ? 
+                '<i class="fas fa-sun"></i>' : 
+                '<i class="fas fa-moon"></i>';
+        }
+    });
+});
+</script>
+
+</body>
+</html>

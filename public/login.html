@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AYP Login - Access Your Potential ✨</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</style>
+<!-- Font Awesome Free (Solid) via CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;700&family=Orbitron:wght@500;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<!-- Fredoka: cute and bubbly -->
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+
+<!-- Optional: Baloo 2 as an alternative -->
+<!-- <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&display=swap" rel="stylesheet"> -->
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/dark-mode.css">
+
+    <style>
+        :root {
+            --bg-primary-light: #f4f7fe; /* Based on image background color */
+            --bg-card-light: #ffffff;
+            --text-dark-primary: #1a202c; 
+            --text-dark-secondary: #4a5568; 
+            --text-placeholder: #a0aec0; 
+            --accent-blue: #4A90E2;     /* A slightly desaturated, modern blue, similar to image button */
+            --accent-purple-gradient-start: #6D28D9; 
+            --accent-purple-gradient-end: #8B5CF6; 
+            --accent-link: #3b82f6; 
+            --accent-error: #ef4444;      
+            --border-interactive: #cbd5e1; 
+            --border-focus: var(--accent-blue);
+            --shadow-soft: 0 6px 16px -2px rgba(100, 116, 139, 0.12); 
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--accent-black), var(--accent-black)); border-radius: 1px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(var(--accent-black), #000000); }
+
+        body {
+            font-family: 'Inter', sans-serif; 
+            min-height: 100vh;
+            background: linear-gradient(135deg, #c3d7da 0%, #b5c4ca 100%); /* Light blue to white gradient */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            overflow-y: auto; /* Change from hidden to auto */
+            position: relative;
+            color: var(--text-dark-primary);
+        }
+
+        /* Canvas for floating elements */
+        .floating-elements-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1; /* Behind all other content */
+            pointer-events: none; /* Allows clicks to pass through */
+        }
+
+        .login-form-container {
+            width: 100%;
+            max-width: 380px; /* Adjusted to match the visual proportions of your image */
+            background:hsla(0, 0%, 100%, 0);
+            border-radius: 16px; 
+            padding: 2.5rem;  
+            border: 1px solid #000000; /* Very subtle border from image */
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            z-index: 10;
+            padding-top:20px;
+            animation: popInForm 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+            opacity: 0; transform: scale(0.95) translateY(20px);
+            
+        }
+        @keyframes popInForm { to { opacity: 1; transform: scale(1) translateY(0); } }
+
+        /* Updated AYP Logo CSS - Inspired by "Supercharge" image */
+        .ayp-logo-light {
+            font-family: 'Fredoka', sans-serif; /* Or try 'Baloo 2' */
+            font-size: 4rem;
+            font-weight: 700;
+            letter-spacing:;
+            margin-bottom: 1rem;
+            text-align: center;
+            display: block;
+            line-height: 1.2;
+        
+            /* Fun pastel gradient for soft, cute vibe */
+            
+            background-image: linear-gradient(90deg,
+    #e76f8e,  /* soft rose pink */
+    #f2a6b3,  /* blush pastel pink */
+    #bb3333   /* strong red */
+);
+
+
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-fill-color: transparent;
+            color: transparent;
+        
+            /* Soft glow for bubbly feel */
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        
+        
+
+        .form-title-light {
+            font-size: 0.9rem; 
+            color: var(--text-dark-secondary);
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 2.25rem; 
+        }
+
+        .form-group { margin-bottom: 1.25rem; } 
+        .form-label-light {
+            display: block;
+            margin-bottom: 0.35rem;
+            color: var(--text-dark-secondary);
+            font-size: 0.8rem; 
+            font-weight: 500;
+        }
+
+        .input-group { position: relative; }
+        .form-input-light {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            padding-left: 2.8rem; 
+            border: 1px solid var(--border-interactive);
+            border-radius: 10px; 
+            font-size: 0.9rem;
+            color: var(--text-dark-primary);
+            background: #f9fafb; /* Off-white input background */
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-input-light::placeholder { color: var(--text-placeholder); }
+        .form-input-light:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); 
+        }
+        .input-icon-light {
+            position: absolute;
+            left: 1rem; top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af; /* Gray 400 */
+            font-size: 0.95rem;
+            pointer-events: none;
+        }
+        .form-input-light:focus + .input-icon-light { color: var(--accent-blue); }
+        .form-input-light.error { border-color: var(--accent-error) !important; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2); }
+        .form-input-light.error + .input-icon-light { color: var(--accent-error); }
+
+        .form-options-light {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem; 
+            color: var(--text-dark-secondary);
+            margin-top: 0.75rem; 
+            margin-bottom: 1.5rem; 
+        }
+        .checkbox-label-light { display: flex; align-items: center; cursor: pointer; }
+        .checkbox-label-light input[type="checkbox"] { /* Custom styled checkbox to match image better */
+            appearance: none; -webkit-appearance: none;
+            width: 16px; height: 16px; border: 1.5px solid var(--border-interactive);
+            border-radius: 4px; margin-right: 0.5rem; cursor: pointer; position: relative;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .checkbox-label-light input[type="checkbox"]:checked { background-color: var(--accent-blue); border-color: var(--accent-blue); }
+        .checkbox-label-light input[type="checkbox"]:checked::before {
+            content: '\f00c'; font-family: 'Font Awesome 6 Free Solid'; font-weight: 900; font-size: 10px; color: white;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        }
+        .forgot-password-link-light { color: var(--accent-link); text-decoration: none; font-weight:500;}
+        .forgot-password-link-light:hover { text-decoration: underline; color: var(--accent-purple-gradient-end); }
+
+        .login-button-light {
+            width: 100%;
+            padding: 0.85rem 1rem; 
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple-gradient-end) 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px; 
+            font-size: 0.9rem;
+            font-weight: 500; /* Medium */
+            text-transform: uppercase; /* Added as per image button */
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease-out;
+            box-shadow: 0 3px 8px rgba(59, 130, 246, 0.25);
+        }
+        .login-button-light:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-interactive);
+            filter: brightness(1.05);
+        }
+        .login-button-light:disabled { background: #cbd5e1; opacity: 0.8; cursor: not-allowed; box-shadow: none; }
+        .btn-loader { display: inline-flex; align-items: center; }
+        .btn-loader i { margin-right: 0.5em; }
+
+        .message-area-light { margin-top: 0.75rem; min-height: 20px; text-align: center; font-weight: 500; font-size:0.8rem; }
+        .message-area-light.success { color: var(--accent-green); }
+        .message-area-light.error { color: var(--accent-red); }
+
+        .divider-container-light {
+            display: flex; align-items: center; text-align: center;
+            color: #adb5bd; /* Adjusted to match image */
+            margin: 1.25rem auto; font-size: 0.75rem; 
+            width: 100%; 
+        }
+        .divider-container-light::before, .divider-container-light::after {
+            content: ''; flex: 1; border-bottom: 1px solid #e9ecef; 
+        }
+        .divider-container-light:not(:empty)::before { margin-right: .7em; }
+        .divider-container-light:not(:empty)::after { margin-left: .7em; }
+
+        #google-login-btn-light {
+            width: 100%; display: flex; align-items: center; justify-content: center;
+            gap: 0.6rem; padding: 0.75rem 1rem; 
+            border: 1px solid var(--border-interactive);
+            border-radius: 8px; background-color: #fff;
+            color: var(--text-dark-primary);
+            font-weight: 500; font-size: 0.9rem; 
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            transition: all 0.2s ease-in-out; cursor: pointer;
+        }
+        #google-login-btn-light:hover {
+            border-color: #adb5bd; background-color: #f8f9fa; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06); transform: translateY(-1px);
+        }
+        #google-login-btn-light img { width: 18px; height: 18px; }
+
+        .signup-link-wrapper-light { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; }
+        .signup-link-wrapper-light a {
+            color: var(--accent-link); font-weight: 500; 
+            text-decoration: none;
+        }
+        .signup-link-wrapper-light a:hover { text-decoration: underline; color: var(--accent-purple-gradient-end); }
+
+        @media (max-width: 450px) {
+            body { padding: 0.75rem; }
+            .login-form-container { padding: 2rem 1.5rem; }
+            .ayp-logo-light { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="floating-elements-canvas" id="floatingElementsCanvas"></canvas>
+
+    <div class="login-form-container">
+        <h1 class="ayp-logo-light">AYP</h1>
+        <h2 class="form-title-light">Access Your Potential. Login to Continue.</h2>
+
+        <form class="login-form" id="loginForm" autocomplete="off">
+            <div class="form-group">
+                <label for="loginEmail" class="form-label-light">Email Address</label>
+                <div class="input-group">
+                    <i class="fas fa-at input-icon-light"></i>
+                    <input type="email" id="loginEmail" class="form-input-light" placeholder="jane@example.com" required autocomplete="off">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword" class="form-label-light">Password</label>
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon-light"></i>
+                    <input type="password" id="loginPassword" class="form-input-light" placeholder="Your Secure Password" required minlength="8" autocomplete="new-password">
+                    
+                </div>
+            </div>
+            <div class="form-options-light">
+                <label class="checkbox-label-light flex items-center"> <!-- Flex for alignment -->
+                    <input type="checkbox" id="rememberMe" class="mr-2"> <!-- Tailwind margin -->
+                    <span>Remember Me</span>
+                </label>
+                <a href="#" class="forgot-password-link-light">Forgot Password?</a>
+            </div>
+            <button type="submit" class="login-button-light" id="loginBtn">
+                <span class="btn-text">Log In</span>
+                <span class="btn-loader" style="display:none;">
+                    <i class="fas fa-spinner fa-spin mr-2"></i>Authenticating...
+                </span>
+            </button>
+            <div id="loginMessage" class="message-area-light"></div>
+        </form>
+
+        <div class="divider-container-light"><span>OR CONTINUE WITH</span></div> <!-- Text changed -->
+
+        <button id="google-login-btn-light" type="button">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Icon">
+            Sign in with Google
+        </button>
+        
+        <p class="signup-link-wrapper-light">
+            Don't have an account? <a href="signup.html">Sign Up & Get Started!</a>
+        </p>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // --- JavaScript for Floating Elements Canvas Animation ---
+        const canvas = document.getElementById('floatingElementsCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        const elementTypes = [
+          {
+            type: 'text',
+            content: [
+              '{}', '< />', '∑', '∫', 'ƒ(x)', '∇', '∀', '∃', 'α', 'β', 'λ', 'π', '∞', '//', '/*', '=>',
+              '#include', 'SELECT *', 'git push', 'O(log n)', 'AYP', 'async', 'await', 'Promise', 'API',
+              'Stack', 'Queue', 'Tree', 'Graph', 'DSA',
+              'DISCIPLINE', 'GRIND', 'ARRAYS', 'COOK', 'PRACTICE', 'KILL IT',
+              'HEAPSORT', 'QUICKSORT', 'MERGESORT', 'NEURAL NET',
+              'NO EXCUSES', 'FOCUS', 'WAKE UP', 'SIT TIGHT', 'BURN OUT', 'LEVEL UP',
+              'EARN IT', 'SWEAT', 'CODE HARD', 'ONE MORE', 'ALL IN', 'RUTHLESS',
+              'HARDCORE', 'ZERO DISTRACTIONS', 'TIGHTTT', 'HARDERRRR', 'NO MERCY',
+              'BETTER THAN YESTERDAY', 'DEEP WORK', 'NO COMFORT ZONE', 'JUST START', 'SHOW UP'
+            ],
+            font: "'Roboto Mono', monospace"
+          },
+          {
+            type: 'icon',
+            content: ['\uf121', '\uf5dc', '\uf085', '\uf1ec', '\uf201', '\uf5d2', '\uf0eb', '\uf0c2', '\uf1c9', '\uf7d9', '\uf6ff', '\uf542'],
+            font: "'Font Awesome 6 Free Solid'"
+          },
+          {
+            type: 'number',
+            content: ['0', '1', '42', '101', '3.14', '2³', '99%', '0.5', '77', '1337', '2048', 'const', 'let', 'var', '<span>', '<div>'],
+            font: "'Roboto Mono', monospace"
+          }
+        ];
+        
+        const symbolColorsVibrantLight = [
+          '#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B',
+          '#10B981', '#EF4444', '#0EA5E9', '#D946EF'
+        ];
+        
+        let elements = [];
+        
+        function resizeCanvas() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        
+        class FloatingElement {
+          constructor(fromTop) {
+            const typeChoice = elementTypes[Math.floor(Math.random() * elementTypes.length)];
+            this.type = typeChoice.type;
+            this.content = typeChoice.content[Math.floor(Math.random() * typeChoice.content.length)];
+            this.fontFamily = typeChoice.font;
+        
+            this.x = Math.random() * canvas.width;
+            this.y = fromTop ? -50 - Math.random() * 100 : canvas.height + 50 + Math.random() * 100;
+        
+            this.size = Math.random() * 10 + 12;
+            this.radius = this.size / 1.5;
+            this.opacity = Math.random() * 0.3 + 0.3;
+            this.color = symbolColorsVibrantLight[Math.floor(Math.random() * symbolColorsVibrantLight.length)];
+            this.vx = (Math.random() - 0.5) * 1.5;
+        
+            // Stronger vertical velocity to ensure elements come into view
+            this.vy = (Math.random() * 1.2 + 0.8) * (fromTop ? 1 : -1);
+        
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = (Math.random() - 0.5) * 0.2;
+          }
+        
+          update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.rotation += this.rotationSpeed;
+        
+            // Bounce from left and right edges
+            if (this.x - this.radius < 0) {
+              this.x = this.radius;
+              this.vx *= -1;
+            }
+            if (this.x + this.radius > canvas.width) {
+              this.x = canvas.width - this.radius;
+              this.vx *= -1;
+            }
+        
+            // Don't bounce vertically — instead, reset if too far out of view
+            if (this.y < -150 || this.y > canvas.height + 150) {
+              this.reset();
+            }
+          }
+        
+          reset() {
+            // Reset position at top or bottom randomly
+            const fromTop = Math.random() > 0.5;
+            this.x = Math.random() * canvas.width;
+            this.y = fromTop ? -50 - Math.random() * 100 : canvas.height + 50 + Math.random() * 100;
+            this.vy = (Math.random() * 1.2 + 0.8) * (fromTop ? 1 : -1);
+            this.vx = (Math.random() - 0.5) * 1.5;
+        
+            // Optional: reset rotation
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = (Math.random() - 0.5) * 0.2;
+          }
+        
+          checkCollision(other) {
+            const dx = other.x - this.x;
+            const dy = other.y - this.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            return dist < this.radius + other.radius;
+          }
+        
+          resolveCollision(other) {
+            const dx = other.x - this.x;
+            const dy = other.y - this.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist === 0) return;
+        
+            const nx = dx / dist;
+            const ny = dy / dist;
+            const tx = -ny;
+            const ty = nx;
+        
+            const dpTan1 = this.vx * tx + this.vy * ty;
+            const dpTan2 = other.vx * tx + other.vy * ty;
+            const dpNorm1 = this.vx * nx + this.vy * ny;
+            const dpNorm2 = other.vx * nx + other.vy * ny;
+        
+            // Exchange normal components of velocity (perfect elastic collision)
+            this.vx = tx * dpTan1 + nx * dpNorm2;
+            this.vy = ty * dpTan1 + ny * dpNorm2;
+            other.vx = tx * dpTan2 + nx * dpNorm1;
+            other.vy = ty * dpTan2 + ny * dpNorm1;
+          }
+        
+          draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation * Math.PI / 180);
+            ctx.globalAlpha = this.opacity;
+            ctx.fillStyle = this.color;
+            const fontWeight = this.fontFamily.includes('Font Awesome') ? '900' : '500';
+            ctx.font = `${fontWeight} ${this.size}px ${this.fontFamily}`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(this.content, 0, 0);
+            ctx.restore();
+          }
+        }
+        
+        function initElements() {
+          elements = [];
+          const total = 150;
+          for (let i = 0; i < total; i++) {
+            const fromTop = i < total / 2;
+            elements.push(new FloatingElement(fromTop));
+          }
+        }
+        
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+          // Handle collisions between elements
+          for (let i = 0; i < elements.length; i++) {
+            for (let j = i + 1; j < elements.length; j++) {
+              if (elements[i].checkCollision(elements[j])) {
+                elements[i].resolveCollision(elements[j]);
+              }
+            }
+          }
+        
+          elements.forEach(el => {
+            el.update();
+            el.draw();
+          });
+        
+          requestAnimationFrame(animate);
+        }
+        
+        initElements();
+        animate();
+         // Start the animation loop
+
+        // --- Original Login Form JavaScript (Functionality Unchanged) ---
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add password visibility toggle functionality
+            const passwordToggle = document.querySelector('.password-toggle');
+            const passwordInput = document.getElementById('loginPassword');
+            
+            // Check if both elements exist before adding listener
+            if (passwordToggle && passwordInput) {
+                 passwordToggle.addEventListener('click', function() {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    this.classList.toggle('fa-eye');
+                    this.classList.toggle('fa-eye-slash');
+                });
+            }
+
+            const loginForm = document.getElementById('loginForm');
+            const loginEmailInput = document.getElementById('loginEmail');
+            const loginPasswordInput = document.getElementById('loginPassword');
+            
+            // Clear input fields on DOMContentLoaded with a small delay
+            setTimeout(() => {
+                if (loginEmailInput) loginEmailInput.value = '';
+                if (loginPasswordInput) loginPasswordInput.value = '';
+            }, 50); // 50ms delay
+            
+            const loginBtn = document.getElementById('loginBtn');
+            const loginBtnText = loginBtn.querySelector('.btn-text');
+            const loginBtnLoader = loginBtn.querySelector('.btn-loader');
+            const loginMessageDiv = document.getElementById('loginMessage');
+
+            const forgotPasswordLink = document.querySelector('.forgot-password-link-light');
+            
+            // --- New Elements for Forgot/Reset Password ---
+            const forgotPasswordForm = document.createElement('form');
+            forgotPasswordForm.id = 'forgotPasswordForm';
+            forgotPasswordForm.style.display = 'none'; // Initially hidden
+            forgotPasswordForm.innerHTML = `
+                <h2 class="form-title-light">Forgot Password?</h2>
+                <p style="margin-bottom: 1.5rem; text-align: center; font-size: 0.9rem; color: var(--text-dark-secondary);">Enter your email to receive a password reset code.</p>
+                <div class="form-group">
+                    <label for="forgotEmail" class="form-label-light">Email Address</label>
+                    <div class="input-group">
+                        <i class="fas fa-at input-icon-light"></i>
+                        <input type="email" id="forgotEmail" class="form-input-light" placeholder="jane@example.com" required>
+                    </div>
+                </div>
+                <button type="submit" class="login-button-light" id="sendOtpBtn">
+                    <span class="btn-text">Send Reset Code</span>
+                    <span class="btn-loader" style="display:none;">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>Sending...
+                    </span>
+                </button>
+                <div id="forgotMessage" class="message-area-light"></div>
+                <p class="signup-link-wrapper-light"><a href="#" id="backToLoginLink">Back to Login</a></p>
+            `;
+
+            const resetPasswordForm = document.createElement('form');
+            resetPasswordForm.id = 'resetPasswordForm';
+            resetPasswordForm.style.display = 'none'; // Initially hidden
+            resetPasswordForm.innerHTML = `
+                <h2 class="form-title-light">Reset Password</h2>
+                <p style="margin-bottom: 1.5rem; text-align: center; font-size: 0.9rem; color: var(--text-dark-secondary);">Enter the code sent to your email and your new password.</p>
+                <div class="form-group">
+                    <label for="resetEmail" class="form-label-light">Email Address</label>
+                    <div class="input-group">
+                        <i class="fas fa-at input-icon-light"></i>
+                        <input type="email" id="resetEmail" class="form-input-light" placeholder="jane@example.com" required readonly style="background-color: #e2e8f0;">
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label for="resetOtp" class="form-label-light">Verification Code (OTP)</label>
+                    <div class="input-group">
+                        <i class="fas fa-key input-icon-light"></i>
+                        <input type="text" id="resetOtp" class="form-input-light" placeholder="Enter OTP" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword" class="form-label-light">New Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon-light"></i>
+                        <input type="password" id="newPassword" class="form-input-light" placeholder="Your New Secure Password" required minlength="8">
+                        <i class="fas fa-eye input-icon-light password-toggle" style="left: auto; right: 1rem; cursor: pointer;"></i>
+                    </div>
+                </div>
+                <button type="submit" class="login-button-light" id="resetPasswordBtn">
+                    <span class="btn-text">Reset Password</span>
+                    <span class="btn-loader" style="display:none;">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>Resetting...
+                    </span>
+                </button>
+                <div id="resetMessage" class="message-area-light"></div>
+                <p class="signup-link-wrapper-light"><a href="#" id="backToLoginLink2">Back to Login</a></p>
+            `;
+            
+            // Append the new forms to the container
+            const formContainer = document.querySelector('.login-form-container');
+            if (formContainer) {
+                formContainer.appendChild(forgotPasswordForm);
+                formContainer.appendChild(resetPasswordForm);
+            }
+
+            // --- Event Listeners --- 
+
+            // Forgot Password Link Click
+            if(forgotPasswordLink) {
+                forgotPasswordLink.addEventListener('click', function(e){
+                    e.preventDefault();
+                    loginForm.style.display = 'none';
+                    resetPasswordForm.style.display = 'none'; // Ensure reset form is hidden
+                    forgotPasswordForm.style.display = 'block';
+                    loginMessageDiv.textContent = ''; // Clear login messages
+                    document.getElementById('forgotEmail').value = loginEmailInput.value; // Pre-fill email if available
+                    document.getElementById('forgotMessage').textContent = '';
+                });
+            }
+
+            // Back to Login Link Click (from Forgot Password form)
+            const backToLoginLink = document.getElementById('backToLoginLink');
+            if (backToLoginLink) {
+                backToLoginLink.addEventListener('click', function(e) {
+                     e.preventDefault();
+                     forgotPasswordForm.style.display = 'none';
+                     resetPasswordForm.style.display = 'none'; // Ensure reset form is hidden
+                     loginForm.style.display = 'block';
+                     document.getElementById('forgotMessage').textContent = ''; // Clear forgot messages
+                     loginMessageDiv.textContent = '';
+                });
+            }
+
+             // Back to Login Link Click (from Reset Password form)
+            const backToLoginLink2 = document.getElementById('backToLoginLink2');
+            if (backToLoginLink2) {
+                backToLoginLink2.addEventListener('click', function(e) {
+                     e.preventDefault();
+                     forgotPasswordForm.style.display = 'none';
+                     resetPasswordForm.style.display = 'none';
+                     loginForm.style.display = 'block';
+                     document.getElementById('resetMessage').textContent = ''; // Clear reset messages
+                     loginMessageDiv.textContent = '';
+                });
+            }
+
+            // Forgot Password Form Submission (Send OTP)
+            forgotPasswordForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const email = document.getElementById('forgotEmail').value;
+                const forgotMessageDiv = document.getElementById('forgotMessage');
+                const sendOtpBtn = document.getElementById('sendOtpBtn');
+                 const sendOtpBtnText = sendOtpBtn.querySelector('.btn-text');
+                 const sendOtpBtnLoader = sendOtpBtn.querySelector('.btn-loader');
+
+                forgotMessageDiv.textContent = '';
+                 forgotMessageDiv.className = 'message-area-light'; // Reset classes
+
+                if (!email) {
+                    forgotMessageDiv.textContent = 'Please enter your email address.';
+                    forgotMessageDiv.classList.add('error');
+                    return;
+                }
+                
+                // Simple frontend email format check (optional but good UX)
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    forgotMessageDiv.textContent = 'Please enter a valid email address.';
+                    forgotMessageDiv.classList.add('error');
+                    document.getElementById('forgotEmail').classList.add('error');
+                    return;
+                }
+
+                sendOtpBtn.disabled = true;
+                 if(sendOtpBtnText) sendOtpBtnText.style.display = 'none';
+                 if(sendOtpBtnLoader) sendOtpBtnLoader.style.display = 'inline-flex';
+
+                try {
+                    const res = await fetch('http://localhost:5000/api/users/forgot-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    });
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        forgotMessageDiv.textContent = data.message || 'Failed to send OTP.';
+                        forgotMessageDiv.classList.add('error');
+                         if (data.message && data.message.toLowerCase().includes('email')) {
+                            document.getElementById('forgotEmail').classList.add('error');
+                        }
+                    } else {
+                        forgotMessageDiv.textContent = data.message || 'OTP sent successfully. Check your email.';
+                        forgotMessageDiv.classList.add('success');
+                        // Automatically switch to reset form and pre-fill email
+                        setTimeout(() => {
+                            forgotPasswordForm.style.display = 'none';
+                            resetPasswordForm.style.display = 'block';
+                            document.getElementById('resetEmail').value = email;
+                            document.getElementById('resetMessage').textContent = '';
+                        }, 1500);
+                    }
+                } catch (err) {
+                    console.error('Fetch error during forgot password:', err);
+                    forgotMessageDiv.textContent = 'Network error. Please try again.';
+                    forgotMessageDiv.classList.add('error');
+                } finally {
+                    sendOtpBtn.disabled = false;
+                    if(sendOtpBtnText) sendOtpBtnText.style.display = 'inline';
+                    if(sendOtpBtnLoader) sendOtpBtnLoader.style.display = 'none';
+                }
+            });
+
+             // Reset Password Form Submission
+            resetPasswordForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const email = document.getElementById('resetEmail').value;
+                const otp = document.getElementById('resetOtp').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const resetMessageDiv = document.getElementById('resetMessage');
+                const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+                const resetPasswordBtnText = resetPasswordBtn.querySelector('.btn-text');
+                const resetPasswordBtnLoader = resetPasswordBtn.querySelector('.btn-loader');
+
+                resetMessageDiv.textContent = '';
+                 resetMessageDiv.className = 'message-area-light'; // Reset classes
+
+                if (!email || !otp || !newPassword) {
+                    resetMessageDiv.textContent = 'All fields are required.';
+                    resetMessageDiv.classList.add('error');
+                    return;
+                }
+                if (newPassword.length < 8) {
+                    resetMessageDiv.textContent = "New password must be at least 8 characters long.";
+                    resetMessageDiv.classList.add('error');
+                    return;
+                }
+
+                resetPasswordBtn.disabled = true;
+                if(resetPasswordBtnText) resetPasswordBtnText.style.display = 'none';
+                if(resetPasswordBtnLoader) resetPasswordBtnLoader.style.display = 'inline-flex';
+
+                try {
+                    const res = await fetch('http://localhost:5000/api/users/reset-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, otp, newPassword })
+                    });
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        resetMessageDiv.textContent = data.message || 'Password reset failed.';
+                        resetMessageDiv.classList.add('error');
+                         // Optionally add error classes to specific inputs based on message
+                    } else {
+                        resetMessageDiv.textContent = data.message || 'Password reset successful! Redirecting...';
+                        resetMessageDiv.classList.add('success');
+                         setTimeout(() => {
+                            // Redirect back to login form or login page
+                            resetPasswordForm.style.display = 'none';
+                            loginForm.style.display = 'block';
+                            loginMessageDiv.textContent = 'Password reset. Please login with your new password.';
+                            loginMessageDiv.classList.add('success'); // Indicate success on the main login form
+                            // Clear inputs
+                            document.getElementById('forgotEmail').value = '';
+                            document.getElementById('resetEmail').value = '';
+                            document.getElementById('resetOtp').value = '';
+                            document.getElementById('newPassword').value = '';
+
+                        }, 1500);
+                    }
+                } catch (err) {
+                    console.error('Fetch error during password reset:', err);
+                    resetMessageDiv.textContent = 'Network error. Please try again.';
+                    resetMessageDiv.classList.add('error');
+                } finally {
+                    resetPasswordBtn.disabled = false;
+                    if(resetPasswordBtnText) resetPasswordBtnText.style.display = 'inline';
+                    if(resetPasswordBtnLoader) resetPasswordBtnLoader.style.display = 'none';
+                }
+            });
+
+
+            // Add password visibility toggle for the new password input in reset form
+             // Need to select the new password toggle after the reset form is appended
+            const newPasswordToggle = resetPasswordForm.querySelector('.password-toggle');
+            const newPasswordInput = document.getElementById('newPassword');
+
+            if (newPasswordToggle && newPasswordInput) {
+                 newPasswordToggle.addEventListener('click', function() {
+                    const type = newPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    newPasswordInput.setAttribute('type', type);
+                    this.classList.toggle('fa-eye');
+                    this.classList.toggle('fa-eye-slash');
+                });
+            }
+
+            // --- Original Login Form Submission (kept as is) ---
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                loginMessageDiv.textContent = '';
+                loginMessageDiv.className = 'message-area-light'; 
+                loginEmailInput.classList.remove('error');
+                loginPasswordInput.classList.remove('error');
+
+                loginBtn.disabled = true;
+                if(loginBtnText) loginBtnText.style.display = 'none';
+                if(loginBtnLoader) loginBtnLoader.style.display = 'inline-flex';
+
+                const email = loginEmailInput.value;
+                const password = loginPasswordInput.value;
+
+                console.log('Attempting login with:', { email: email, password: password });
+
+                if (!email || !password) {
+                    loginMessageDiv.textContent = "Email and Password fields are required.";
+                    loginMessageDiv.classList.add('error');
+                    if (!email) loginEmailInput.classList.add('error');
+                    if (!password) loginPasswordInput.classList.add('error');
+                    loginBtn.disabled = false;
+                    if(loginBtnText) loginBtnText.style.display = 'inline';
+                    if(loginBtnLoader) loginBtnLoader.style.display = 'none';
+                    return;
+                }
+                if (password.length < 8) {
+                    loginMessageDiv.textContent = "Password must be at least 8 characters long.";
+                    loginMessageDiv.classList.add('error');
+                    loginPasswordInput.classList.add('error');
+                    loginBtn.disabled = false;
+                    if(loginBtnText) loginBtnText.style.display = 'inline';
+                    if(loginBtnLoader) loginBtnLoader.style.display = 'none';
+                    return;
+                }
+
+                try {
+                    const res = await fetch('http://localhost:5000/api/users/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+                    const data = await res.json();
+
+                    if (!res.ok || !data.token || !data.user) {
+                        loginMessageDiv.textContent = (data && data.message) ? data.message : 'Login failed. Please check credentials.';
+                        loginMessageDiv.classList.add('error');
+                        if (data && data.message) {
+                            if (data.message.toLowerCase().includes('email')) loginEmailInput.classList.add('error');
+                            if (data.message.toLowerCase().includes('password')) loginPasswordInput.classList.add('error');
+                            if (!data.message.toLowerCase().includes('email') && !data.message.toLowerCase().includes('password')) {
+                                loginEmailInput.classList.add('error'); loginPasswordInput.classList.add('error');
+                            }
+                        } else {
+                            loginEmailInput.classList.add('error');
+                            loginPasswordInput.classList.add('error');
+                        }
+                    } else {
+                        localStorage.setItem('token', data.token);
+                        // Ensure user object has profilePicture, defaulting if not provided
+                        const userToStore = {
+                            ...data.user,
+                            profilePicture: data.user.profilePicture || 'static/default-profile.jpg'
+                        };
+                        localStorage.setItem('user', JSON.stringify(userToStore));
+                        console.log('Login successful! Redirecting...');
+                        console.log('User data from backend (data.user):', data.user);
+                        console.log('User data stored in localStorage (userToStore):', userToStore);
+                        loginMessageDiv.textContent = 'Login successful! Redirecting to dashboard...';
+                        loginMessageDiv.classList.add('success');
+                        setTimeout(() => {
+                            // Force a hard refresh of index.html to ensure all cached resources are reloaded
+                            window.location.replace('index.html?_t=' + new Date().getTime()); 
+                        }, 500);
+                    }
+                } catch (err) {
+                    console.error('Fetch error during login:', err);
+                    loginMessageDiv.textContent = 'Network connection error. Please try again.';
+                    loginMessageDiv.classList.add('error');
+                    loginBtn.disabled = false;
+                    if(loginBtnText) loginBtnText.style.display = 'inline';
+                    if(loginBtnLoader) loginBtnLoader.style.display = 'none';
+                }
+            });
+
+            document.getElementById('google-login-btn-light').addEventListener('click', function() {
+                window.location.href = 'http://localhost:5000/api/auth/google';
+            });
+        });
+
+        // Add a pageshow listener to clear fields, which handles browser history navigation/autofill
+        window.addEventListener('pageshow', function(event) {
+            // Small delay to allow browser autofill to complete first
+            setTimeout(() => {
+                const emailInput = document.getElementById('loginEmail');
+                const passwordInput = document.getElementById('loginPassword');
+                if (emailInput) emailInput.value = '';
+                if (passwordInput) passwordInput.value = '';
+            }, 50); // 50ms delay
+        });
+    </script>
+
+    <!-- === DARK MODE LOGIC (Self-contained, like index.html) === -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        // Set default theme to light
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            if (darkModeToggle) darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            if (darkModeToggle) darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            if (darkModeToggle) darkModeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+        if (darkModeToggle) darkModeToggle.addEventListener('click', toggleTheme);
+        prefersDarkScheme.addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                const newTheme = e.matches ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                if (darkModeToggle) darkModeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment In Progress | AceYourPlacement</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="logo.png" type="image/png">
+
+  <!-- FONT & ICONS & AOS-->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet"> <!-- For Code Editor -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- OUR EPIC CSS -->
+  <link rel="stylesheet" href="css/assessment.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="antialiased">
+  <!-- DARK FLOATING NAVBAR -->
+  <nav class="floating-navbar py-3 px-4 sm:px-6 fixed top-4 left-1/2 rounded-xl shadow-2xl z-[1000] w-11/12 max-w-5xl" style="transform: translateX(-50%);">
+    <div class="mx-auto flex justify-between items-center">
+      <a href="/" class="flex items-center space-x-2 group">
+        <img src="logo.png" alt="AceYourPlacement Logo" class="w-8 h-8 sm:w-9 sm:h-9 mr-2">
+        <span class="font-black text-lg sm:text-xl nav-brand-text">AceYourPlacement</span>
+      </a>
+      <div class="hidden md:flex items-center space-x-4 lg:space-x-6">
+        <a href="/" class="floating-navbar-link text-sm">Home</a>
+        <a href="/assessment-home.html" class="floating-navbar-link text-sm active">Assessments</a>
+        <a href="/resources.html" class="floating-navbar-link text-sm">Resources</a>
+      </div>
+      <div class="flex items-center space-x-3 sm:space-x-4" id="navRightContainer">
+        <div class="profile-dropdown-tuf">
+          <button id="tufProfileBtn" class="focus:outline-none block">
+            <img class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-gray-700 hover:border-blue-400 transition-all object-cover" src="https://i.pravatar.cc/100" alt="Profile">
+          </button>
+          <div id="tufProfileDropdownMenu" class="dropdown-menu-tuf">
+            <div class="dropdown-header-tuf"><img src="https://i.pravatar.cc/100" alt="Avatar"><div><div class="font-semibold text-white">Guest User</div><div class="text-sm text-gray-400">guest@example.com</div></div></div>
+            <a href="#" class="dropdown-item-tuf"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+          </div>
+        </div>
+        <button class="md:hidden text-xl text-gray-300 focus:outline-none hover:text-white" id="mobileMenuBtn"><i class="fas fa-bars-staggered"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-32 pb-16 px-4">
+    <div class="max-w-4xl mx-auto" id="assessmentContainer">
+      <!-- JS will summon the questions here! -->
+    </div>
+  </main>
+  
+  <div id="loaderOverlay" class="loader-overlay show">
+    <div class="loader"></div>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init({ duration: 600, once: true, offset: 20, easing: 'ease-out-cubic' });</script>
+  <script src="js/navbar.js"></script>
+  <script src="js/assessment-module.js"></script>
+</body>
+</html> 

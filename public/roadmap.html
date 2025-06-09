@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Career Trajectories - Ace Your Placement 🗺️✨</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* Cosmic Background */
+            background-color: #ffffff;
+            
+            margin: 0; padding: 0; overflow-x: hidden;
+            color: #e0e0e0; /* Light text for dark bg */
+            position: relative;
+            min-height: 100vh;
+        }
+        /* Starry background effect */
+        body::before {
+            content: ""; position: fixed; top:0; left:0; right:0; bottom:0;
+            width:100%; height:100%; z-index:-1;
+            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.03) 0%,rgba(255, 255, 255, 0) 60%),
+                        radial-gradient(ellipse at top left, rgba(255,255,255,0.05) 0%,rgba(255,255,255,0) 50%),
+                        radial-gradient(ellipse at bottom right, rgba(255,255,255,0.05) 0%,rgba(255,255,255,0) 50%);
+            background-size: 2px 2px, auto, auto; /* smaller, more numerous 'stars' */
+            animation: twinkle-stars 90s linear infinite;
+        }
+        @keyframes twinkle-stars {
+            from { background-position: 0 0, 0 0, 0 0; }
+            to { background-position: 1500px 1500px, 750px 750px, -750px -750px; }
+        }
+
+        /* --- PAGE TRANSITION STYLES --- */
+        .page-wrapper { width: 100%; position: absolute; top: 0; left: 0; background-color:transparent; min-height: 100vh;}
+        @keyframes slideOutLeft { from { transform: translateX(0%); opacity: 1; } to { transform: translateX(-100%); opacity: 0; } }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0%); opacity: 1; } }
+        body.page-transition-out .page-wrapper { animation: slideOutLeft 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+        body.page-transition-in .page-wrapper { animation: slideInRight 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards 0.1s; }
+        body:not(.page-transition-in):not(.page-transition-out) .page-wrapper { opacity: 0; animation: initialFadeIn 0.5s ease-out forwards 0.1s; }
+        @keyframes initialFadeIn { to { opacity: 1; } }
+        /* --- END PAGE TRANSITION STYLES --- */
+
+        /* Gradient utilities (Cosmic Theme) */
+        .gradient-text-page-main { background: linear-gradient(125deg, #89f7fe 0%, #66a6ff 50%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gradient-text-alt-roadmap { background: linear-gradient(125deg, #fde047 0%, #f97316 50%, #ef4444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } /* Yellow to Red for emphasis */
+
+        /* Navbar & Profile Dropdown Styles (Same as other dark-themed pages) */
+        .floating-navbar { background-color: rgba(20, 20, 40, 0.85); backdrop-filter: blur(10px) saturate(150%); color: #e5e7eb; border: 1px solid rgba(255,255,255,0.1); }
+        .floating-navbar-link { color: #d1d5db; transition: color 0.2s ease, transform 0.2s ease; }
+        .floating-navbar-link:hover, .floating-navbar-link.active-nav-link { color: #ffffff; transform: scale(1.05); text-shadow: 0 0 8px rgba(192, 132, 252,0.7);} /* Purpleish glow */
+        .nav-brand-text { background: linear-gradient(120deg, #89f7fe, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .profile-dropdown-tuf { position: relative; }
+        .dropdown-menu-tuf { display: none; position: absolute; right: 0; top: calc(100% + 10px); background-color: #110f20ea; backdrop-filter: blur(8px); color: #d1d5db; border-radius: 0.75rem; box-shadow: 0 10px 35px -5px rgba(0,0,0,0.5), 0 20px 50px -20px rgba(0,0,0,0.7); min-width: 220px; z-index: 1050; padding-top: 0.5rem; padding-bottom: 0.5rem; transform-origin: top right; opacity: 0; scale: 0.95; transition: opacity 0.15s ease-out, transform 0.15s ease-out; border: 1px solid rgba(255,255,255,0.15);}
+        .dropdown-menu-tuf.open { display: block; opacity: 1; }
+        .dropdown-menu-tuf .dropdown-header-tuf { padding: 0.75rem 1.25rem; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; }
+        .dropdown-menu-tuf .dropdown-header-tuf img { width: 40px; height: 40px; border-radius: 50%; margin-right: 0.75rem; border: 2px solid #89f7fe; object-fit: cover; }
+        .dropdown-menu-tuf .dropdown-item-tuf { display: flex; align-items: center; padding: 0.6rem 1.25rem; cursor: pointer; font-size: 0.95rem; color: #d1d5db; transition: background-color 0.2s ease, color 0.2s ease; border-radius: 0.375rem; margin: 0 0.5rem;}
+        .dropdown-menu-tuf .dropdown-item-tuf:hover { background-color: rgba(137, 247, 254, 0.1); color: #ffffff; }
+        .dropdown-menu-tuf .dropdown-item-tuf i { margin-right: 0.75rem; width: 20px; text-align: center; color: #9ca3af; }
+        .dropdown-menu-tuf .dropdown-item-tuf:hover i { color: #89f7fe; }
+        .dropdown-menu-tuf .close-btn-tuf { position: absolute; top: 0.5rem; right: 0.75rem; background: none; border: none; color: #9ca3af; font-size: 1.5rem; line-height: 1; cursor: pointer; }
+        .dropdown-menu-tuf .close-btn-tuf:hover { color: #ffffff; }
+
+        /* Cosmic Role Card (Planet Styling) */
+        .cosmic-role-card {
+            position: relative;
+            background: rgba(30, 28, 60, 0.7); /* Dark translucent base */
+            backdrop-filter: blur(12px) saturate(130%);
+            border-radius: 1.5rem; /* More rounded like a planet */
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px -20px rgba(0,0,0,0.5);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+            overflow: hidden;
+            min-height: 280px; /* Increased height for cosmic feel */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .cosmic-role-card::before { /* Inner Glow */
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, var(--planet-glow-color, rgba(137, 247, 254, 0.2)) 0%, transparent 50%);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        .cosmic-role-card:hover::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .cosmic-role-card:hover {
+            transform: translateY(-12px) scale(1.04);
+            box-shadow: 0 30px 70px -20px var(--planet-shadow-color, rgba(137, 247, 254, 0.3));
+        }
+
+        .planet-icon-wrapper {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 1rem;
+            background: var(--planet-icon-bg, linear-gradient(145deg, #4a00e0, #8e2de2)); /* Default violet */
+            box-shadow: 0 0 25px var(--planet-icon-shadow, rgba(142, 45, 226, 0.7));
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cosmic-role-card:hover .planet-icon-wrapper {
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 0 0 35px var(--planet-icon-shadow, rgba(142, 45, 226, 0.9));
+        }
+        .planet-icon-wrapper i { font-size: 2.5rem; color: white; }
+
+        .cosmic-role-card h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; color: #fff; }
+        .cosmic-role-card p { font-size: 0.9rem; color: #b0b0d0; margin-bottom: 1rem; line-height: 1.6; }
+        .tech-nebula-tags span {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--planet-tag-color, #e0e0ff);
+            backdrop-filter: blur(3px);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .cosmic-role-card:hover .tech-nebula-tags span { transform: scale(1.05); }
+        .tech-nebula-tags span:hover { background: var(--planet-glow-color, rgba(137, 247, 254, 0.3)); }
+
+
+        /* Roadmap Modal (Cosmic Theme) */
+        .cosmic-modal {
+            display: none; position: fixed; inset: 0;
+            background: rgba(10, 8, 30, 0.85); /* Deep space transparent bg */
+            backdrop-filter: blur(10px) saturate(120%);
+            z-index: 1050;
+            opacity: 0;
+            transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            padding: 2rem; /* Ensure padding for smaller screens */
+        }
+        .cosmic-modal.active { display: flex; opacity: 1; }
+
+        .cosmic-modal-content {
+            background: linear-gradient(160deg, #1a1838, #2c2a5c); /* Dark textured bg */
+            margin: auto; padding: 2rem; border-radius: 1.5rem;
+            width: 100%; max-width: 700px; /* Optimized width */
+            max-height: 90vh; overflow-y: auto;
+            border: 1px solid rgba(137, 247, 254, 0.2); /* Subtle cyan border */
+            box-shadow: 0 20px 60px -15px rgba(0,0,0,0.7);
+            transform: translateY(-20px) scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0.1s, opacity 0.4s ease 0.1s; /* Added opacity */
+            opacity: 0; /* Start hidden for transition */
+            position: relative; /* For close button positioning */
+        }
+        .cosmic-modal.active .cosmic-modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .cosmic-modal-close-btn {
+            position: absolute; top: 1rem; right: 1.25rem;
+            font-size: 2rem; line-height: 1; cursor: pointer;
+            color: rgba(200,200,255,0.6); transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .cosmic-modal-close-btn:hover { color: #89f7fe; transform: rotate(90deg) scale(1.1); }
+
+        .cosmic-modal-title { color: var(--planet-glow-color, #89f7fe); margin-bottom: 1.5rem; font-weight: 800; text-shadow: 0 0 10px var(--planet-glow-color, rgba(137, 247, 254,0.5));}
+
+        /* Roadmap Path (Cosmic Styling) */
+        .cosmic-roadmap-path { position: relative; padding-left: 25px; }
+        .cosmic-roadmap-path::before { /* The "timeline" track */
+            content: ''; position: absolute; left: 8px; top: 5px;
+            width: 4px; height: calc(100% - 10px);
+            background: linear-gradient(to bottom, var(--planet-glow-color, rgba(137, 247, 254,0.5)), rgba(192, 132, 252, 0.7)); /* Cyan to Purple gradient */
+            border-radius: 2px;
+            box-shadow: 0 0 8px var(--planet-glow-color, rgba(137, 247, 254,0.3));
+        }
+        .cosmic-milestone {
+            position: relative; margin-bottom: 2.5rem;
+            padding-left: 15px; /* Space from the "timeline dot" */
+        }
+        .cosmic-milestone::before { /* The "timeline dot" */
+            content: ''; position: absolute; left: -27px; top: 4px; /* Adjusted to align with title */
+            width: 18px; height: 18px; border-radius: 50%;
+            background: var(--planet-main-color, #66a6ff);
+            border: 3px solid var(--planet-modal-bg, #1a1838); /* Match modal bg */
+            box-shadow: 0 0 0 3px var(--planet-main-color, #66a6ff), 0 0 10px var(--planet-glow-color, rgba(137, 247, 254,0.5));
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        .cosmic-milestone:hover::before { transform: scale(1.25); box-shadow: 0 0 0 4px var(--planet-main-color), 0 0 15px var(--planet-glow-color); }
+        .cosmic-milestone:last-child { margin-bottom: 0; }
+        .cosmic-milestone:last-child .cosmic-milestone-content::after { display: none; } /* No line after last item */
+
+        .cosmic-milestone-title { font-weight: 700; font-size: 1.15rem; margin-bottom: 0.75rem; color: #f0f0f0; display: flex; align-items: center;}
+        .cosmic-milestone-title i { margin-right: 0.5rem; color: var(--planet-glow-color, #89f7fe); font-size: 1.1em;}
+
+        .cosmic-milestone-content {
+            background: rgba(255, 255, 255, 0.05); /* Slightly lighter than modal for depth */
+            backdrop-filter: blur(5px);
+            border-radius: 0.75rem; padding: 1rem;
+            border-left: 3px solid var(--planet-glow-color, #89f7fe);
+        }
+        .cosmic-milestone-content ul { list-style: none; padding-left: 0; color: #c0c0e0; font-size:0.9rem; line-height: 1.7;}
+        .cosmic-milestone-content ul li { margin-bottom: 0.5rem; display: flex; align-items: flex-start;}
+        .cosmic-milestone-content ul li::before { /* Custom bullet point */
+            content: "✧"; /* Sparkle or star icon */
+            margin-right: 0.75rem;
+            color: var(--planet-glow-color, #89f7fe);
+            font-size: 1.1em; line-height: 1;
+        }
+
+
+        /* Custom colors per role - to be applied via JS or inline style variable */
+        :root { /* Define some default fallbacks just in case */
+            --default-planet-glow: rgba(137, 247, 254, 0.2);
+            --default-planet-shadow: rgba(137, 247, 254, 0.3);
+            --default-planet-icon-bg: linear-gradient(145deg, #4a00e0, #8e2de2);
+            --default-planet-icon-shadow: rgba(142, 45, 226, 0.7);
+            --default-planet-tag: #e0e0ff;
+            --default-planet-modal-title: #89f7fe;
+            --default-planet-modal-timeline: #66a6ff;
+        }
+
+        .sde-theme {
+            --planet-glow-color: rgba(96, 165, 250, 0.3); /* blue-400 */
+            --planet-shadow-color: rgba(96, 165, 250, 0.4);
+            --planet-icon-bg: linear-gradient(145deg, #3b82f6, #60a5fa); /* blue-500 to blue-400 */
+            --planet-icon-shadow: rgba(59, 130, 246, 0.7);
+            --planet-tag-color: #bfdbfe; /* blue-200 */
+            --planet-main-color: #60a5fa; /* blue-400 for timeline dots etc */
+            --planet-modal-bg: #1e2048; /* Slightly bluer dark for modal */
+        }
+        .ml-theme {
+            --planet-glow-color: rgba(52, 211, 153, 0.3); /* emerald-400 */
+            --planet-shadow-color: rgba(52, 211, 153, 0.4);
+            --planet-icon-bg: linear-gradient(145deg, #10b981, #34d399); /* emerald-500 to emerald-400 */
+            --planet-icon-shadow: rgba(16, 185, 129, 0.7);
+            --planet-tag-color: #a7f3d0; /* emerald-200 */
+            --planet-main-color: #34d399;
+            --planet-modal-bg: #182838;
+        }
+        .devops-theme {
+            --planet-glow-color: rgba(248, 113, 113, 0.3); /* red-400 */
+            --planet-shadow-color: rgba(248, 113, 113, 0.4);
+            --planet-icon-bg: linear-gradient(145deg, #ef4444, #f87171); /* red-500 to red-400 */
+            --planet-icon-shadow: rgba(239, 68, 68, 0.7);
+            --planet-tag-color: #fecaca; /* red-200 */
+            --planet-main-color: #f87171;
+            --planet-modal-bg: #281828;
+        }
+        .fullstack-theme {
+            --planet-glow-color: rgba(192, 132, 252, 0.3); /* purple-400 */
+            --planet-shadow-color: rgba(192, 132, 252, 0.4);
+            --planet-icon-bg: linear-gradient(145deg, #a855f7, #c084fc); /* purple-500 to purple-400 */
+            --planet-icon-shadow: rgba(168, 85, 247, 0.7);
+            --planet-tag-color: #e9d5ff; /* purple-200 */
+            --planet-main-color: #c084fc;
+            --planet-modal-bg: #201838;
+        }
+        /* Add other themes: data, cloud, mobile, security, uiux following the pattern */
+        .data-theme {
+            --planet-glow-color: rgba(79, 70, 229, 0.3); /* indigo-600 */
+            --planet-shadow-color: rgba(79, 70, 229, 0.4);
+            --planet-icon-bg: linear-gradient(145deg, #4f46e5, #6366f1); /* indigo-600 to indigo-500 */
+            --planet-icon-shadow: rgba(79, 70, 229, 0.7);
+            --planet-tag-color: #c7d2fe; /* indigo-200 */
+            --planet-main-color: #6366f1;
+            --planet-modal-bg: #1c1a40;
+        }
+        .cloud-theme {
+            --planet-glow-color: rgba(6, 182, 212, 0.3); /* cyan-500 */
+            --planet-shadow-color: rgba(6, 182, 212, 0.4);
+            --planet-icon-bg: linear-gradient(145deg, #06b6d4, #22d3ee); /* cyan-500 to cyan-400 */
+            --planet-icon-shadow: rgba(6, 182, 212, 0.7);
+            --planet-tag-color: #a5f3fc; /* cyan-200 */
+            --planet-main-color: #22d3ee;
+            --planet-modal-bg: #152535;
+        }
+        .mobile-theme {
+            --planet-glow-color: rgba(249, 115, 22, 0.3); /* orange-500 */
+            --planet-shadow-color: rgba(249, 115, 22, 0.4);
+            --planet-icon-bg: linear-gradient(145deg, #f97316, #fb923c); /* orange-500 to orange-400 */
+            --planet-icon-shadow: rgba(249, 115, 22, 0.7);
+            --planet-tag-color: #fed7aa; /* orange-200 */
+            --planet-main-color: #fb923c;
+            --planet-modal-bg: #282020;
+        }
+         .security-theme {
+            --planet-glow-color: rgba(16, 185, 129, 0.3); /* Emerald, good for security too */
+            --planet-shadow-color: rgba(16, 185, 129, 0.4);
+            --planet-icon-bg: linear-gradient(145deg, #059669, #10b981); /* emerald-600 to -500 */
+            --planet-icon-shadow: rgba(5, 150, 105, 0.7);
+            --planet-tag-color: #a7f3d0;
+            --planet-main-color: #10b981;
+            --planet-modal-bg: #162428;
+        }
+        .uiux-theme {
+            --planet-glow-color: rgba(236, 72, 153, 0.3); /* pink-500 */
+            --planet-shadow-color: rgba(236, 72, 153, 0.4);
+            --planet-icon-bg: linear-gradient(145deg, #ec4899, #f472b6); /* pink-500 to pink-400 */
+            --planet-icon-shadow: rgba(236, 72, 153, 0.7);
+            --planet-tag-color: #fbcfe8; /* pink-200 */
+            --planet-main-color: #f472b6;
+            --planet-modal-bg: #281a30;
+        }
+        /* Stellar Insight Panel Styling */
+        #stellarInsightPanel {
+            background: linear-gradient(170deg, #2c2a5c, #1a1838 80%); /* Darker cosmic bg */
+            border: 1px solid rgba(192, 132, 252, 0.3); /* Purpleish border */
+            box-shadow: 0 15px 40px -10px rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px) saturate(130%);
+        }
+        #stellarInsightPanel.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Animation for the star icon in insight panel */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        #stellarInsightPanel .fa-star-of-life.animate-pulse {
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        /* --- UNIVERSAL DROPDOWN MENU CSS (Both Light & Dark) --- */
+        .profile-dropdown-tuf {
+            position: relative;
+        }
+
+        .dropdown-menu-tuf {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 12px); /* Spacing from the icon */
+            min-width: 200px;
+            z-index: 1050;
+            border-radius: 0.75rem;
+            padding: 0.5rem;
+            transform-origin: top right;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px) scale(0.95);
+            transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s;
+        }
+
+        .dropdown-menu-tuf.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .dropdown-item-tuf {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.7rem 1rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            text-decoration: none; /* For the <a> tag */
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        
+        .dropdown-item-tuf i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* --- Dark Theme Dropdown Specifics --- */
+        .floating-navbar:not(.light-navbar) .dropdown-menu-tuf {
+            background-color: #1f2937; /* Dark gray */
+            color: #d1d5db; /* Light gray text */
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2), 0 20px 40px -20px rgba(0,0,0,0.3);
+        }
+        .floating-navbar:not(.light-navbar) .dropdown-item-tuf {
+            color: #d1d5db;
+        }
+        .floating-navbar:not(.light-navbar) .dropdown-item-tuf:hover {
+            background-color: #374151; /* Lighter dark gray */
+            color: #ffffff;
+        }
+        .floating-navbar:not(.light-navbar) .dropdown-item-tuf i {
+            color: #9ca3af;
+        }
+        .floating-navbar:not(.light-navbar) .dropdown-item-tuf:hover i {
+            color: #60a5fa; /* Blue accent */
+        }
+
+        /* --- Light Theme Dropdown Specifics --- */
+        .light-navbar .dropdown-menu-tuf {
+            background-color: #ffffff;
+            color: #374151; /* Dark text */
+            box-shadow: 0 12px 40px -10px rgba(79, 70, 229, 0.2);
+            border: 1px solid #e5e7eb;
+        }
+        .light-navbar .dropdown-item-tuf {
+            color: #374151;
+        }
+        .light-navbar .dropdown-item-tuf:hover {
+            background-color: #eef2ff; /* Light indigo */
+            color: #4f46e5; /* Indigo */
+        }
+        .light-navbar .dropdown-item-tuf i {
+            color: #6b7280;
+        }
+        .light-navbar .dropdown-item-tuf:hover i {
+            color: #4f46e5;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased page-transition-in">
+
+<!-- ====================================================== -->
+<!-- === UNIVERSAL DARK NAVBAR === -->
+<!-- ====================================================== -->
+<nav class="floating-navbar py-3 px-4 sm:px-6 fixed top-4 left-1/2 transform -translate-x-1/2 rounded-xl shadow-2xl z-[1000] w-[90%]">
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Brand/Logo -->
+        <a href="index.html" class="nav-transition-link flex items-center space-x-2 group">
+            <img src="logo.png" alt="AceYourPlacement Logo" class="w-8 h-8 sm:w-9 sm:h-9 mr-2">
+            <span class="font-black text-lg sm:text-xl nav-brand-text hidden sm:inline tracking-tight group-hover:text-white transition-colors">AceYourPlacement</span>
+            <span class="font-black text-lg nav-brand-text sm:hidden group-hover:text-white transition-colors">AYP</span>
+        </a>
+
+        <!-- Main Navigation Links -->
+        <div class="hidden md:flex items-center space-x-4 lg:space-x-6">
+            <a href="index.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Home <i class="fas fa-home ml-1"></i></a>
+            <a href="aptitude.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Aptitude <i class="fas fa-calculator ml-1"></i></a>
+            <a href="coding.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Coding <i class="fas fa-laptop-code ml-1"></i></a>
+            <a href="technical.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Technical <i class="fas fa-book ml-1"></i></a>
+            <a href="roadmap.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Roadmaps <i class="fas fa-map-marked-alt ml-1"></i></a>
+            <a href="hr_interview.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">HR <i class="fas fa-handshake ml-1"></i></a>
+            <a href="assessment-home.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Assessment <i class="fas fa-clipboard-list ml-1"></i></a>
+        </div>
+
+        <!-- Right-side controls -->
+        <div class="flex items-center space-x-3 sm:space-x-4">
+            <!-- Profile Dropdown -->
+            <div class="profile-dropdown-tuf relative">
+                <!-- Trigger Button: The Profile Picture -->
+                <button aria-label="Profile Menu" id="profileDropdownBtn" class="focus:outline-none block">
+                    <img id="navProfileImg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-gray-700 hover:border-blue-400 transition-all object-cover" src="static/default-profile.jpg" alt="Profile" referrerpolicy="no-referrer">
+                </button>
+                
+                <!-- Dropdown Menu: Contains Profile Only -->
+                <div id="profileDropdownMenu" class="dropdown-menu-tuf">
+                    <a href="profile.html" class="nav-transition-link dropdown-item-tuf">
+                        <i class="fas fa-user-circle"></i> My Profile
+                    </a>
+                </div>
+            </div>
+        <button class="md:hidden text-xl text-gray-300 focus:outline-none hover:text-white" id="mobileMenuBtn" aria-label="Open Menu">
+            <i class="fas fa-bars-staggered"></i>
+        </button>
+        </div>
+    </div>
+</nav>
+
+<!-- ====================================================== -->
+<!-- === CORRECTED MOBILE MENU === -->
+<!-- ====================================================== -->
+<div id="mobileMenuTUF" class="fixed inset-0 bg-gray-900 bg-opacity-95 backdrop-blur-sm z-[999] p-6 text-white transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+    <div class="flex justify-between items-center mb-10">
+        <a href="index.html" class="nav-transition-link flex items-center space-x-2">
+            <i class="fas fa-rocket text-3xl nav-brand-text"></i>
+            <span class="font-black text-2xl nav-brand-text">AYP</span>
+        </a>
+        <button class="text-3xl text-gray-300 hover:text-white" id="closeMobileMenuBtnTUF" aria-label="Close menu">×</button>
+    </div>
+    <nav class="space-y-5 text-center">
+        <a href="index.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Home <i class="fas fa-house-chimney-user ml-2"></i></a>
+        <a href="aptitude.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Aptitude <i class="fas fa-calculator ml-2"></i></a>
+        <a href="coding.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Coding <i class="fas fa-code ml-2"></i></a>
+        <a href="technical.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Technical <i class="fas fa-book-open-reader ml-2"></i></a>
+        <a href="roadmap.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Roadmaps <i class="fas fa-road ml-2"></i></a>
+        <a href="hr_interview.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">HR Interview <i class="fas fa-user-tie ml-2"></i></a>
+        <a href="assessment-home.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Assessment <i class="fas fa-clipboard-list ml-2"></i></a>
+        <hr class="border-gray-700 my-4">
+        <a href="profile.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">My Profile <i class="fas fa-id-card ml-2"></i></a>
+        <div onclick="logoutUserWithTransition()" class="block text-xl py-3 rounded-lg hover:bg-red-700/50 cursor-pointer transition-colors">Sign Out <i class="fas fa-person-running ml-2"></i></div>
+    </nav>
+</div>
+
+    <div class="page-wrapper">
+    <main class="pt-28 sm:pt-32 pb-16 px-4 md:px-8">
+        <div class="max-w-7xl mx-auto">
+            <header class="text-center mb-16" data-aos="fade-down">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-black gradient-text-page-main mb-4 relative inline-block">
+                    Cosmic Career Trajectories
+                    <i class="fas fa-meteor text-purple-400 absolute -top-5 -right-12 text-4xl animate-pulse transform -rotate-12 filter drop-shadow-[0_0_8px_#c084fc]"></i>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Embark on your tech odyssey! Select a celestial body to chart your course through the stars of opportunity.
+                </p>
+            </header>
+
+            <!-- Role "Planets" Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <!-- SDE Card -->
+                <div class="cosmic-role-card sde-theme" data-role="sde" onclick="showRoadmap('sde', 'sde-theme')" data-aos="fade-up" data-aos-delay="100">
+                    <div class="planet-icon-wrapper"><i class="fas fa-laptop-code"></i></div>
+                    <h2>Software Development Engineer</h2>
+                    <p>Architect and construct scalable software systems and cutting-edge applications.</p>
+                    <div class="tech-nebula-tags flex flex-wrap gap-2 justify-center">
+                        <span class="px-3 py-1 rounded-full text-sm">Java/Python</span>
+                        <span class="px-3 py-1 rounded-full text-sm">DSA</span>
+                        <span class="px-3 py-1 rounded-full text-sm">System Design</span>
+                    </div>
+                </div>
+
+                <!-- ML Engineer Card -->
+                <div class="cosmic-role-card ml-theme" data-role="ml" onclick="showRoadmap('ml', 'ml-theme')" data-aos="fade-up" data-aos-delay="150">
+                    <div class="planet-icon-wrapper"><i class="fas fa-brain"></i></div>
+                    <h2>Machine Learning Engineer</h2>
+                    <p>Pioneer intelligent systems and unlock the power of data through machine learning.</p>
+                    <div class="tech-nebula-tags flex flex-wrap gap-2 justify-center">
+                        <span class="px-3 py-1 rounded-full text-sm">Python</span>
+                        <span class="px-3 py-1 rounded-full text-sm">TensorFlow</span>
+                        <span class="px-3 py-1 rounded-full text-sm">PyTorch</span>
+                    </div>
+                </div>
+
+                <!-- DevOps Engineer Card -->
+                <div class="cosmic-role-card devops-theme" data-role="devops" onclick="showRoadmap('devops', 'devops-theme')" data-aos="fade-up" data-aos-delay="200">
+                    <div class="planet-icon-wrapper"><i class="fas fa-infinity"></i></div>
+                    <h2>DevOps Engineer</h2>
+                    <p>Bridge development and operations to streamline software delivery and infrastructure.</p>
+                    <div class="tech-nebula-tags flex flex-wrap gap-2 justify-center">
+                        <span class="px-3 py-1 rounded-full text-sm">CI/CD</span>
+                        <span class="px-3 py-1 rounded-full text-sm">Docker</span>
+                        <span class="px-3 py-1 rounded-full text-sm">Kubernetes</span>
+                    </div>
+                </div>
+
+                <!-- Full Stack Developer Card -->
+                <div class="cosmic-role-card fullstack-theme" data-role="fullstack" onclick="showRoadmap('fullstack', 'fullstack-theme')" data-aos="fade-up" data-aos-delay="250">
+                    <div class="planet-icon-wrapper"><i class="fas fa-layer-group"></i></div>
+                    <h2>Full Stack Developer</h2>
+                    <p>Master the art of both client-side and server-side development for complete web solutions.</p>
+                    <div class="tech-nebula-tags flex flex-wrap gap-2 justify-center">
+                        <span class="px-3 py-1 rounded-full text-sm">React/Angular</span>
+                        <span class="px-3 py-1 rounded-full text-sm">Node.js</span>
+                        <span class="px-3 py-1 rounded-full text-sm">Databases</span>
+                    </div>
+                </div>
+
+                <!-- Data Engineer Card -->
+                <div class="cosmic-role-card data-theme" data-role="data" onclick="showRoadmap('data', 'data-theme')" data-aos="fade-up" data-aos-delay="300">
+                    <div class="planet-icon-wrapper"><i class="fas fa-database"></i></div>
+                    <h2>Data Engineer</h2>
+                    <p>Construct and maintain robust, scalable data pipelines and data warehousing solutions.</p>
+                    <div class="tech-nebula-tags flex flex-wrap gap-2 justify-center">
+                        <span class="px-3 py-1 rounded-full text-sm">SQL</span>
+                        <span class="px-3 py-1 rounded-full text-sm">ETL</span>
+                        <span class="px-3 py-1 rounded-full text-sm">Spark/Hadoop</span>
+                    </div>
+                </div>
+
+                <!-- Cloud Engineer Card -->
+                <div class="cosmic-role-card cloud-theme" data-role="cloud" onclick="showRoadmap('cloud', 'cloud-theme')" data-aos="fade-up" data-aos-delay="350">
+                    <div class="planet-icon-wrapper"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <h2>Cloud Engineer</h2>
+                    <p>Design, deploy, and manage resilient cloud infrastructure on platforms like AWS, Azure, GCP.</p>
+                    <div class="tech-nebula-tags flex flex-wrap gap-2 justify-center">
+                        <span class="px-3 py-1 rounded-full text-sm">AWS/Azure/GCP</span>
+                        <span class="px-3 py-1 rounded-full text-sm">IaC</span>
+                        <span class="px-3 py-1 rounded-full text-sm">Containers</span>
+                    </div>
+                </div>
+
+                <!-- Mobile App Developer Card -->
+                 <div class="cosmic-role-card mobile-theme" data-role="mobile" onclick="showRoadmap('mobile', 'mobile-theme')" data-aos="fade-up" data-aos-delay="400">
+                    <div class="planet-icon-wrapper"><i class="fas fa-mobile-alt"></i></div>
+                    <h2>Mobile App Developer</h2>
+                    <p>Craft engaging and high-performance mobile experiences for iOS and Android platforms.</p>
+                    <div class="tech-nebula-tags flex flex-wrap gap-2 justify-center">
+                        <span class="px-3 py-1 rounded-full text-sm">React Native</span>
+                        <span class="px-3 py-1 rounded-full text-sm">Flutter</span>
+                        <span class="px-3 py-1 rounded-full text-sm">Swift/Kotlin</span>
+                    </div>
+                </div>
+
+                <!-- Security Engineer Card -->
+                <div class="cosmic-role-card security-theme" data-role="security" onclick="showRoadmap('security', 'security-theme')" data-aos="fade-up" data-aos-delay="450">
+                    <div class="planet-icon-wrapper"><i class="fas fa-shield-alt"></i></div>
+                    <h2>Security Engineer</h2>
+                    <p>Defend systems, networks, and data from cyber threats through robust security measures.</p>
+                    <div class="tech-nebula-tags flex flex-wrap gap-2 justify-center">
+                        <span class="px-3 py-1 rounded-full text-sm">Cybersecurity</span>
+                        <span class="px-3 py-1 rounded-full text-sm">Pentesting</span>
+                        <span class="px-3 py-1 rounded-full text-sm">Cryptography</span>
+                    </div>
+                </div>
+
+                <!-- UI/UX Engineer Card -->
+                <div class="cosmic-role-card uiux-theme" data-role="uiux" onclick="showRoadmap('uiux', 'uiux-theme')" data-aos="fade-up" data-aos-delay="500">
+                    <div class="planet-icon-wrapper"><i class="fas fa-palette"></i></div>
+                    <h2>UI/UX Engineer</h2>
+                    <p>Design intuitive, accessible, and delightful user interfaces and experiences.</p>
+                    <div class="tech-nebula-tags flex flex-wrap gap-2 justify-center">
+                        <span class="px-3 py-1 rounded-full text-sm">Figma/Sketch</span>
+                        <span class="px-3 py-1 rounded-full text-sm">User Research</span>
+                        <span class="px-3 py-1 rounded-full text-sm">Prototyping</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    </div> <!-- End Page Wrapper -->
+
+    <!-- Roadmap Modals (One for each role, using cosmic styling) -->
+    <!-- SDE Roadmap Modal -->
+    <div id="sde-modal" class="cosmic-modal">
+        <div class="cosmic-modal-content">
+            <span class="cosmic-modal-close-btn" onclick="hideRoadmap('sde')">×</span>
+            <h2 class="text-3xl cosmic-modal-title">SDE Mission Briefing</h2>
+            <div class="cosmic-roadmap-path">
+                <div class="cosmic-milestone">
+                    <h4 class="cosmic-milestone-title"><i class="fas fa-flag"></i>Phase 1: Ground Control (3-4 months)</h4>
+                    <div class="cosmic-milestone-content">
+                        <ul>
+                            <li>Master Core Programming Language (Java/Python/C++)</li>
+                            <li>Conquer Data Structures & Algorithms (Arrays to Graphs)</li>
+                            <li>Embrace Object-Oriented Programming Principles</li>
+                            <li>Navigate Version Control with Git & GitHub</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="cosmic-milestone">
+                    <h4 class="cosmic-milestone-title"><i class="fas fa-rocket"></i>Phase 2: Orbital Ascent (4-6 months)</h4>
+                    <div class="cosmic-milestone-content">
+                        <ul>
+                            <li>Advanced DSA & Complex Problem Solving</li>
+                            <li>Introduction to System Design Concepts</li>
+                            <li>Database Fundamentals (SQL, NoSQL basics)</li>
+                            <li>Web Technologies (HTTP, REST APIs, Basic Frontend)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="cosmic-milestone">
+                    <h4 class="cosmic-milestone-title"><i class="fas fa-satellite-dish"></i>Phase 3: Deep Space Exploration (6+ months)</h4>
+                    <div class="cosmic-milestone-content">
+                        <ul>
+                            <li>High-Level System Design & Scalability</li>
+                            <li>Architectural and Software Design Patterns</li>
+                            <li>Microservices Architecture & Containerization (Docker)</li>
+                            <li>Cloud Platforms (AWS/Azure/GCP fundamentals)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ML Engineer Roadmap Modal -->
+    <div id="ml-modal" class="cosmic-modal">
+        <div class="cosmic-modal-content">
+            <span class="cosmic-modal-close-btn" onclick="hideRoadmap('ml')">×</span>
+            <h2 class="text-3xl cosmic-modal-title">ML Engineer Star Chart</h2>
+            <div class="cosmic-roadmap-path">
+                <div class="cosmic-milestone">
+                    <h4 class="cosmic-milestone-title"><i class="fas fa-microscope"></i>Phase 1: Cosmic Genesis (4-5 months)</h4>
+                    <div class="cosmic-milestone-content">
+                        <ul>
+                            <li>Python for Data Science (NumPy, Pandas, Matplotlib)</li>
+                            <li>Mathematics for ML (Linear Algebra, Calculus, Statistics)</li>
+                            <li>Data Wrangling & Visualization</li>
+                            <li>Fundamentals of Machine Learning Algorithms</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="cosmic-milestone">
+                    <h4 class="cosmic-milestone-title"><i class="fas fa-atom"></i>Phase 2: Nebula Navigation (5-7 months)</h4>
+                    <div class="cosmic-milestone-content">
+                        <ul>
+                            <li>Applied ML Algorithms (Regression, Classification, Clustering)</li>
+                            <li>Deep Learning & Neural Networks</li>
+                            <li>Frameworks: TensorFlow & PyTorch</li>
+                            <li>Model Evaluation & Feature Engineering</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="cosmic-milestone">
+                    <h4 class="cosmic-milestone-title"><i class="fas fa-telescope"></i>Phase 3: Galactic Mastery (7+ months)</h4>
+                    <div class="cosmic-milestone-content">
+                        <ul>
+                            <li>Natural Language Processing (NLP) & Computer Vision (CV)</li>
+                            <li>Reinforcement Learning Basics</li>
+                            <li>MLOps: Deployment & Monitoring Models (Docker, Kubernetes)</li>
+                            <li>Advanced DL Architectures (Transformers, GANs)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Other Modals to be structured similarly -->
+    <div id="devops-modal" class="cosmic-modal"> <div class="cosmic-modal-content"> <span class="cosmic-modal-close-btn" onclick="hideRoadmap('devops')">×</span> <h2 class="text-3xl cosmic-modal-title">DevOps Cosmic Relay</h2> <div class="cosmic-roadmap-path"><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-tools"></i>Phase 1: Launch Pad Setup (3-4 months)</h4><div class="cosmic-milestone-content"><ul><li>Linux/Unix Fundamentals & Shell Scripting</li><li>Networking Essentials (TCP/IP, DNS, HTTP)</li><li>Version Control Mastery (Git, Git Workflows)</li><li>Introduction to Cloud Computing (AWS/Azure/GCP Basics)</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-cogs"></i>Phase 2: Orbital Mechanics (4-6 months)</h4><div class="cosmic-milestone-content"><ul><li>Infrastructure as Code (Terraform, Ansible)</li><li>Containerization with Docker</li><li>Orchestration with Kubernetes</li><li>CI/CD Pipelines (Jenkins, GitLab CI, GitHub Actions)</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-satellite"></i>Phase 3: Interstellar Ops (6+ months)</h4><div class="cosmic-milestone-content"><ul><li>Monitoring, Logging, and Alerting (Prometheus, Grafana, ELK)</li><li>Cloud Native DevOps Practices</li><li>Security in DevOps (DevSecOps)</li><li>Site Reliability Engineering (SRE) Principles</li></ul></div></div></div> </div> </div>
+    <div id="fullstack-modal" class="cosmic-modal"> <div class="cosmic-modal-content"> <span class="cosmic-modal-close-btn" onclick="hideRoadmap('fullstack')">×</span> <h2 class="text-3xl cosmic-modal-title">Full Stack Nebula Explorer</h2> <div class="cosmic-roadmap-path"><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-paint-roller"></i>Phase 1: Frontend Constellation (3-4 months)</h4><div class="cosmic-milestone-content"><ul><li>HTML5, CSS3, JavaScript (ES6+)</li><li>Modern Frontend Framework (React, Angular, or Vue.js)</li><li>State Management (Redux, Vuex, Context API)</li><li>Responsive Design & CSS Preprocessors (Sass/LESS)</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-server"></i>Phase 2: Backend Universe (4-5 months)</h4><div class="cosmic-milestone-content"><ul><li>Backend Language & Framework (Node.js/Express, Python/Django, Java/Spring)</li><li>RESTful APIs & GraphQL</li><li>Database Design (SQL/NoSQL) & ORMs</li><li>Authentication & Authorization Mechanisms</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-globe-americas"></i>Phase 3: Galactic Integration (5+ months)</h4><div class="cosmic-milestone-content"><ul><li>DevOps Basics (Docker, CI/CD)</li><li>Testing (Unit, Integration, E2E)</li><li>Web Security Fundamentals (OWASP Top 10)</li><li>Cloud Deployment & Microservices Introduction</li></ul></div></div></div> </div> </div>
+    <div id="data-modal" class="cosmic-modal"> <div class="cosmic-modal-content"> <span class="cosmic-modal-close-btn" onclick="hideRoadmap('data')">×</span> <h2 class="text-3xl cosmic-modal-title">Data Engineer Astro-Pipeline</h2> <div class="cosmic-roadmap-path"><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-code"></i>Phase 1: Core Systems Online (3-4 months)</h4><div class="cosmic-milestone-content"><ul><li>Proficiency in Python & SQL</li><li>Database Fundamentals (Relational, NoSQL)</li><li>Linux Command Line & Shell Scripting</li><li>Data Structures & Algorithms for Data Processing</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-stream"></i>Phase 2: Building Data Streams (4-6 months)</h4><div class="cosmic-milestone-content"><ul><li>ETL/ELT Processes & Tools (e.g., Apache Airflow)</li><li>Data Warehousing & Data Lakes</li><li>Big Data Technologies (Hadoop, Spark)</li><li>Data Modeling Techniques</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-project-diagram"></i>Phase 3: Hyperspace Data Flow (6+ months)</h4><div class="cosmic-milestone-content"><ul><li>Real-time Data Streaming (Kafka, Flink)</li><li>Cloud Data Platforms (AWS S3/Redshift, Azure Data Lake, GCP BigQuery)</li><li>Data Governance & Quality</li><li>Containerization & Orchestration for Data Pipelines</li></ul></div></div></div> </div> </div>
+    <div id="cloud-modal" class="cosmic-modal"> <div class="cosmic-modal-content"> <span class="cosmic-modal-close-btn" onclick="hideRoadmap('cloud')">×</span> <h2 class="text-3xl cosmic-modal-title">Cloud Architect Sky Map</h2> <div class="cosmic-roadmap-path"><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-network-wired"></i>Phase 1: Atmospheric Entry (3-4 months)</h4><div class="cosmic-milestone-content"><ul><li>Networking Fundamentals (TCP/IP, DNS, VPNs)</li><li>Operating Systems (Linux proficiency)</li><li>Virtualization & Containerization (Docker basics)</li><li>Core Cloud Concepts (IaaS, PaaS, SaaS)</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-cloud"></i>Phase 2: Stratosphere Navigation (4-6 months)</h4><div class="cosmic-milestone-content"><ul><li>Choose a Cloud Platform (AWS, Azure, or GCP) & Core Services</li><li>Infrastructure as Code (Terraform, CloudFormation)</li><li>Cloud Security Best Practices</li><li>Identity and Access Management (IAM)</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-rocket-launch"></i>Phase 3: Exo-Atmospheric Operations (6+ months)</h4><div class="cosmic-milestone-content"><ul><li>Serverless Computing & Microservices on Cloud</li><li>Advanced Networking & Storage Solutions</li><li>Cost Management & Optimization Strategies</li><li>Disaster Recovery & High Availability Design</li></ul></div></div></div> </div> </div>
+    <div id="mobile-modal" class="cosmic-modal"> <div class="cosmic-modal-content"> <span class="cosmic-modal-close-btn" onclick="hideRoadmap('mobile')">×</span> <h2 class="text-3xl cosmic-modal-title">Mobile App Voyager Plan</h2> <div class="cosmic-roadmap-path"><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-drafting-compass"></i>Phase 1: Blueprinting (3-4 months)</h4><div class="cosmic-milestone-content"><ul><li>Programming Language (Swift/Kotlin for Native, or JavaScript/Dart for Cross-Platform)</li><li>UI/UX Design Principles for Mobile</li><li>Version Control (Git)</li><li>Understanding Mobile OS Ecosystems (iOS, Android)</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-mobile-alt"></i>Phase 2: Core Systems Build (4-6 months)</h4><div class="cosmic-milestone-content"><ul><li>Framework Mastery (React Native, Flutter, or Native SDKs)</li><li>State Management Solutions</li><li>Networking & API Integration</li><li>Local Data Storage (SQLite, Realm, CoreData)</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-paper-plane"></i>Phase 3: Launch & Orbit (6+ months)</h4><div class="cosmic-milestone-content"><ul><li>Performance Optimization & Debugging</li><li>App Store Deployment (App Store Connect, Google Play Console)</li><li>Push Notifications & Background Services</li><li>Testing Strategies & Analytics Integration</li></ul></div></div></div> </div> </div>
+    <div id="security-modal" class="cosmic-modal"> <div class="cosmic-modal-content"> <span class="cosmic-modal-close-btn" onclick="hideRoadmap('security')">×</span> <h2 class="text-3xl cosmic-modal-title">Cyber Sentinel Protocol</h2> <div class="cosmic-roadmap-path"><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-user-secret"></i>Phase 1: Reconnaissance (3-4 months)</h4><div class="cosmic-milestone-content"><ul><li>Networking & OS Fundamentals (Security Perspective)</li><li>Introduction to Cybersecurity Principles & Threats</li><li>Basic Scripting (Python, Bash)</li><li>Understanding Common Vulnerabilities (OWASP Top 10)</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-shield-virus"></i>Phase 2: Fortification (4-6 months)</h4><div class="cosmic-milestone-content"><ul><li>Network Security (Firewalls, IDS/IPS) & Web Security</li><li>Cryptography Basics & PKI</li><li>Security Tools & Technologies (Nmap, Wireshark, Metasploit)</li><li>Identity and Access Management (IAM)</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-skull-crossbones"></i>Phase 3: Threat Neutralization (6+ months)</h4><div class="cosmic-milestone-content"><ul><li>Penetration Testing & Ethical Hacking</li><li>Incident Response & Forensics</li><li>Cloud Security & Application Security (AppSec)</li><li>Security Compliance & Governance (e.g., ISO 27001, SOC 2)</li></ul></div></div></div> </div> </div>
+    <div id="uiux-modal" class="cosmic-modal"> <div class="cosmic-modal-content"> <span class="cosmic-modal-close-btn" onclick="hideRoadmap('uiux')">×</span> <h2 class="text-3xl cosmic-modal-title">UI/UX Galactic Navigator</h2> <div class="cosmic-roadmap-path"><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-lightbulb"></i>Phase 1: Ideation & Principles (3-4 months)</h4><div class="cosmic-milestone-content"><ul><li>Fundamentals of Design Thinking</li><li>User Psychology & Human-Computer Interaction (HCI)</li><li>Visual Design Principles (Color, Typography, Layout)</li><li>Introduction to UI/UX Tools (e.g., Figma, Adobe XD)</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-pencil-ruler"></i>Phase 2: Design & Prototyping (4-6 months)</h4><div class="cosmic-milestone-content"><ul><li>User Research & Persona Creation</li><li>Wireframing & Information Architecture</li><li>Interactive Prototyping & Usability Testing</li><li>Building Design Systems & UI Kits</li></ul></div></div><div class="cosmic-milestone"><h4 class="cosmic-milestone-title"><i class="fas fa-users"></i>Phase 3: User-Centric Mastery (6+ months)</h4><div class="cosmic-milestone-content"><ul><li>Advanced Interaction Design & Microinteractions</li><li>Accessibility (A11Y) & Inclusive Design</li><li>Data-Driven Design & A/B Testing</li><li>Collaboration with Developers & Product Managers</li></ul></div></div></div> </div> </div>
+
+    <!-- Stellar Insight Panel (Keep this outside .page-wrapper if you want it unaffected by page transitions, but ensure z-index logic is fine) -->
+    <div id="stellarInsightPanel" class="fixed bottom-20 right-6 md:right-8 z-[490] w-72 md:w-80 p-5 rounded-xl shadow-2xl opacity-0 transform translate-y-10 pointer-events-none transition-all duration-500 ease-out-cubic">
+        <button id="closeStellarInsight" class="absolute top-2 right-3 text-xl text-gray-400 hover:text-white transition-colors">×</button>
+        <h4 class="text-lg font-bold mb-2 gradient-text-alt-roadmap flex items-center">
+            <i class="fas fa-star-of-life mr-2 animate-pulse"></i>Stellar Insight
+        </h4>
+        <p id="stellarInsightText" class="text-sm text-gray-200 leading-relaxed">
+            <!-- Insight text will be populated here -->
+        </p>
+    </div>
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- <script src="js/progress.js"></script> --> <!-- Progress bar not used on this page -->
+    <script src="js/dark-mode.js"></script>
+    <script>
+        // --- PAGE TRANSITION SCRIPT ---
+        function handlePageTransition(event) {
+            const link = event.currentTarget;
+            const targetUrl = link.href;
+            if (targetUrl && (link.hostname === window.location.hostname || !link.hostname) && !link.getAttribute('target')) {
+                event.preventDefault();
+                document.body.classList.add('page-transition-out');
+                setTimeout(() => { window.location.href = targetUrl; }, 400);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({ duration: 800, once: true, offset: 50, easing: 'ease-out-cubic' });
+
+            document.querySelectorAll('.nav-transition-link').forEach(link => {
+                link.addEventListener('click', handlePageTransition);
+            });
+
+            // --- UNIVERSAL NAVBAR PROFILE DROPDOWN LOGIC ---
+            const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+            const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+
+            if (profileDropdownBtn && profileDropdownMenu) {
+                profileDropdownBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevents the window click from closing it immediately
+                    profileDropdownMenu.classList.toggle('open');
+                });
+            }
+
+            // Close dropdown if clicked outside
+            document.addEventListener('click', (e) => {
+                if (profileDropdownMenu && profileDropdownMenu.classList.contains('open') && !profileDropdownBtn.contains(e.target)) {
+                    profileDropdownMenu.classList.remove('open');
+                }
+            });
+            
+            // Universal function to handle sign out
+            function logoutUserWithTransition() {
+                console.log('Logging out...');
+                // Optional: Add a fade-out effect
+                document.body.style.transition = 'opacity 0.3s ease-out';
+                document.body.style.opacity = '0';
+
+                // Clear local storage
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('platformProgress');
+
+                // Redirect to login page after the fade-out
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 300);
+            }
+            
+            // Universal function to update the profile picture from localStorage
+            try {
+                const userString = localStorage.getItem('user');
+                if (userString) {
+                    const user = JSON.parse(userString);
+                    const profilePicUrl = user.profilePicture || 'static/default-profile.jpg';
+                    const navImg = document.getElementById('navProfileImg');
+                    if (navImg) {
+                        navImg.src = profilePicUrl;
+                        navImg.onerror = function() { this.src = 'static/default-profile.jpg'; };
+                    }
+                }
+            } catch(e) { console.error('Could not parse user data for profile picture.', e); }
+
+            // --- Mobile Menu Logic ---
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenuTUF');
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('-translate-x-full'));
+                document.getElementById('closeMobileMenuBtnTUF').addEventListener('click', () => mobileMenu.classList.add('-translate-x-full'));
+            }
+        }); // End of DOMContentLoaded
+
+        function logoutUser() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.replace('login.html');
+        }
+        function logoutUserWithTransition() {
+            document.body.classList.add('page-transition-out');
+            setTimeout(() => {
+                logoutUser();
+            }, 400);
+        }
+
+        // Roadmap Modal Logic (should be outside DOMContentLoaded if called from inline HTML onclick)
+        function showRoadmap(role, themeClass) {
+            const modal = document.getElementById(`${role}-modal`);
+            if (modal) {
+                modal.className = 'cosmic-modal active ' + (themeClass || '');
+                const modalContent = modal.querySelector('.cosmic-modal-content');
+                if(modalContent) modalContent.className = 'cosmic-modal-content ' + (themeClass || '');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function hideRoadmap(role) {
+            const modal = document.getElementById(`${role}-modal`);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // These event listeners can be global or also moved into DOMContentLoaded
+        // if you ensure the modal structure is part of the initial DOM.
+        // For this structure, they are fine globally as modals are always in the DOM.
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('cosmic-modal')) {
+                const role = event.target.id.replace('-modal', '');
+                hideRoadmap(role);
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                const activeModal = document.querySelector('.cosmic-modal.active');
+                if (activeModal) {
+                    const role = activeModal.id.replace('-modal', '');
+                    hideRoadmap(role);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

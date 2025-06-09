@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment Arena | AceYourPlacement</title>
+  <!-- FONT & ICONS & AOS-->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- OUR EPIC CSS -->
+  <link rel="stylesheet" href="css/assessment.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/dark-mode.css">
+  <style>
+    /* --- UNIVERSAL DROPDOWN MENU CSS (Both Light & Dark) --- */
+    .profile-dropdown-tuf {
+        position: relative;
+    }
+
+    .dropdown-menu-tuf {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 12px); /* Spacing from the icon */
+        min-width: 200px;
+        z-index: 1050;
+        border-radius: 0.75rem;
+        padding: 0.5rem;
+        transform-origin: top right;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px) scale(0.95);
+        transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s;
+    }
+
+    .dropdown-menu-tuf.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+    }
+
+    .dropdown-item-tuf {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.7rem 1rem;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 500;
+        border-radius: 0.5rem;
+        text-decoration: none; /* For the <a> tag */
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    
+    .dropdown-item-tuf i {
+        width: 20px;
+        text-align: center;
+    }
+
+    /* --- Dark Theme Dropdown Specifics --- */
+    .floating-navbar:not(.light-navbar) .dropdown-menu-tuf {
+        background-color: #1f2937; /* Dark gray */
+        color: #d1d5db; /* Light gray text */
+        box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2), 0 20px 40px -20px rgba(0,0,0,0.3);
+    }
+    .floating-navbar:not(.light-navbar) .dropdown-item-tuf {
+        color: #d1d5db;
+    }
+    .floating-navbar:not(.light-navbar) .dropdown-item-tuf:hover {
+        background-color: #374151; /* Lighter dark gray */
+        color: #ffffff;
+    }
+    .floating-navbar:not(.light-navbar) .dropdown-item-tuf i {
+        color: #9ca3af;
+    }
+    .floating-navbar:not(.light-navbar) .dropdown-item-tuf:hover i {
+        color: #60a5fa; /* Blue accent */
+    }
+
+    /* --- Light Theme Dropdown Specifics --- */
+    .light-navbar .dropdown-menu-tuf {
+        background-color: #ffffff;
+        color: #374151; /* Dark text */
+        box-shadow: 0 12px 40px -10px rgba(79, 70, 229, 0.2);
+        border: 1px solid #e5e7eb;
+    }
+    .light-navbar .dropdown-item-tuf {
+        color: #374151;
+    }
+    .light-navbar .dropdown-item-tuf:hover {
+        background-color: #eef2ff; /* Light indigo */
+        color: #4f46e5; /* Indigo */
+    }
+    .light-navbar .dropdown-item-tuf i {
+        color: #6b7280;
+    }
+    .light-navbar .dropdown-item-tuf:hover i {
+        color: #4f46e5;
+    }
+  </style>
+</head>
+<body class="text-gray-800 antialiased page-transition-in">
+
+<!-- ====================================================== -->
+<!-- === UNIVERSAL DARK NAVBAR === -->
+<!-- ====================================================== -->
+<nav class="floating-navbar py-3 px-4 sm:px-6 fixed top-4 left-1/2 transform -translate-x-1/2 rounded-xl shadow-2xl z-[1000] w-[90%]">
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Brand/Logo -->
+        <a href="index.html" class="nav-transition-link flex items-center space-x-2 group">
+            <i class="fas fa-rocket text-2xl sm:text-3xl nav-brand-text group-hover:animate-wiggle-more"></i>
+            <span class="font-black text-lg sm:text-xl nav-brand-text hidden sm:inline tracking-tight group-hover:text-white transition-colors">AceYourPlacement</span>
+            <span class="font-black text-lg nav-brand-text sm:hidden group-hover:text-white transition-colors">AYP</span>
+        </a>
+
+        <!-- Main Navigation Links -->
+        <div class="hidden md:flex items-center space-x-4 lg:space-x-6">
+            <a href="index.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Home <i class="fas fa-home ml-1"></i></a>
+            <a href="aptitude.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Aptitude <i class="fas fa-calculator ml-1"></i></a>
+            <a href="coding.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Coding <i class="fas fa-laptop-code ml-1"></i></a>
+            <a href="technical.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Technical <i class="fas fa-book ml-1"></i></a>
+            <a href="roadmap.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Roadmaps <i class="fas fa-map-marked-alt ml-1"></i></a>
+            <a href="hr_interview.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">HR <i class="fas fa-handshake ml-1"></i></a>
+            <a href="assessment-home.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Assessment <i class="fas fa-clipboard-list ml-1"></i></a>
+        </div>
+
+        <!-- Right-side controls -->
+        <div class="flex items-center space-x-3 sm:space-x-4">
+            <!-- Profile Dropdown -->
+            <div class="profile-dropdown-tuf relative">
+                <!-- Trigger Button: The Profile Picture -->
+                <button aria-label="Profile Menu" id="profileDropdownBtn" class="focus:outline-none block">
+                    <img id="navProfileImg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-gray-700 hover:border-blue-400 transition-all object-cover" src="static/default-profile.jpg" alt="Profile" referrerpolicy="no-referrer">
+                </button>
+                
+                <!-- Dropdown Menu: Contains Profile Only -->
+                <div id="profileDropdownMenu" class="dropdown-menu-tuf">
+                    <a href="profile.html" class="nav-transition-link dropdown-item-tuf">
+                        <i class="fas fa-user-circle"></i> My Profile
+                    </a>
+                </div>
+            </div>
+        <button class="md:hidden text-xl text-gray-300 focus:outline-none hover:text-white" id="mobileMenuBtn" aria-label="Open Menu">
+            <i class="fas fa-bars-staggered"></i>
+        </button>
+        </div>
+    </div>
+</nav>
+
+<!-- ====================================================== -->
+<!-- === CORRECTED MOBILE MENU === -->
+<!-- ====================================================== -->
+<div id="mobileMenuTUF" class="fixed inset-0 bg-gray-900 bg-opacity-95 backdrop-blur-sm z-[999] p-6 text-white transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+    <div class="flex justify-between items-center mb-10">
+        <a href="index.html" class="nav-transition-link flex items-center space-x-2">
+            <i class="fas fa-rocket text-3xl nav-brand-text"></i>
+            <span class="font-black text-2xl nav-brand-text">AYP</span>
+        </a>
+        <button class="text-3xl text-gray-300 hover:text-white" id="closeMobileMenuBtnTUF" aria-label="Close menu">×</button>
+    </div>
+    <nav class="space-y-5 text-center">
+        <a href="index.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Home <i class="fas fa-house-chimney-user ml-2"></i></a>
+        <a href="aptitude.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Aptitude <i class="fas fa-calculator ml-2"></i></a>
+        <a href="coding.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Coding <i class="fas fa-code ml-2"></i></a>
+        <a href="technical.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Technical <i class="fas fa-book-open-reader ml-2"></i></a>
+        <a href="roadmap.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Roadmaps <i class="fas fa-road ml-2"></i></a>
+        <a href="hr_interview.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">HR Interview <i class="fas fa-user-tie ml-2"></i></a>
+        <a href="assessment-home.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Assessment <i class="fas fa-clipboard-list ml-2"></i></a>
+        <hr class="border-gray-700 my-4">
+        <a href="profile.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">My Profile <i class="fas fa-id-card ml-2"></i></a>
+        <div onclick="logoutUserWithTransition()" class="block text-xl py-3 rounded-lg hover:bg-red-700/50 cursor-pointer transition-colors">Sign Out <i class="fas fa-person-running ml-2"></i></div>
+    </nav>
+</div>
+
+<main class="pt-32 pb-16 px-4">
+  <div class="max-w-7xl mx-auto">
+    <header class="page-header" data-aos="fade-down">
+      <h1 class="gradient-text-main">
+        Assessment Arena
+        <i class="fas fa-brain header-icon icon-brain"></i>
+      </h1>
+      <p>Ready to test your might? Choose your challenge and show us what you've got!</p>
+    </header>
+
+    <div id="assessment-container" class="space-y-12">
+      <div class="loading-spinner"></div>
+      <p class="text-center text-gray-500">Loading your challenges...</p>
+    </div>
+    <div id="error-message" class="error-message" style="display: none;"></div>
+  </div>
+</main>
+  
+<script src="js/utils.js"></script>
+<script src="js/script.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/assessment.js"></script>
+<script src="js/assessment-home.js?v=20250608"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 1000, once: true, offset: 0, easing: 'ease-out-cubic' });
+  
+  // The auth logic is now assumed to be part of assessment.js or a separate auth handler.
+  // This is cleaner than inline script logic.
+  document.addEventListener('DOMContentLoaded', () => {
+      if (typeof AssessmentManager === 'function') {
+          new AssessmentManager();
+      } else {
+          console.error("AssessmentManager class not found. Check if assessment.js is loaded correctly.");
+          document.getElementById('error-message').textContent = 'Error: Core assessment script failed to load.';
+          document.getElementById('error-message').style.display = 'block';
+          document.querySelector('.loading-spinner').style.display = 'none';
+      }
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // --- UNIVERSAL NAVBAR PROFILE DROPDOWN LOGIC ---
+    const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+    const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+
+    if (profileDropdownBtn && profileDropdownMenu) {
+        profileDropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevents the window click from closing it immediately
+            profileDropdownMenu.classList.toggle('open');
+        });
+    }
+
+    // Close dropdown if clicked outside
+    document.addEventListener('click', (e) => {
+        if (profileDropdownMenu && profileDropdownMenu.classList.contains('open') && !profileDropdownBtn.contains(e.target)) {
+            profileDropdownMenu.classList.remove('open');
+        }
+    });
+    
+    // Universal function to handle sign out
+    function logoutUserWithTransition() {
+        console.log('Logging out...');
+        // Optional: Add a fade-out effect
+        document.body.style.transition = 'opacity 0.3s ease-out';
+        document.body.style.opacity = '0';
+
+        // Clear local storage
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('platformProgress');
+
+        // Redirect to login page after the fade-out
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 300);
+    }
+    
+    // Universal function to update the profile picture from localStorage
+    try {
+        const userString = localStorage.getItem('user');
+        if (userString) {
+            const user = JSON.parse(userString);
+            const profilePicUrl = user.profilePicture || 'static/default-profile.jpg';
+            const navImg = document.getElementById('navProfileImg');
+            if (navImg) {
+                navImg.src = profilePicUrl;
+                navImg.onerror = function() { this.src = 'static/default-profile.jpg'; };
+            }
+        }
+    } catch(e) { console.error('Could not parse user data for profile picture.', e); }
+
+    // --- Mobile Menu Logic ---
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenuTUF');
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('-translate-x-full'));
+        document.getElementById('closeMobileMenuBtnTUF').addEventListener('click', () => mobileMenu.classList.add('-translate-x-full'));
+    }
+  });
+</script>
+
+    <style>
+        .error-message {
+            color: #dc2626;
+            background-color: #fee2e2;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+    </style>
+  <script src="js/navbar.js"></script>
+  <script src="js/dark-mode.js"></script>
+
+  <!-- === DARK MODE LOGIC (Self-contained, like index.html) === -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+      // Set default theme to light
+      const currentTheme = localStorage.getItem('theme') || 'light';
+      if (currentTheme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          if (darkModeToggle) darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+      } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+          if (darkModeToggle) darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+      }
+      function toggleTheme() {
+          const currentTheme = document.documentElement.getAttribute('data-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          if (darkModeToggle) darkModeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      }
+      if (darkModeToggle) darkModeToggle.addEventListener('click', toggleTheme);
+      prefersDarkScheme.addEventListener('change', (e) => {
+          if (!localStorage.getItem('theme')) {
+              const newTheme = e.matches ? 'dark' : 'light';
+              document.documentElement.setAttribute('data-theme', newTheme);
+              if (darkModeToggle) darkModeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+          }
+      });
+  });
+  </script>
+</body>
+</html> 

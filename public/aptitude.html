@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light"> <!-- Set a default theme -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Powerhouse - AceYourPlacement ��⚡</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Your Custom CSS - Fully Corrected and Unified -->
+    <style>
+        /* --- UNIFIED GLOBAL DESIGN SYSTEM & THEME VARIABLES --- */
+        :root {
+            /* Light Theme Variables */
+            --bg-light: #f4f7fe;
+            --card-light: #ffffff;
+            --text-primary-light: #1f2937;
+            --text-secondary-light: #4b5563;
+            --border-light: #e5e7eb;
+            --gradient-start: #4F46E5;
+            --gradient-mid: #A855F7;
+            --gradient-end: #EC4899;
+            --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --shadow-strong: 0 20px 45px -15px rgba(79, 70, 229, 0.15);
+            --font-main: 'Poppins', sans-serif;
+
+            /* Theme-aware Gradients & Colors */
+            --quant-gradient: linear-gradient(135deg, #e0f2fe 0%, #eef2ff 100%);
+            --pro-tip-yellow-bg: #fffbeb;
+            --pro-tip-green-bg: #f0fdf4;
+            --pro-tip-purple-bg: #faf5ff;
+        }
+
+        /* Dark Theme Variables */
+        [data-theme="dark"] {
+            --bg-light: #111827;
+            --card-light: #1f2937;
+            --text-primary-light: #f3f4f6;
+            --text-secondary-light: #a0aec0;
+            --border-light: #374151;
+
+            /* Dark Theme Gradients & Colors */
+            --quant-gradient: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%);
+            --pro-tip-yellow-bg: #2b2105;
+            --pro-tip-green-bg: #142a18;
+            --pro-tip-purple-bg: #2a1a35;
+        }
+
+        /* --- BASE & UTILITIES --- */
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--bg-light);
+            font-family: var(--font-main);
+            color: var(--text-secondary-light);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .gradient-text-main { background: linear-gradient(125deg, var(--gradient-start) 0%, var(--gradient-mid) 50%, var(--gradient-end) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* --- NAVBAR & PROFILE DROPDOWN --- */
+        .floating-navbar { background-color: rgba(31, 41, 55, 0.97); backdrop-filter: blur(16px); color: #e5e7eb; transition: background-color 0.3s, border-color 0.3s; }
+        .floating-navbar-link { color: #d1d5db; transition: color 0.2s ease, transform 0.2s ease; }
+        .floating-navbar-link:hover, .floating-navbar-link.active-nav-link { color: #ffffff; transform: scale(1.05); text-shadow: 0 0 5px rgba(255,255,255,0.5);}
+        .nav-brand-text { background: linear-gradient(120deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        /* Light mode navbar */
+        .light-navbar { background-color: rgba(255, 255, 255, 0.8); border: 1px solid var(--border-light); }
+        .light-navbar .floating-navbar-link, .light-navbar .fa-bars-staggered { color: var(--text-primary-light); }
+        .light-navbar .floating-navbar-link:hover { color: var(--gradient-start); }
+        .light-navbar #darkModeToggle { color: #4b5563; }
+        .light-navbar #darkModeToggle:hover { color: var(--gradient-start); }
+
+        /* Dropdown Menu (Universal) */
+        .profile-dropdown-tuf { position: relative; }
+        .dropdown-menu-tuf { position: absolute; right: 0; top: calc(100% + 12px); min-width: 200px; z-index: 1050; border-radius: 0.75rem; padding: 0.5rem; transform-origin: top right; opacity: 0; visibility: hidden; transform: translateY(10px) scale(0.95); transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s; }
+        .dropdown-menu-tuf.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+        .dropdown-item-tuf { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 1rem; cursor: pointer; font-size: 0.95rem; font-weight: 500; border-radius: 0.5rem; text-decoration: none; transition: background-color 0.2s ease, color 0.2s ease; }
+        .dropdown-item-tuf i { width: 20px; text-align: center; }
+        .light-navbar .dropdown-menu-tuf { background-color: #ffffff; color: #374151; box-shadow: 0 12px 40px -10px rgba(79, 70, 229, 0.2); border: 1px solid #e5e7eb; }
+        .light-navbar .dropdown-item-tuf { color: #374151; }
+        .light-navbar .dropdown-item-tuf:hover { background-color: #eef2ff; color: #4f46e5; }
+        .floating-navbar:not(.light-navbar) .dropdown-menu-tuf { background-color: #1f2937; color: #d1d5db; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2); }
+        .floating-navbar:not(.light-navbar) .dropdown-item-tuf { color: #d1d5db; }
+        .floating-navbar:not(.light-navbar) .dropdown-item-tuf:hover { background-color: #374151; color: #ffffff; }
+
+        /* --- APTITUDE PAGE STYLES (THEME-AWARE) --- */
+        header p { color: var(--text-secondary-light); }
+        .progress-bar-wrapper .font-semibold { color: var(--gradient-start); }
+        .progress-bar-container { background-color: var(--border-light); border-radius: 9999px; height: 1.25rem; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); }
+
+        .aptitude-card-section { border-radius: 1.5rem; padding: 2rem 1.5rem; background: var(--quant-gradient); box-shadow: var(--shadow-strong); transition: background 0.3s ease; }
+        .section-header .section-title { color: var(--text-primary-light); font-size: 2rem; font-weight: 800; }
+        .section-header i { font-size: 2.25rem; padding: 0.6rem; border-radius: 0.75rem; color: white; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+        .aptitude-card-section .quote-box { background-color: rgba(255, 255, 255, 0.3); backdrop-filter: blur(5px); }
+        [data-theme="dark"] .aptitude-card-section .quote-box { background-color: rgba(0, 0, 0, 0.2); }
+        .aptitude-card-section .quote-text { color: var(--text-primary-light); opacity: 0.9; }
+
+        .aptitude-topic-card { background-color: var(--card-light); border: 1px solid var(--border-light); border-radius: 1rem; padding: 1.5rem; min-height: 160px; box-shadow: var(--shadow-soft); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .aptitude-topic-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--shadow-strong); border-color: var(--gradient-start); }
+        .topic-icon { font-size: 1.75rem; margin-bottom: 0.75rem; width: 50px; height: 50px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; color: white; transition: transform 0.3s ease; }
+        .aptitude-topic-card:hover .topic-icon { transform: scale(1.1) rotate(-8deg); }
+        .topic-title { color: var(--text-primary-light); font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; transition: color 0.3s ease; }
+        .aptitude-topic-card:hover .topic-title { color: var(--gradient-start); }
+        .topic-description { color: var(--text-secondary-light); font-size: 0.875rem; line-height: 1.6; }
+
+        .floating-checkbox { position: absolute; top: 1rem; right: 1rem; z-index: 10; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(4px); border-radius: 50%; width: 36px; height: 36px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease-out; }
+        [data-theme="dark"] .floating-checkbox { background: rgba(31, 41, 55, 0.8); }
+        .floating-checkbox:hover { transform: scale(1.1); }
+        .floating-checkbox input[type="checkbox"] { width: 20px; height: 20px; accent-color: #22c55e; cursor: pointer; appearance: none; -webkit-appearance: none; border: 2px solid #cbd5e1; border-radius: 50%; transition: background-color 0.2s, border-color 0.2s; position: relative; }
+        [data-theme="dark"] .floating-checkbox input[type="checkbox"] { border-color: var(--border-light); }
+        .floating-checkbox input[type="checkbox"]:checked { background-color: #22c55e; border-color: #16a34a; }
+        .floating-checkbox input[type="checkbox"]:checked::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: white; font-size: 12px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+        .pro-tips-section { background-color: var(--card-light); border: 1px solid var(--border-light); transition: background-color 0.3s ease, border-color 0.3s ease; }
+        .pro-tip-card { background-color: var(--pro-tip-yellow-bg); }
+        .pro-tip-card.green { background-color: var(--pro-tip-green-bg); }
+        .pro-tip-card.purple { background-color: var(--pro-tip-purple-bg); }
+        .pro-tip-card h3 { color: var(--text-primary-light); }
+        
+        @keyframes pulse-glow { 0%, 100% { text-shadow: 0 0 15px currentColor; } 50% { text-shadow: 0 0 30px currentColor; } }
+        .animate-pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
+        @keyframes subtle-float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        .animate-subtle-float { animation: subtle-float 4s ease-in-out infinite; }
+        @keyframes spin-slowly { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .animate-spin-slowly { animation: spin-slowly 5s linear infinite; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- UNIVERSAL NAVBAR -->
+    <nav class="floating-navbar py-3 px-4 sm:px-6 fixed top-4 left-1/2 transform -translate-x-1/2 rounded-xl shadow-2xl z-[1000] w-[90%]">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="nav-transition-link flex items-center space-x-2 group">
+                <img src="logo.png" alt="AceYourPlacement Logo" class="w-8 h-8 sm:w-9 sm:h-9 mr-2">
+                <span class="font-black text-lg sm:text-xl nav-brand-text hidden sm:inline tracking-tight">AceYourPlacement</span>
+                <span class="font-black text-lg nav-brand-text sm:hidden">AYP</span>
+            </a>
+            <div class="hidden md:flex items-center space-x-4 lg:space-x-6">
+                <a href="index.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Home <i class="fas fa-home ml-1"></i></a>
+                <a href="aptitude.html" class="nav-transition-link floating-navbar-link font-semibold text-sm active-nav-link">Aptitude <i class="fas fa-calculator ml-1"></i></a>
+                <a href="coding.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Coding <i class="fas fa-laptop-code ml-1"></i></a>
+                <a href="technical.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Technical <i class="fas fa-book ml-1"></i></a>
+                <a href="roadmap.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Roadmaps <i class="fas fa-map-marked-alt ml-1"></i></a>
+                <a href="hr_interview.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">HR <i class="fas fa-handshake ml-1"></i></a>
+                <a href="assessment-home.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Assessment <i class="fas fa-clipboard-list ml-1"></i></a>
+            </div>
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <button aria-label="Toggle Dark Mode" id="darkModeToggle" class="text-xl text-gray-400 hover:text-yellow-300 transition-colors focus:outline-none"><i class="fas fa-moon"></i></button>
+                <div class="profile-dropdown-tuf relative"><button aria-label="Profile Menu" id="profileDropdownBtn" class="focus:outline-none block"><img id="navProfileImg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-gray-700 hover:border-blue-400 transition-all object-cover" src="static/default-profile.jpg" alt="Profile" referrerpolicy="no-referrer"></button><div id="profileDropdownMenu" class="dropdown-menu-tuf"><a href="profile.html" class="nav-transition-link dropdown-item-tuf"><i class="fas fa-user-circle"></i> My Profile</a></div></div>
+            </div>
+            <button class="md:hidden text-xl text-gray-300 focus:outline-none hover:text-white" id="mobileMenuBtn" aria-label="Open Menu"><i class="fas fa-bars-staggered"></i></button>
+        </div>
+    </nav>
+    
+    <!-- MOBILE MENU (No changes needed here) -->
+    <div id="mobileMenuTUF" class="fixed inset-0 bg-gray-900 bg-opacity-95 backdrop-blur-sm z-[999] p-6 text-white transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden"></div>
+
+    <!-- MAIN PAGE CONTENT -->
+    <main class="pt-28 sm:pt-32 pb-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <header class="text-center mb-16" data-aos="fade-down">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-black gradient-text-main mb-4 relative inline-block">Aptitude Powerhouse<i class="fas fa-bolt text-yellow-400 absolute -top-5 -right-10 text-4xl animate-pulse transform rotate-12 filter drop-shadow-[0_0_5px_#fbbf24]"></i></h1>
+                <p class="text-xl max-w-2xl mx-auto">Sharpen your analytical skills and conquer any aptitude challenge that comes your way!</p>
+            </header>
+
+            <div class="max-w-3xl mx-auto mt-4 mb-12 md:mb-16 progress-bar-wrapper" data-aos="fade-up" data-aos-delay="100">
+                <div class="mb-2 flex justify-between items-center"><span class="font-semibold text-lg">Your Aptitude Quest Progress</span><span id="aptitudeModulePercent" class="font-bold text-lg">0%</span></div>
+                <div class="progress-bar-container"><div id="aptitudeProgressBarFill" class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: 0%;"></div></div>
+            </div>
+
+            <div class="space-y-12 md:space-y-16">
+                <!-- Quantitative Aptitude -->
+                <section class="aptitude-card-section" data-aos="fade-right" data-aos-delay="200">
+                    <div class="section-header flex items-center gap-3 mb-6">
+                        <i class="fas fa-calculator bg-gradient-to-br from-blue-500 to-indigo-600"></i>
+                        <h2 class="section-title">Quantitative Aptitude</h2>
+                    </div>
+                    <div class="mb-8 quote-box rounded-xl p-4 shadow-inner" data-aos="fade-up" data-aos-delay="250"><p class="quote-text italic text-center text-sm md:text-base">"Numbers whisper secrets to those who listen. Let's decode their language! 🔢"</p></div>
+                    
+                    <!-- THE GRID IS NOW EXPANDED WITH 12 TOPICS -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="aptitude-topic-card" data-aos="zoom-in-up" data-aos-delay="300"><span class="floating-checkbox"><input type="checkbox" class="aptitude-checkbox" data-subtopic-id="aptitude_numbers"></span><a href="https://www.indiabix.com/aptitude/numbers/" target="_blank" class="block group h-full flex flex-col"><div><div class="topic-icon bg-gradient-to-br from-blue-500 to-indigo-600"><i class="fas fa-hashtag"></i></div><h3 class="topic-title">Numbers</h3></div><p class="topic-description mt-auto">Divisibility, HCF/LCM, Series.</p></a></div>
+                        <div class="aptitude-topic-card" data-aos="zoom-in-up" data-aos-delay="350"><span class="floating-checkbox"><input type="checkbox" class="aptitude-checkbox" data-subtopic-id="aptitude_time_and_work"></span><a href="https://www.indiabix.com/aptitude/time-and-work/" target="_blank" class="block group h-full flex flex-col"><div><div class="topic-icon bg-gradient-to-br from-green-500 to-emerald-600"><i class="fas fa-hourglass-half"></i></div><h3 class="topic-title">Time & Work</h3></div><p class="topic-description mt-auto">Efficiency, pipes, cisterns.</p></a></div>
+                        <div class="aptitude-topic-card" data-aos="zoom-in-up" data-aos-delay="400"><span class="floating-checkbox"><input type="checkbox" class="aptitude-checkbox" data-subtopic-id="aptitude_profit_and_loss"></span><a href="https://www.indiabix.com/aptitude/profit-and-loss/" target="_blank" class="block group h-full flex flex-col"><div><div class="topic-icon bg-gradient-to-br from-yellow-500 to-amber-600"><i class="fas fa-chart-pie"></i></div><h3 class="topic-title">Profit & Loss</h3></div><p class="topic-description mt-auto">Calculate gains, avoid pains!</p></a></div>
+                        <div class="aptitude-topic-card" data-aos="zoom-in-up" data-aos-delay="450"><span class="floating-checkbox"><input type="checkbox" class="aptitude-checkbox" data-subtopic-id="aptitude_percentage"></span><a href="https://www.indiabix.com/aptitude/percentage/" target="_blank" class="block group h-full flex flex-col"><div><div class="topic-icon bg-gradient-to-br from-sky-500 to-cyan-600"><i class="fas fa-percent"></i></div><h3 class="topic-title">Percentage</h3></div><p class="topic-description mt-auto">Discounts, growth rates.</p></a></div>
+                        <div class="aptitude-topic-card" data-aos="zoom-in-up" data-aos-delay="500"><span class="floating-checkbox"><input type="checkbox" class="aptitude-checkbox" data-subtopic-id="aptitude_ratio_and_proportion"></span><a href="https://www.indiabix.com/aptitude/ratio-and-proportion/" target="_blank" class="block group h-full flex flex-col"><div><div class="topic-icon bg-gradient-to-br from-orange-500 to-red-600"><i class="fas fa-balance-scale-right"></i></div><h3 class="topic-title">Ratio & Proportion</h3></div><p class="topic-description mt-auto">Comparing quantities, scaling.</p></a></div>
+                        <div class="aptitude-topic-card" data-aos="zoom-in-up" data-aos-delay="550"><span class="floating-checkbox"><input type="checkbox" class="aptitude-checkbox" data-subtopic-id="aptitude_simple_interest"></span><a href="https://www.indiabix.com/aptitude/simple-interest/" target="_blank" class="block group h-full flex flex-col"><div><div class="topic-icon bg-gradient-to-br from-lime-500 to-green-600"><i class="fas fa-money-bill-wave"></i></div><h3 class="topic-title">Interest</h3></div><p class="topic-description mt-auto">Simple vs. Compound interest.</p></a></div>
+
+                        <!-- NEWLY ADDED TOPICS START HERE -->
+                        <div class="aptitude-topic-card" data-aos="zoom-in-up" data-aos-delay="600"><span class="floating-checkbox"><input type="checkbox" class="aptitude-checkbox" data-subtopic-id="aptitude_time_speed_dist"></span><a href="https://www.indiabix.com/aptitude/time-and-distance/" target="_blank" class="block group h-full flex flex-col"><div><div class="topic-icon bg-gradient-to-br from-teal-500 to-cyan-600"><i class="fas fa-tachometer-alt"></i></div><h3 class="topic-title">Time, Speed & Distance</h3></div><p class="topic-description mt-auto">Trains, boats, relative speed.</p></a></div>
+                        <div class="aptitude-topic-card" data-aos="zoom-in-up" data-aos-delay="650"><span class="floating-checkbox"><input type="checkbox" class="aptitude-checkbox" data-subtopic-id="aptitude_pnc"></span><a href="https://www.indiabix.com/aptitude/permutation-and-combination/" target="_blank" class="block group h-full flex flex-col"><div><div class="topic-icon bg-gradient-to-br from-rose-500 to-pink-600"><i class="fas fa-project-diagram"></i></div><h3 class="topic-title">Permutation & Combination</h3></div><p class="topic-description mt-auto">Arrangements and selections.</p></a></div>
+                        <div class="aptitude-topic-card" data-aos="zoom-in-up" data-aos-delay="700"><span class="floating-checkbox"><input type="checkbox" class="aptitude-checkbox" data-subtopic-id="aptitude_probability"></span><a href="https://www.indiabix.com/aptitude/probability/" target="_blank" class="block group h-full flex flex-col"><div><div class="topic-icon bg-gradient-to-br from-violet-500 to-fuchsia-600"><i class="fas fa-dice-five"></i></div><h3 class="topic-title">Probability</h3></div><p class="topic-description mt-auto">Chances, outcomes, events.</p></a></div>
+                        <div class="aptitude-topic-card" data-aos="zoom-in-up" data-aos-delay="750"><span class="floating-checkbox"><input type="checkbox" class="aptitude-checkbox" data-subtopic-id="aptitude_averages"></span><a href="https://www.indiabix.com/aptitude/average/" target="_blank" class="block group h-full flex flex-col"><div><div class="topic-icon bg-gradient-to-br from-blue-400 to-sky-500"><i class="fas fa-calculator"></i></div><h3 class="topic-title">Averages</h3></div><p class="topic-description mt-auto">Finding the central, typical value.</p></a></div>
+                        <div class="aptitude-topic-card" data-aos="zoom-in-up" data-aos-delay="800"><span class="floating-checkbox"><input type="checkbox" class="aptitude-checkbox" data-subtopic-id="aptitude_mixtures"></span><a href="https://www.indiabix.com/aptitude/alligation-or-mixture/" target="_blank" class="block group h-full flex flex-col"><div><div class="topic-icon bg-gradient-to-br from-emerald-400 to-teal-500"><i class="fas fa-flask-vial"></i></div><h3 class="topic-title">Mixtures & Alligations</h3></div><p class="topic-description mt-auto">Mixing solutions, finding ratios.</p></a></div>
+                        <div class="aptitude-topic-card" data-aos="zoom-in-up" data-aos-delay="850"><span class="floating-checkbox"><input type="checkbox" class="aptitude-checkbox" data-subtopic-id="aptitude_data_interp"></span><a href="https://www.indiabix.com/data-interpretation/table-charts/" target="_blank" class="block group h-full flex flex-col"><div><div class="topic-icon bg-gradient-to-br from-slate-500 to-gray-600"><i class="fas fa-chart-bar"></i></div><h3 class="topic-title">Data Interpretation</h3></div><p class="topic-description mt-auto">Analyze charts, graphs, and tables.</p></a></div>
+                    </div>
+                </section>
+
+                <!-- Quick Tips Section -->
+                <section class="mt-16 py-12 pro-tips-section rounded-2xl shadow-lg" data-aos="fade-up" data-aos-delay="500">
+                    <h2 class="text-3xl font-bold text-center mb-10 gradient-text-main">Pro Gamer Moves for Aptitude! 🎮</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
+                        <div class="pro-tip-card text-center p-6 rounded-xl shadow-md transition-all duration-300 transform hover:-translate-y-2"><div class="text-yellow-500 mb-4 text-5xl"><i class="fas fa-dumbbell animate-bounce"></i></div><h3 class="text-xl font-semibold mb-2">Daily Brain Gym</h3><p class="text-sm">"Flex those mental muscles! Consistent practice builds unbeatable aptitude strength."</p></div>
+                        <div class="pro-tip-card green text-center p-6 rounded-xl shadow-md transition-all duration-300 transform hover:-translate-y-2"><div class="text-green-500 mb-4 text-5xl"><i class="fas fa-stopwatch-20 animate-spin-slowly"></i></div><h3 class="text-xl font-semibold mb-2">Master the Clock</h3><p class="text-sm">"Time is your ally, not your enemy. Practice timed sets to boost speed and accuracy."</p></div>
+                        <div class="pro-tip-card purple text-center p-6 rounded-xl shadow-md transition-all duration-300 transform hover:-translate-y-2"><div class="text-purple-500 mb-4 text-5xl animate-pulse-glow"><i class="fas fa-bullseye"></i></div><h3 class="text-xl font-semibold mb-2">Zen Focus Mode</h3><p class="text-sm">"Channel your inner sage. Minimize distractions, maximize concentration."</p></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- External and Dummy Scripts -->
+    <script src="js/utils.js"></script> <!-- Assuming this exists -->
+    <script src="js/progress.js"></script> <!-- Assuming this exists -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- FULLY INTEGRATED JAVASCRIPT LOGIC -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- UNIVERSAL DARK MODE TOGGLE SCRIPT ---
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const floatingNavbar = document.querySelector('.floating-navbar');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                if (darkModeToggle) darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                if (floatingNavbar) floatingNavbar.classList.remove('light-navbar');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                if (darkModeToggle) darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                if (floatingNavbar) floatingNavbar.classList.add('light-navbar');
+            }
+        }
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        }
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) { applyTheme(savedTheme); } 
+        else { applyTheme(prefersDarkScheme.matches ? 'dark' : 'light'); }
+        if (darkModeToggle) { darkModeToggle.addEventListener('click', toggleTheme); }
+        prefersDarkScheme.addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) { applyTheme(e.matches ? 'dark' : 'light'); }
+        });
+
+        // --- PAGE TRANSITION SCRIPT ---
+        function handlePageTransition(event) {
+            const link = event.currentTarget;
+            const targetUrl = link.href;
+            if (targetUrl && (link.hostname === window.location.hostname || !link.hostname) && !link.getAttribute('target')) {
+                event.preventDefault();
+                document.body.style.transition = 'opacity 0.4s ease';
+                document.body.style.opacity = '0';
+                setTimeout(() => { window.location.href = targetUrl; }, 400);
+            }
+        }
+        document.querySelectorAll('.nav-transition-link').forEach(link => {
+            link.addEventListener('click', handlePageTransition);
+        });
+
+        // --- UNIVERSAL NAVBAR & PROFILE LOGIC ---
+        const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+        const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+        if (profileDropdownBtn) {
+            profileDropdownBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                profileDropdownMenu.classList.toggle('open');
+            });
+        }
+        document.addEventListener('click', (e) => {
+            if (profileDropdownMenu && profileDropdownMenu.classList.contains('open') && !profileDropdownBtn.contains(e.target)) {
+                profileDropdownMenu.classList.remove('open');
+            }
+        });
+
+        function logoutUserWithTransition() {
+            document.body.style.transition = 'opacity 0.3s ease-out';
+            document.body.style.opacity = '0';
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('platformProgress');
+            setTimeout(() => { window.location.href = 'login.html'; }, 300);
+        }
+        // Make it globally accessible for the onclick attribute
+        window.logoutUserWithTransition = logoutUserWithTransition;
+
+        try {
+            const userString = localStorage.getItem('user');
+            if (userString) {
+                const user = JSON.parse(userString);
+                const profilePicUrl = user.profilePicture || 'static/default-profile.jpg';
+                const navImg = document.getElementById('navProfileImg');
+                if (navImg) {
+                    navImg.src = profilePicUrl;
+                    navImg.onerror = function() { this.src = 'static/default-profile.jpg'; };
+                }
+            }
+        } catch(e) { console.error('Could not parse user data for profile picture.', e); }
+
+        // --- MOBILE MENU LOGIC ---
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenuTUF');
+        const closeMobileMenuBtn = document.getElementById('closeMobileMenuBtnTUF');
+        if (mobileMenuBtn && mobileMenu && closeMobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('-translate-x-full'));
+            closeMobileMenuBtn.addEventListener('click', () => mobileMenu.classList.add('-translate-x-full'));
+        }
+
+        // --- APTITUDE PAGE SPECIFIC LOGIC (PROGRESS TRACKER) ---
+        if (typeof ProgressTracker === 'undefined') {
+            console.error('ProgressTracker class is not defined. Make sure progress.js is loaded correctly.');
+        } else {
+            const progressTrackerInstance = new ProgressTracker();
+            async function initializeAptitudePage() {
+                try {
+                    await progressTrackerInstance.init();
+                    const updateAptitudeUI = () => {
+                        document.querySelectorAll('.aptitude-checkbox').forEach(checkbox => {
+                            const subtopicId = checkbox.dataset.subtopicId;
+                            if (progressTrackerInstance.isCompleted) {
+                                checkbox.checked = progressTrackerInstance.isCompleted(subtopicId);
+                            }
+                        });
+                        const aptitudeProgressData = progressTrackerInstance.progress;
+                        const aptitudeModuleVal = aptitudeProgressData?.aptitude ?? 0;
+                        const progressBarFill = document.getElementById('aptitudeProgressBarFill');
+                        const percentText = document.getElementById('aptitudeModulePercent');
+                        if(progressBarFill) { progressBarFill.style.width = aptitudeModuleVal + '%'; }
+                        if(percentText) { percentText.textContent = aptitudeModuleVal + '%'; }
+                    };
+                    updateAptitudeUI();
+
+                    document.querySelectorAll('.aptitude-checkbox').forEach(checkbox => {
+                        checkbox.addEventListener('change', async () => {
+                            if(progressTrackerInstance.setCompleted) {
+                                await progressTrackerInstance.setCompleted(checkbox.dataset.subtopicId, checkbox.checked);
+                                updateAptitudeUI();
+                            }
+                        });
+                    });
+                } catch (error) {
+                    console.error("Error initializing Aptitude Page progress:", error);
+                    const progressBarFill = document.getElementById('aptitudeProgressBarFill');
+                    const percentText = document.getElementById('aptitudeModulePercent');
+                    if(progressBarFill) progressBarFill.style.width = '0%';
+                    if(percentText) percentText.textContent = 'Error';
+                }
+            }
+            initializeAptitudePage();
+        }
+
+        // --- INITIALIZE LIBRARIES ---
+        AOS.init({ duration: 800, once: true, offset: 70, easing: 'ease-out-cubic' });
+    });
+    </script>
+</body>
+</html>

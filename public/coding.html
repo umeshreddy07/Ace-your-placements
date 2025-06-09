@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Cosmos - Ace Your Placement 💻🌌</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7fe;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            color: #374151;
+            position: relative;
+        }
+
+        /* --- PAGE TRANSITION STYLES --- */
+        .page-wrapper { width: 100%; position: absolute; top: 0; left: 0; background-color: #f4f7fe; min-height: 100vh;}
+        @keyframes slideOutLeft { from { transform: translateX(0%); opacity: 1; } to { transform: translateX(-100%); opacity: 0; } }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0%); opacity: 1; } }
+        body.page-transition-out .page-wrapper { animation: slideOutLeft 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+        body.page-transition-in .page-wrapper { animation: slideInRight 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards 0.1s; }
+        body:not(.page-transition-in):not(.page-transition-out) .page-wrapper { opacity: 0; animation: initialFadeIn 0.5s ease-out forwards 0.1s; }
+        @keyframes initialFadeIn { to { opacity: 1; } }
+        /* --- END PAGE TRANSITION STYLES --- */
+
+        /* Gradient utilities & Animations */
+        .gradient-text-page-main { background: linear-gradient(125deg, #4F46E5 0%, #A855F7 50%, #EC4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gradient-text-alt { background: linear-gradient(125deg, #10B981 0%, #3B82F6 50%, #8B5CF6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        /* For DSA header specifically */
+        .gradient-text-dsa { background: linear-gradient(125deg, #ef4444 0%, #f97316 50%, #eab308 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 15px 0px rgba(79, 70, 229, 0.4); } 50% { box-shadow: 0 0 25px 8px rgba(168, 85, 247, 0.5); } }
+        .animate-pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
+        @keyframes subtle-float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        .animate-subtle-float { animation: subtle-float 4s ease-in-out infinite; }
+        @keyframes subtle-float-space { 0%, 100% { transform: translateY(0px) rotate(-6deg); } 50% { transform: translateY(-8px) rotate(-2deg); } }
+
+        /* Section & Card Styling for Coding Page (Light Theme) */
+        .content-section-wrapper {
+            border-radius: 1.5rem;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 15px 40px -15px rgba(0, 70, 200, 0.15);
+        }
+        .gradient-bg-lang { background: linear-gradient(135deg, #e0f2fe 0%, #eef2ff 100%); } /* Sky blue to Lavender */
+        .gradient-bg-dsa { background: linear-gradient(135deg, #fff7ed 0%, #fff1f2 100%); } /* Light orange to Light pink */
+
+        .topic-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 6px 15px -5px rgba(0,0,0,0.08);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            min-height: 170px;
+            display: flex; /* For direct children like checkbox + link */
+            flex-direction: column; /* To stack checkbox and link vertically if link is not full card */
+            /* justify-content: space-between; Ensures link content (if link wraps card content) is spaced */
+        }
+         /* If <a> wraps most of the card content */
+        .topic-card > a {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1; /* Make the link take up available space */
+            text-decoration: none; /* Remove underline from link */
+        }
+
+        .topic-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 30px -8px rgba(79, 70, 229, 0.2);
+        }
+        .topic-card .topic-header { display: flex; align-items: center; margin-bottom: 0.75rem; }
+        .topic-card .topic-icon-code {
+            font-size: 1.75rem;
+            margin-right: 0.75rem; width: 48px; height: 48px;
+            border-radius: 0.75rem;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+         .topic-card:hover .topic-icon-code { transform: scale(1.1) rotate(-8deg); }
+
+        .topic-card .topic-title-code {
+            font-size: 1.25rem;
+            font-weight: 700;
+            transition: color 0.3s ease;
+            /* Tailwind color utilities will be used, e.g., text-indigo-700 group-hover:text-indigo-500 */
+        }
+        .topic-card .topic-description-code {
+            font-size: 0.875rem; color: #6b7280; /* gray-500 */
+            line-height: 1.6;
+            /* mt-auto will be used if inside a flex container link */
+        }
+        .topic-card .topic-links-code a.subtopic-link { /* For LeetCode links */
+            display: block; color: #4F46E5; /* Indigo-600 */
+            text-decoration: none; font-size:0.9rem;
+            margin-top:0.3rem; transition: color 0.2s ease, letter-spacing 0.2s ease;
+        }
+        .topic-card .topic-links-code a.subtopic-link:hover { color: #A855F7; /* Purple-500 */ letter-spacing: 0.5px; }
+
+
+        /* Floating Checkbox (Light theme from Aptitude) */
+        .floating-checkbox {
+            position: absolute; top: 1rem; right: 1rem; z-index: 10;
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(4px);
+            border-radius: 50%; width: 36px; height: 36px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s ease-out;
+        }
+        .floating-checkbox:hover { transform: scale(1.1); }
+        .floating-checkbox input[type="checkbox"].coding-checkbox {
+            width: 20px; height: 20px; accent-color: #22c55e; /* green-500 */ cursor: pointer;
+            appearance: none; -webkit-appearance: none; border: 2px solid #cbd5e1; /* slate-300 */
+            border-radius: 50%; transition: background-color 0.2s, border-color 0.2s; position: relative;
+        }
+        .floating-checkbox input[type="checkbox"].coding-checkbox:checked { background-color: #22c55e; border-color: #16a34a; /* green-600 */ }
+        .floating-checkbox input[type="checkbox"].coding-checkbox:checked::after {
+            content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            color: white; font-size: 12px; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Navbar & Profile Dropdown Styles */
+        .floating-navbar { background-color: rgba(31, 41, 55, 0.97); backdrop-filter: blur(16px); color: #e5e7eb; }
+        .floating-navbar-link { color: #d1d5db; transition: color 0.2s ease, transform 0.2s ease; }
+        .floating-navbar-link:hover, .floating-navbar-link.active-nav-link { color: #ffffff; transform: scale(1.05); text-shadow: 0 0 5px rgba(255,255,255,0.5);}
+        .nav-brand-text { background: linear-gradient(120deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .profile-dropdown-tuf { position: relative; }
+        .dropdown-menu-tuf {
+            position: absolute; right: 0; top: calc(100% + 12px);
+            min-width: 200px; z-index: 1050; border-radius: 0.75rem;
+            padding: 0.5rem; transform-origin: top right;
+            opacity: 0; visibility: hidden;
+            transform: translateY(10px) scale(0.95);
+            transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s;
+            background-color: #1f2937; color: #d1d5db;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2), 0 20px 40px -20px rgba(0,0,0,0.3);
+        }
+        .dropdown-menu-tuf.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+        .dropdown-item-tuf {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.7rem 1rem; cursor: pointer; font-size: 0.95rem;
+            font-weight: 500; border-radius: 0.5rem; text-decoration: none;
+            color: #d1d5db; transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .dropdown-item-tuf:hover { background-color: #374151; color: #ffffff; }
+        .dropdown-item-tuf i { width: 20px; text-align: center; color: #9ca3af; }
+        .dropdown-item-tuf:hover i { color: #60a5fa; }
+
+        /* Progress Bar */
+        .progress-bar-wrapper .text-lg { font-size: 1.125rem; }
+        .progress-bar-container { background-color: #e5e7eb; border-radius: 9999px; height: 1.25rem; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); }
+        #codingProgressBarFill.progress-bar {
+            background: linear-gradient(90deg, #34d399 0%, #10b981 100%); /* Emerald gradient for coding */
+            height: 100%; border-radius: 9999px; transition: width 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative; overflow: hidden;
+        }
+        #codingProgressBarFill.progress-bar::after {
+            content: ''; position: absolute;top: 0; left: 0; bottom: 0; right: 0;
+            background-image: linear-gradient( -45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent );
+            z-index: 1; background-size: 50px 50px; animation: progress-shine 2s linear infinite; opacity: 0.3;
+        }
+        @keyframes progress-shine { 0% { background-position: 0 0; } 100% { background-position: 50px 50px; } }
+
+        /* Section Header Styling */
+        .section-header-coding { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .section-header-coding .icon-bg { font-size: 2.25rem; padding: 0.75rem; border-radius: 0.75rem; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .section-title-coding { font-size: 2rem; font-weight: 800; /* color: #1f2937; (indigo-800 like) */ }
+
+         /* Fun quote boxes for coding page (light theme) */
+        .code-fun-quote-box {
+            background: #eef2ff; /* Light indigo/lavender */
+            border: 1px solid #dbeafe; /* Lighter blue border */
+            border-radius: 0.75rem; padding: 1.25rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .code-fun-quote-box .main-quote { color: #4338ca; /* Indigo-700 */ }
+        .code-fun-quote-box .sub-quote { color: #64748b; /* Slate-500 */ font-size: 0.8rem; }
+    </style>
+</head>
+<body class="page-transition-in">
+
+    <!-- TUF-Inspired Floating Navbar -->
+    <nav class="floating-navbar py-3 px-4 sm:px-6 fixed top-4 left-1/2 transform -translate-x-1/2 rounded-xl shadow-2xl z-[1000] w-[90%]">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="nav-transition-link flex items-center space-x-2 group">
+                <img src="logo.png" alt="AceYourPlacement Logo" class="w-8 h-8 sm:w-9 sm:h-9 mr-2">
+                <span class="font-black text-lg sm:text-xl nav-brand-text hidden sm:inline tracking-tight group-hover:text-white transition-colors">AceYourPlacement</span>
+                <span class="font-black text-lg nav-brand-text sm:hidden group-hover:text-white transition-colors">AYP</span>
+            </a>
+            <div class="hidden md:flex items-center space-x-4 lg:space-x-6">
+                <a href="index.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Home <i class="fas fa-home ml-1"></i></a>
+                <a href="aptitude.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Aptitude <i class="fas fa-calculator ml-1"></i></a>
+                <a href="coding.html" class="nav-transition-link floating-navbar-link font-semibold text-sm active-nav-link">Coding <i class="fas fa-laptop-code ml-1"></i></a>
+                <a href="technical.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Technical <i class="fas fa-book ml-1"></i></a>
+                <a href="roadmap.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Roadmaps <i class="fas fa-map-marked-alt ml-1"></i></a>
+                <a href="hr_interview.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">HR <i class="fas fa-handshake ml-1"></i></a>
+                <a href="assessment-home.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Assessment <i class="fas fa-clipboard-list ml-1"></i></a>
+            </div>
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <!-- Profile Dropdown -->
+                <div class="profile-dropdown-tuf relative">
+                    <!-- Trigger Button: The Profile Picture -->
+                    <button aria-label="Profile Menu" id="profileDropdownBtn" class="focus:outline-none block">
+                        <img id="navProfileImg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-gray-700 hover:border-blue-400 transition-all object-cover" src="static/default-profile.jpg" alt="Profile" referrerpolicy="no-referrer">
+                    </button>
+                    
+                    <!-- Dropdown Menu: Contains Profile Only -->
+                    <div id="profileDropdownMenu" class="dropdown-menu-tuf">
+                        <a href="profile.html" class="nav-transition-link dropdown-item-tuf">
+                            <i class="fas fa-user-circle"></i> My Profile
+                        </a>
+                    </div>
+                </div>
+                <button class="md:hidden text-xl text-gray-300 focus:outline-none hover:text-white" id="mobileMenuBtn" aria-label="Open Menu">
+                    <i class="fas fa-bars-staggered"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="mobileMenuTUF" class="fixed inset-0 bg-gray-900 bg-opacity-95 backdrop-blur-sm z-[999] p-6 text-white transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+        <div class="flex justify-between items-center mb-10">
+            <a href="index.html" class="nav-transition-link flex items-center space-x-2">
+                <i class="fas fa-rocket text-3xl nav-brand-text"></i>
+                <span class="font-black text-2xl nav-brand-text">AYP</span>
+            </a>
+            <button class="text-3xl text-gray-300 hover:text-white" id="closeMobileMenuBtnTUF" aria-label="Close menu">×</button>
+        </div>
+        <nav class="space-y-5 text-center">
+            <a href="index.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Home <i class="fas fa-house-chimney-user ml-2"></i></a>
+            <a href="aptitude.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Aptitude <i class="fas fa-calculator ml-2"></i></a>
+            <a href="coding.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Coding <i class="fas fa-code ml-2"></i></a>
+            <a href="technical.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Technical <i class="fas fa-book-open-reader ml-2"></i></a>
+            <a href="roadmap.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Roadmaps <i class="fas fa-road ml-2"></i></a>
+            <a href="hr_interview.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">HR Interview <i class="fas fa-user-tie ml-2"></i></a>
+            <a href="assessment-home.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Assessment <i class="fas fa-clipboard-list ml-2"></i></a>
+            <hr class="border-gray-700 my-4">
+            <a href="profile.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">My Profile <i class="fas fa-id-card ml-2"></i></a>
+            <div onclick="logoutUserWithTransition()" class="block text-xl py-3 rounded-lg hover:bg-red-700/50 cursor-pointer transition-colors">Sign Out <i class="fas fa-person-running ml-2"></i></div>
+        </nav>
+    </div>
+
+
+    <div class="page-wrapper">
+    <main class="pt-28 sm:pt-32 pb-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <header class="text-center mb-16" data-aos="fade-down">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-black gradient-text-page-main mb-4 relative inline-block">
+                    The Coding Cosmos
+                    <i class="fas fa-laptop-code text-purple-500 absolute -top-4 -right-12 text-4xl animate-subtle-float-space filter drop-shadow-[0_0_8px_#a855f7]"></i>
+                </h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Navigate the constellations of code, master algorithms, and launch your career into the tech stratosphere!
+                </p>
+            </header>
+
+            <!-- Module Progress Bar -->
+            <div class="max-w-3xl mx-auto mt-4 mb-12 md:mb-16 progress-bar-wrapper" data-aos="fade-up" data-aos-delay="100">
+                <div class="mb-2 flex justify-between items-center">
+                    <span class="font-semibold text-lg text-emerald-700">Your Coding Galaxy Progress</span>
+                    <span id="codingModulePercent" class="text-emerald-700 font-bold text-lg">0%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="codingProgressBarFill" class="progress-bar" data-module="coding" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Playful Intro Quote Box -->
+            <div class="max-w-3xl mx-auto mb-12 code-fun-quote-box bg-indigo-50 border-indigo-200" data-aos="zoom-in-up" data-aos-delay="150">
+                <p class="text-lg italic text-center main-quote text-indigo-700">
+                     "In programming, life is an array of opportunities, and you are the index that matters 😉"
+                </p>
+            </div>
+
+
+            <!-- Programming Languages Quotes -->
+            <div class="mb-10 grid grid-cols-1 md:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="150">
+                <div class="code-fun-quote-box bg-sky-50 border-sky-200" data-aos="fade-right" data-aos-delay="200"><p class="main-quote text-sky-700 italic">"Python: Simple, Beautiful, and Complex... 🐍"</p><p class="sub-quote mt-2 text-sky-600">"Why glasses? Can't C# 😎"</p></div>
+                <div class="code-fun-quote-box bg-orange-50 border-orange-200" data-aos="fade-up" data-aos-delay="250"><p class="main-quote text-orange-700 italic">"Java: Write once, debug everywhere ☕"</p><p class="sub-quote mt-2 text-orange-600">"Keep calm & catch exceptions."</p></div>
+                <div class="code-fun-quote-box bg-slate-100 border-slate-300" data-aos="fade-left" data-aos-delay="300"><p class="main-quote text-slate-700 italic">"C: Swiss army knife, handle with care 🔪"</p><p class="sub-quote mt-2 text-slate-600">"In C we trust; In pointers, we fault."</p></div>
+            </div>
+
+            <!-- Programming Languages Section -->
+            <section class="mb-16 content-section-wrapper gradient-bg-lang" data-aos="fade-up" data-aos-delay="200">
+                <div class="section-header-coding mb-8">
+                    <span class="icon-bg p-3 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white shadow-lg text-3xl"><i class="fas fa-terminal"></i></span>
+                    <h2 class="section-title-coding gradient-text-alt">Choose Your Weapon (Language)</h2>
+                </div>
+                <!-- C Programming -->
+                <div class="mb-12" data-aos="fade-up" data-aos-delay="250">
+                    <h3 class="text-2xl font-bold mb-6 text-sky-700 flex items-center"><i class="fas fa-atom text-sky-500 mr-3 text-3xl"></i>C: The Ancient One</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="300">
+                            <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_c_basics"></span>
+                            <a href="https://www.geeksforgeeks.org/c-programming-language/" target="_blank" class="group">
+                                <div>
+                                    <div class="topic-header"><div class="topic-icon-code bg-sky-500"><i class="fas fa-drafting-compass"></i></div><h4 class="topic-title-code text-sky-700 group-hover:text-sky-500">C Basics</h4></div>
+                                </div>
+                                <p class="topic-description-code mt-auto">Variables, Data Types, Control Structures.</p>
+                            </a>
+                        </div>
+                        <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="350">
+                            <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_c_pointers"></span>
+                            <a href="https://www.geeksforgeeks.org/c-pointers/" target="_blank" class="group">
+                               <div>
+                                    <div class="topic-header"><div class="topic-icon-code bg-sky-500"><i class="fas fa-map-signs"></i></div> <h4 class="topic-title-code text-sky-700 group-hover:text-sky-500">Pointers & Memory</h4></div>
+                               </div>
+                                <p class="topic-description-code mt-auto">The wild west of memory management!</p>
+                            </a>
+                        </div>
+                         <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="400">
+                            <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_c_tutorial"></span>
+                            <a href="https://www.geeksforgeeks.org/c-tutorial/" target="_blank" class="group">
+                               <div>
+                                    <div class="topic-header"><div class="topic-icon-code bg-sky-500"><i class="fas fa-scroll"></i></div> <h4 class="topic-title-code text-sky-700 group-hover:text-sky-500">Full C Scroll</h4></div>
+                               </div>
+                                <p class="topic-description-code mt-auto">Comprehensive C guide.</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Java Programming -->
+                <div class="mb-12" data-aos="fade-up" data-aos-delay="300">
+                    <h3 class="text-2xl font-bold mb-6 text-orange-600 flex items-center"><i class="fab fa-java text-orange-500 mr-3 text-3xl"></i>Java: The Enterprise Titan</h3>
+                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="300">
+                            <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_java_fundamentals"></span>
+                            <a href="https://www.geeksforgeeks.org/java-fundamentals/" target="_blank" class="group">
+                                <div>
+                                    <div class="topic-header"><div class="topic-icon-code bg-orange-500"><i class="fas fa-mug-hot"></i></div><h4 class="topic-title-code text-orange-700 group-hover:text-orange-500">Java Fundamentals</h4></div>
+                                </div>
+                                <p class="topic-description-code mt-auto">OOP, Collections, Exceptions.</p>
+                            </a>
+                        </div>
+                        <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="350">
+                            <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_java_advanced"></span>
+                            <a href="https://www.geeksforgeeks.org/advanced-java-tutorial/" target="_blank" class="group">
+                                <div>
+                                    <div class="topic-header"><div class="topic-icon-code bg-orange-500"><i class="fas fa-cogs"></i></div><h4 class="topic-title-code text-orange-700 group-hover:text-orange-500">Java Advanced</h4></div>
+                                </div>
+                                <p class="topic-description-code mt-auto">Multithreading, JDBC, Servlets.</p>
+                            </a>
+                        </div>
+                        <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="400">
+                            <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_java_course"></span>
+                             <a href="https://www.geeksforgeeks.org/java-tutorial/" target="_blank" class="group">
+                                <div>
+                                    <div class="topic-header"><div class="topic-icon-code bg-orange-500"><i class="fas fa-book-journal-whills"></i></div><h4 class="topic-title-code text-orange-700 group-hover:text-orange-500">Complete Java Tome</h4></div>
+                                </div>
+                                <p class="topic-description-code mt-auto">Full Java tutorial saga.</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Python Programming -->
+                <div data-aos="fade-up" data-aos-delay="350">
+                    <h3 class="text-2xl font-bold mb-6 text-yellow-600 flex items-center"><i class="fab fa-python text-yellow-500 mr-3 text-3xl"></i>Python: The Agile Serpent</h3>
+                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="300">
+                            <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_python_basics"></span>
+                            <a href="https://www.geeksforgeeks.org/python-programming-language/#basics" target="_blank" class="group">
+                                <div>
+                                    <div class="topic-header"><div class="topic-icon-code bg-yellow-400"><i class="fas fa-wand-sparkles"></i></div><h4 class="topic-title-code text-yellow-700 group-hover:text-yellow-500">Python Basics</h4></div>
+                                </div>
+                                <p class="topic-description-code mt-auto">Data Types, Functions, Magic.</p>
+                            </a>
+                        </div>
+                        <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="350">
+                             <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_python_oop"></span>
+                             <a href="https://www.geeksforgeeks.org/python-oops-concepts/" target="_blank" class="group">
+                                <div>
+                                    <div class="topic-header"><div class="topic-icon-code bg-yellow-400"><i class="fas fa-hat-wizard"></i></div><h4 class="topic-title-code text-yellow-700 group-hover:text-yellow-500">Python OOP</h4></div>
+                                </div>
+                                <p class="topic-description-code mt-auto">Classes, Inheritance, Spells.</p>
+                            </a>
+                        </div>
+                        <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="400">
+                            <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_python_course"></span>
+                            <a href="https://www.geeksforgeeks.org/python-tutorial/" target="_blank" class="group">
+                                <div>
+                                    <div class="topic-header"><div class="topic-icon-code bg-yellow-400"><i class="fas fa-dragon"></i></div><h4 class="topic-title-code text-yellow-700 group-hover:text-yellow-500">Full Python Saga</h4></div>
+                                </div>
+                                <p class="topic-description-code mt-auto">Conquer Python like a hero.</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DSA Section -->
+            <section class="mb-12 content-section-wrapper gradient-bg-dsa" data-aos="fade-up" data-aos-delay="400">
+                 <div class="section-header-coding mb-8">
+                    <span class="icon-bg p-3 rounded-xl bg-gradient-to-br from-red-500 to-orange-600 text-white shadow-lg text-3xl"><i class="fas fa-dungeon"></i></span>
+                    <h2 class="section-title-coding gradient-text-dsa">DSA Dungeon - LeetCode Quests</h2>
+                </div>
+                <!-- DSA Topic Quotes -->
+                <div class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="code-fun-quote-box bg-blue-50 border-blue-200" data-aos="fade-right" data-aos-delay="450"><p class="main-quote text-blue-700 italic">"Arrays: Organized, yet somehow my keys always end up at index -1. <i class="fas fa-table-cells-large ml-1 text-blue-500"></i>"</p></div>
+                    <div class="code-fun-quote-box bg-green-50 border-green-200" data-aos="fade-left" data-aos-delay="500"><p class="main-quote text-green-700 italic">"Linked Lists: Chaining thoughts, one node at a time... until NULL. <i class="fas fa-infinity ml-1 text-green-500"></i>"</p></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Array Puzzles -->
+                    <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="300">
+                        <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_dsa_arrays_category"></span>
+                         <div class="flex-grow flex flex-col justify-between"> <!-- Wrapper for content when card is not a link -->
+                            <div>
+                                <div class="topic-header"><div class="topic-icon-code bg-blue-500"><i class="fas fa-layer-group"></i></div><h3 class="topic-title-code text-blue-700 group-hover:text-blue-500">Array Puzzles</h3></div>
+                            </div>
+                            <div class="topic-links-code space-y-1 mt-auto">
+                                <a href="https://leetcode.com/problems/two-sum" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_arrays_q1">Two Sum</a>
+                                <a href="https://leetcode.com/problems/container-with-most-water" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_arrays_q2">Container With Most Water</a>
+                                <a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_arrays_q3">Best Time to Buy/Sell Stock</a>
+                                <a href="https://leetcode.com/problems/product-of-array-except-self/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_arrays_q4">Product of Array Except Self</a>
+                                <a href="https://leetcode.com/problems/maximum-subarray/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_arrays_q5">Maximum Subarray</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sorting & Searching -->
+                     <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="350">
+                        <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_dsa_sort_seek_category"></span>
+                         <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="topic-header"><div class="topic-icon-code bg-green-500"><i class="fas fa-sort-alpha-down"></i></div><h3 class="topic-title-code text-green-700 group-hover:text-green-500">Sort & Seek</h3></div>
+                            </div>
+                            <div class="topic-links-code space-y-1 mt-auto">
+                                <a href="https://leetcode.com/problems/binary-search" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_sort_seek_q1">Binary Search</a>
+                                <a href="https://leetcode.com/problems/search-in-rotated-sorted-array/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_sort_seek_q2">Search in Rotated Sorted Array</a>
+                                <a href="https://leetcode.com/problems/kth-largest-element-in-an-array/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_sort_seek_q3">Kth Largest Element</a>
+                                <a href="https://leetcode.com/problems/merge-intervals/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_sort_seek_q4">Merge Intervals</a>
+                                <a href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_sort_seek_q5">Min in Rotated Sorted Array</a>
+                            </div>
+                        </div>
+                     </div>
+                     <!-- Sliding Window -->
+                     <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="400">
+                         <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_dsa_sliding_window_category"></span>
+                          <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                 <div class="topic-header"><div class="topic-icon-code bg-yellow-500"><i class="fas fa-window-maximize"></i></div><h3 class="topic-title-code text-yellow-700 group-hover:text-yellow-500">Window Wizardry</h3></div>
+                            </div>
+                             <div class="topic-links-code space-y-1 mt-auto">
+                                <a href="https://leetcode.com/problems/longest-substring-without-repeating-characters" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_sliding_window_q1">Longest Substring Without Repeating Chars</a>
+                                <a href="https://leetcode.com/problems/minimum-window-substring/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_sliding_window_q2">Minimum Window Substring</a>
+                                <a href="https://leetcode.com/problems/sliding-window-maximum/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_sliding_window_q3">Sliding Window Maximum</a>
+                                <a href="https://leetcode.com/problems/longest-repeating-character-replacement/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_sliding_window_q4">Longest Repeating Char Replacement</a>
+                                <a href="https://leetcode.com/problems/permutation-in-string/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_sliding_window_q5">Permutation in String</a>
+                            </div>
+                        </div>
+                     </div>
+                     <!-- Dynamic Programming -->
+                     <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="450">
+                        <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_dsa_dp_category"></span>
+                         <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="topic-header"><div class="topic-icon-code bg-red-500"><i class="fas fa-brain"></i></div><h3 class="topic-title-code text-red-700 group-hover:text-red-500">DP Dimensions</h3></div>
+                            </div>
+                             <div class="topic-links-code space-y-1 mt-auto">
+                                <a href="https://leetcode.com/problems/climbing-stairs" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_dp_q1">Climbing Stairs</a>
+                                <a href="https://leetcode.com/problems/coin-change/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_dp_q2">Coin Change</a>
+                                <a href="https://leetcode.com/problems/longest-increasing-subsequence/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_dp_q3">Longest Increasing Subsequence</a>
+                                <a href="https://leetcode.com/problems/word-break/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_dp_q4">Word Break</a>
+                                <a href="https://leetcode.com/problems/house-robber/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_dp_q5">House Robber</a>
+                            </div>
+                        </div>
+                     </div>
+                     <!-- Trees & Graphs -->
+                     <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="500">
+                         <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_dsa_trees_graphs_category"></span>
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="topic-header"><div class="topic-icon-code bg-purple-500"><i class="fas fa-sitemap"></i></div><h3 class="topic-title-code text-purple-700 group-hover:text-purple-500">Tree & Graph Trails</h3></div>
+                            </div>
+                            <div class="topic-links-code space-y-1 mt-auto">
+                                 <a href="https://leetcode.com/problems/maximum-depth-of-binary-tree" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_trees_graphs_q1">Max Depth of Binary Tree</a>
+                                 <a href="https://leetcode.com/problems/invert-binary-tree/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_trees_graphs_q2">Invert Binary Tree</a>
+                                 <a href="https://leetcode.com/problems/binary-tree-level-order-traversal/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_trees_graphs_q3">Level Order Traversal</a>
+                                 <a href="https://leetcode.com/problems/number-of-islands/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_trees_graphs_q4">Number of Islands</a>
+                                 <a href="https://leetcode.com/problems/clone-graph/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_trees_graphs_q5">Clone Graph</a>
+                            </div>
+                        </div>
+                     </div>
+                     <!-- Stack & Queue -->
+                     <div class="topic-card" data-aos="zoom-in-up" data-aos-delay="550">
+                         <span class="floating-checkbox"><input type="checkbox" class="coding-checkbox" data-subtopic-id="coding_dsa_stack_queue_category"></span>
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="topic-header"><div class="topic-icon-code bg-pink-500"><i class="fas fa-layer-group"></i></div><h3 class="topic-title-code text-pink-700 group-hover:text-pink-500">Stack & Queue Quests</h3></div>
+                            </div>
+                             <div class="topic-links-code space-y-1 mt-auto">
+                                 <a href="https://leetcode.com/problems/valid-parentheses" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_stack_queue_q1">Valid Parentheses</a>
+                                 <a href="https://leetcode.com/problems/min-stack/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_stack_queue_q2">Min Stack</a>
+                                 <a href="https://leetcode.com/problems/implement-queue-using-stacks/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_stack_queue_q3">Queue using Stacks</a>
+                                 <a href="https://leetcode.com/problems/daily-temperatures/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_stack_queue_q4">Daily Temperatures</a>
+                                 <a href="https://leetcode.com/problems/evaluate-reverse-polish-notation/" target="_blank" class="subtopic-link" data-subtopic-id="coding_dsa_stack_queue_q5">Evaluate RPN</a>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+            </section>
+
+            <!-- Final Wisdom Section -->
+             <section class="mb-12" data-aos="fade-up" data-aos-delay="600">
+                 <div class="max-w-2xl mx-auto code-fun-quote-box bg-purple-50 border-purple-200 text-center">
+                     <i class="fas fa-ghost text-5xl text-purple-500 mb-4 animate-subtle-float"></i>
+                    <h3 class="text-2xl font-bold gradient-text-alt mb-3">A Coder's Final Thought...</h3>
+                    <p class="text-gray-600 italic leading-relaxed">
+                        "The code you write today is the legacy you leave for the debugger of tomorrow. May their coffee be strong and their patience unending."
+                    </p>
+                </div>
+            </section>
+        </div>
+    </main>
+    </div> <!-- End Page Wrapper -->
+
+    <!-- Floating Icon -->
+    <div class="fixed bottom-6 right-6 z-[500] animate-subtle-float" style="animation-duration: 5s;">
+      <div class="bg-gradient-to-tr from-purple-500 via-pink-500 to-orange-400 p-4 rounded-full shadow-2xl shadow-pink-500/30 cursor-pointer hover:shadow-orange-400/50 transition-all transform hover:scale-110 hover:rotate-[720deg] duration-700">
+          <i class="fas fa-satellite-dish text-white text-3xl"></i>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/progress.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // --- PAGE TRANSITION SCRIPT ---
+        function handlePageTransition(event) {
+            const link = event.currentTarget;
+            const targetUrl = link.href;
+            if (targetUrl && (link.hostname === window.location.hostname || !link.hostname) && !link.getAttribute('target')) {
+                event.preventDefault();
+                document.body.classList.add('page-transition-out');
+                setTimeout(() => { window.location.href = targetUrl; }, 400);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({ duration: 800, once: true, offset: 70, easing: 'ease-out-cubic' });
+
+            document.querySelectorAll('.nav-transition-link').forEach(link => {
+                link.addEventListener('click', handlePageTransition);
+            });
+
+            // --- UNIVERSAL NAVBAR PROFILE DROPDOWN LOGIC ---
+            const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+            const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+
+            if (profileDropdownBtn && profileDropdownMenu) {
+                profileDropdownBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevents the window click from closing it immediately
+                    profileDropdownMenu.classList.toggle('open');
+                });
+            }
+
+            // Close dropdown if clicked outside
+            document.addEventListener('click', (e) => {
+                if (profileDropdownMenu && profileDropdownMenu.classList.contains('open') && !profileDropdownBtn.contains(e.target)) {
+                    profileDropdownMenu.classList.remove('open');
+                }
+            });
+            
+            // Universal function to handle sign out
+            function logoutUserWithTransition() {
+                console.log('Logging out...');
+                // Optional: Add a fade-out effect
+                document.body.style.transition = 'opacity 0.3s ease-out';
+                document.body.style.opacity = '0';
+
+                // Clear local storage
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('platformProgress');
+
+                // Redirect to login page after the fade-out
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 300);
+            }
+            
+            // Universal function to update the profile picture from localStorage
+            try {
+                const userString = localStorage.getItem('user');
+                if (userString) {
+                    const user = JSON.parse(userString);
+                    const profilePicUrl = user.profilePicture || 'static/default-profile.jpg';
+                    const navImg = document.getElementById('navProfileImg');
+                    if (navImg) {
+                        navImg.src = profilePicUrl;
+                        navImg.onerror = function() { this.src = 'static/default-profile.jpg'; };
+                    }
+                }
+            } catch(e) { console.error('Could not parse user data for profile picture.', e); }
+
+            // --- Mobile Menu Logic ---
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenuTUF');
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('-translate-x-full'));
+                document.getElementById('closeMobileMenuBtnTUF').addEventListener('click', () => mobileMenu.classList.add('-translate-x-full'));
+            }
+
+            // --- CODING PAGE Progress & Checkbox Logic ---
+            if (typeof ProgressTracker === 'undefined') {
+                console.error('ProgressTracker class is not defined. Make sure progress.js is loaded correctly.');
+                return;
+            }
+            const progressTrackerInstance = new ProgressTracker();
+
+            async function initializeCodingPage() {
+                try {
+                    await progressTrackerInstance.init();
+                    const updateCodingUI = () => {
+                        document.querySelectorAll('.coding-checkbox').forEach(checkbox => {
+                            const subtopicId = checkbox.dataset.subtopicId;
+                            if (progressTrackerInstance.isCompleted) {
+                                checkbox.checked = progressTrackerInstance.isCompleted(subtopicId);
+                            }
+                        });
+
+                        const codingProgressData = progressTrackerInstance.progress;
+                        const codingModuleVal = codingProgressData && codingProgressData.coding !== undefined ? codingProgressData.coding : 0;
+
+                        const progressBarFill = document.getElementById('codingProgressBarFill');
+                        const percentText = document.getElementById('codingModulePercent');
+
+                        if(progressBarFill) {
+                            progressBarFill.style.width = codingModuleVal + '%';
+                        }
+                        if(percentText) {
+                            percentText.textContent = codingModuleVal + '%';
+                        }
+                    };
+                    updateCodingUI();
+
+                    // Event listener for main category checkboxes
+                    document.querySelectorAll('.coding-checkbox').forEach(checkbox => {
+                        checkbox.addEventListener('change', async () => {
+                            if(progressTrackerInstance.setCompleted) {
+                                await progressTrackerInstance.setCompleted(checkbox.dataset.subtopicId, checkbox.checked);
+                                updateCodingUI();
+                            }
+                        });
+                    });
+
+                    // Event listener for resource links to also mark the main card's checkbox
+                    document.querySelectorAll('a.subtopic-link').forEach(link => {
+                        link.addEventListener('click', async (e) => {
+                            const subtopicIdForLink = link.dataset.subtopicId;
+                            if (progressTrackerInstance.setCompleted && subtopicIdForLink) {
+                                await progressTrackerInstance.setCompleted(subtopicIdForLink, true);
+                                updateCodingUI();
+                                console.log(`Marked link ${subtopicIdForLink} as complete.`);
+                            }
+                        });
+                    });
+
+                } catch (error) {
+                    console.error("Error initializing Coding Page progress:", error);
+                    const progressBarFill = document.getElementById('codingProgressBarFill');
+                    const percentText = document.getElementById('codingModulePercent');
+                    if(progressBarFill) progressBarFill.style.width = '0%';
+                    if(percentText) percentText.textContent = 'Error';
+                }
+            }
+            initializeCodingPage();
+        });
+    </script>
+</body>
+</html>

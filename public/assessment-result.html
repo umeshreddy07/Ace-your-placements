@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment Results | AceYourPlacement</title>
+  <!-- FONT & ICONS & AOS-->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- OUR EPIC CSS -->
+  <link rel="stylesheet" href="css/assessment.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="antialiased">
+
+  <!-- DARK FLOATING NAVBAR -->
+  <nav class="floating-navbar py-3 px-4 sm:px-6 fixed top-4 left-1/2 transform -translate-x-1/2 rounded-xl shadow-2xl z-[1000] w-11/12 max-w-5xl">
+    <div class="mx-auto flex justify-between items-center">
+      <a href="/" class="flex items-center space-x-2 group">
+        <i class="fas fa-rocket text-2xl sm:text-3xl nav-brand-text group-hover:animate-bounce"></i>
+        <span class="font-black text-lg sm:text-xl nav-brand-text">AceYourPlacement</span>
+      </a>
+      <div class="hidden md:flex items-center space-x-4 lg:space-x-6">
+        <a href="/" class="floating-navbar-link text-sm">Home</a>
+        <a href="/assessment-home.html" class="floating-navbar-link text-sm active">Assessments</a>
+        <a href="/resources.html" class="floating-navbar-link text-sm">Resources</a>
+      </div>
+      <div class="flex items-center space-x-3 sm:space-x-4">
+        <div class="profile-dropdown-tuf">
+          <button id="tufProfileBtn" class="focus:outline-none block">
+            <img class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-gray-700 hover:border-blue-400 transition-all object-cover" src="https://i.pravatar.cc/100" alt="Profile">
+          </button>
+          <div id="tufProfileDropdownMenu" class="dropdown-menu-tuf">
+            <div class="dropdown-header-tuf"><img src="https://i.pravatar.cc/100" alt="Avatar"><div><div class="font-semibold text-white">Guest User</div><div class="text-sm text-gray-400">guest@example.com</div></div></div>
+            <a href="#" class="dropdown-item-tuf"><i class="fas fa-user-circle"></i> My Profile</a>
+            <a href="#" class="dropdown-item-tuf"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+          </div>
+        </div>
+        <button class="md:hidden text-xl text-gray-300 focus:outline-none hover:text-white" id="mobileMenuBtn"><i class="fas fa-bars-staggered"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-32 pb-16 px-4">
+    <div class="max-w-4xl mx-auto">
+      <header class="page-header" data-aos="fade-down">
+        <h1 class="gradient-text-main">
+          Assessment Results
+          <i class="fas fa-trophy header-icon icon-trophy"></i>
+        </h1>
+        <p>Let's see how you did!</p>
+      </header>
+
+      <div class="result-container" data-aos="fade-up">
+        <h2 id="moduleName" class="text-3xl font-bold text-purple-700 mb-2"></h2>
+        <p id="category" class="text-lg text-gray-600"></p>
+        <p class="text-sm text-gray-500 mb-4">Submitted on: <span id="submittedAt"></span></p>
+
+        <div class="score-circle" data-aos="zoom-in" data-aos-delay="200">
+          <div class="score-value" id="scoreValue">0%</div>
+          <div class="score-label">Your Score</div>
+        </div>
+
+        <div class="ai-reviews-section" data-aos="fade-up" data-aos-delay="400">
+          <h3>
+            <i class="fas fa-robot text-purple-500"></i>
+            AI Feedback
+          </h3>
+          <div id="aiReviews">
+            <!-- AI reviews will be dynamically inserted here -->
+            <div class="ai-review-card">No AI feedback available yet.</div>
+          </div>
+        </div>
+
+        <button id="back-button" onclick="window.location.href='assessment-home.html'" data-aos="fade-up" data-aos-delay="600">
+          <i class="fas fa-arrow-left mr-2"></i>
+          Back to Assessments
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init({ duration: 800, once: true, offset: 50, easing: 'ease-out-cubic' });</script>
+  <script src="js/navbar.js"></script>
+  <script src="js/assessment-result.js"></script>
+</body>
+</html> 

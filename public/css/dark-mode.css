@@ -1,0 +1,220 @@
+/* Dark Theme Variables */
+:root {
+    /* Light Theme (Default) */
+    --primary-bg: #ffffff;
+    --secondary-bg: #f8f9fa;
+    --primary-text: #2d3748;
+    --secondary-text: #4a5568;
+    --accent-color: #4f46e5;
+    --border-color: #e2e8f0;
+    --card-bg: #ffffff;
+    --hover-bg: #f1f5f9;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --code-bg: #f8f9fa;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --error-color: #ef4444;
+    --info-color: #3b82f6;
+    --gradient-start: #4F46E5;
+    --gradient-mid: #A855F7;
+    --gradient-end: #EC4899;
+    --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    --shadow-strong: 0 20px 45px -15px rgba(79, 70, 229, 0.15);
+    --font-main: 'Poppins', sans-serif;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+    --primary-bg: #1a1a1a;
+    --secondary-bg: #2d2d2d;
+    --primary-text: #e2e8f0;
+    --secondary-text: #a0aec0;
+    --accent-color: #6366f1;
+    --border-color: #4a5568;
+    --card-bg: #2d2d2d;
+    --hover-bg: #3d3d3d;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --code-bg: #2d2d2d;
+    --success-color: #34d399;
+    --warning-color: #fbbf24;
+    --error-color: #f87171;
+    --info-color: #60a5fa;
+}
+
+/* Dark Mode Specific Styles */
+[data-theme="dark"] body {
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+}
+
+[data-theme="dark"] .floating-navbar {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .module-pane {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .tab-btn {
+    background-color: var(--card-bg);
+    color: var(--secondary-text);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .tab-btn:hover:not(.active) {
+    background-color: var(--hover-bg);
+}
+
+[data-theme="dark"] .hero-tagline {
+    color: var(--primary-text);
+}
+
+[data-theme="dark"] .hero-subtitle {
+    color: var(--secondary-text);
+}
+
+[data-theme="dark"] .section-header h2 {
+    color: var(--primary-text);
+}
+
+[data-theme="dark"] .section-header p {
+    color: var(--secondary-text);
+}
+
+[data-theme="dark"] .module-description p {
+    color: var(--secondary-text);
+}
+
+[data-theme="dark"] .card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .form-input {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--primary-text);
+}
+
+[data-theme="dark"] .form-input:focus {
+    border-color: var(--accent-color);
+}
+
+[data-theme="dark"] .btn {
+    background-color: var(--card-bg);
+    color: var(--primary-text);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .btn:hover {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+/* Aptitude Page Specific Styles */
+[data-theme="dark"] .aptitude-topic-card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .aptitude-topic-card .topic-title {
+    color: var(--primary-text);
+}
+
+[data-theme="dark"] .aptitude-topic-card .topic-description {
+    color: var(--secondary-text);
+}
+
+/* Technical Page Specific Styles */
+[data-theme="dark"] .topic-card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .topic-card .topic-title-tech {
+    color: var(--primary-text);
+}
+
+[data-theme="dark"] .topic-card .subtopic-link {
+    background-color: var(--hover-bg) !important;
+    color: var(--secondary-text);
+}
+
+[data-theme="dark"] .topic-card .subtopic-link:hover {
+    background-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .topic-card .subtopic-link h4 {
+    color: var(--primary-text);
+}
+
+[data-theme="dark"] .topic-card .subtopic-link p {
+    color: var(--secondary-text);
+}
+
+/* Coding Page Specific Styles */
+[data-theme="dark"] .coding-topic-card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .coding-topic-card .topic-title {
+    color: var(--primary-text);
+}
+
+[data-theme="dark"] .coding-topic-card .topic-description {
+    color: var(--secondary-text);
+}
+
+/* HR Interview Page Specific Styles */
+[data-theme="dark"] .interview-topic-card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .interview-topic-card .topic-title {
+    color: var(--primary-text);
+}
+
+[data-theme="dark"] .interview-topic-card .topic-description {
+    color: var(--secondary-text);
+}
+
+/* Profile Page Specific Styles */
+[data-theme="dark"] .profile-card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .profile-card .profile-title {
+    color: var(--primary-text);
+}
+
+[data-theme="dark"] .profile-card .profile-description {
+    color: var(--secondary-text);
+}
+
+/* Login Page Specific Styles */
+[data-theme="dark"] .login-card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .login-card .login-title {
+    color: var(--primary-text);
+}
+
+[data-theme="dark"] .login-card .login-description {
+    color: var(--secondary-text);
+}
+
+/* Add smooth transitions */
+body, .floating-navbar, .module-pane, .tab-btn, .hero-tagline, 
+.hero-subtitle, .section-header h2, .section-header p, 
+.module-description p, .card, .form-input, .btn,
+.aptitude-topic-card, .topic-card, .coding-topic-card,
+.interview-topic-card, .profile-card, .login-card {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+} 

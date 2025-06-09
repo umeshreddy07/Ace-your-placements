@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+@layer components {
+  .floating-navbar {
+    @apply bg-white/80 backdrop-blur-xl shadow-lg border border-white/20;
+  }
+  
+  .nav-brand-text {
+    @apply bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent;
+  }
+  
+  .floating-navbar-link {
+    @apply text-gray-600 hover:text-indigo-600 transition-all duration-300;
+  }
+  
+  .content-pod-vibrant {
+    @apply bg-white/65 backdrop-blur-lg rounded-2xl p-6 shadow-lg border border-white/40;
+  }
+} 

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<div class="navbar">
+    <div class="logo">
+        <a href="{{ url_for('index') }}">Ace Your Placement</a>
+    </div>
+    <div class="profile-section">
+        <div class="profile-completion">
+            <div class="progress-circle">
+                <svg viewBox="0 0 36 36" class="circular-chart">
+                    <path class="circle-bg" d="M18 2.0845
+                        a 15.9155 15.9155 0 0 1 0 31.831
+                        a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                    <path class="circle" stroke-dasharray="0, 100" d="M18 2.0845
+                        a 15.9155 15.9155 0 0 1 0 31.831
+                        a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                </svg>
+                <span class="percentage">0%</span>
+            </div>
+        </div>
+        <div class="user-profile">
+            <span class="user-name">Loading...</span>
+            <div class="profile-dropdown">
+                <a href="{{ url_for('serve_page', page='profile') }}">View Profile</a>
+                <a href="#" onclick="logout()">Logout</a>
+            </div>
+        </div>
+    </div>
+    <div id="user-profile-section" style="margin-left: auto; display: flex; align-items: center; gap: 1rem;">
+        <!-- Dark Mode Toggle - Only show on index page -->
+        <button aria-label="Toggle Dark Mode" id="darkModeToggle" class="text-xl text-gray-400 hover:text-yellow-300 transition-colors focus:outline-none" style="display: none;">
+            <i class="fas fa-moon"></i>
+        </button>
+        <a href="/login.html">Login</a>
+    </div>
+</div>
+
+<style>
+.navbar {
+    background: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.logo a {
+    color: #9542f5;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-completion {
+    position: relative;
+}
+
+.progress-circle {
+    width: 40px;
+    height: 40px;
+    position: relative;
+}
+
+.circular-chart {
+    width: 100%;
+    height: 100%;
+}
+
+.circle-bg {
+    fill: none;
+    stroke: #eee;
+    stroke-width: 3;
+}
+
+.circle {
+    fill: none;
+    stroke: #9542f5;
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.5s ease;
+}
+
+.percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: 600;
+    color: #333;
+}
+
+.user-profile {
+    position: relative;
+    cursor: pointer;
+}
+
+.user-name {
+    color: #333;
+    font-weight: 500;
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    display: none;
+    min-width: 150px;
+}
+
+.user-profile:hover .profile-dropdown {
+    display: block;
+}
+
+.profile-dropdown a {
+    display: block;
+    padding: 8px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.profile-dropdown a:hover {
+    background: #f5f5f5;
+    color: #9542f5;
+}
+</style>
+
+<script>
+function updateProfileCompletion(percentage) {
+    const circle = document.querySelector('.circle');
+    const percentageText = document.querySelector('.percentage');
+    
+    // Update the circular progress
+    const circumference = 2 * Math.PI * 15.9155; // radius of the circle
+    const dasharray = (percentage / 100) * circumference;
+    circle.style.strokeDasharray = `${dasharray}, ${circumference}`;
+    
+    // Update the percentage text
+    percentageText.textContent = `${Math.round(percentage)}%`;
+}
+
+function updateUserInfo(user) {
+    const userName = document.querySelector('.user-name');
+    userName.textContent = user.name;
+}
+
+// Initialize the navbar
+document.addEventListener('DOMContentLoaded', function() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = localStorage.getItem('token');
+
+    if (user && token) {
+        updateUserInfo(user);
+        updateProfileCompletion(user.profile_completion || 0);
+    } else {
+        window.location.href = 'login.html';
+    }
+});
+
+function logout() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    window.location.href = 'login.html';
+}
+
+// Dark Mode Toggle Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    // Set default theme to light
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    // Apply the theme
+    if (currentTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    }
+
+    // Toggle theme function
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        // Update icon
+        darkModeToggle.innerHTML = newTheme === 'dark' ? 
+            '<i class="fas fa-sun"></i>' : 
+            '<i class="fas fa-moon"></i>';
+    }
+
+    // Add click event listener
+    darkModeToggle.addEventListener('click', toggleTheme);
+
+    // Listen for system theme changes
+    prefersDarkScheme.addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+            const newTheme = e.matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            darkModeToggle.innerHTML = newTheme === 'dark' ? 
+                '<i class="fas fa-sun"></i>' : 
+                '<i class="fas fa-moon"></i>';
+        }
+    });
+});
+
+// Show dark mode toggle only on index page
+document.addEventListener('DOMContentLoaded', function() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html')) {
+        darkModeToggle.style.display = 'block';
+    }
+});
+</script> 

@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    // Auth check
+    (function() {
+        // Ensure auth.js is loaded before trying to use auth.getToken
+        if (typeof auth === 'undefined' || !auth.getToken) {
+            console.warn('Auth utility not loaded yet in initial script, falling back to direct localStorage check.');
+            const token = localStorage.getItem('token');
+            if (!token && window.location.pathname.includes('profile.html')) {
+                console.log('No auth token found (localStorage fallback), redirecting to login...');
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            }
+            return;
+        }
+
+        const token = auth.getToken();
+        if (!token && window.location.pathname.includes('profile.html')) {
+            console.log('No auth token found (auth.js), redirecting to login...');
+            auth.clearAuth();
+            window.location.href = 'login.html';
+        }
+
+        // NEW: Also update the navbar profile picture immediately on page load
+        const navProfileImg = document.getElementById('navProfileImg');
+        if (navProfileImg) {
+            const user = auth.getUser(); // Get the latest user from auth.js
+            const profilePicUrl = (user && user.profilePicture && user.profilePicture !== "null" && user.profilePicture !== "") 
+                                  ? user.profilePicture 
+                                  : 'static/default-profile.jpg';
+            navProfileImg.src = profilePicUrl;
+            navProfileImg.onerror = function() { 
+                console.warn('Failed to load initial nav profile picture, falling back to default.');
+                this.onerror = null; 
+                this.src = 'static/default-profile.jpg'; 
+            };
+        }
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stellar Profile Matrix - Ace Your Placement 🚀✨</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="logo.png" type="image/png">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/dark-mode.css">
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8faff; /* Ultra-light cool gray */
+        background-image:
+            radial-gradient(circle at 0% 0%, hsla(220, 80%, 90%, 0.15) 0px, transparent 40%),
+            radial-gradient(circle at 100% 100%, hsla(300, 70%, 90%, 0.15) 0px, transparent 40%),
+            linear-gradient(170deg, #f8faff 0%, #fdfcff 100%);
+        background-attachment: fixed;
+        margin: 0; padding: 0; overflow-x: hidden;
+        color: #2d3748; /* Rich gray */
+        position: relative;
+        min-height: 100vh;
+    }
+
+    /* --- Page Transitions (Cyberpunk Inspired) --- */
+    .page-wrapper { width: 100%; position: absolute; top: 0; left: 0; background-color: transparent; min-height: 100vh;}
+    @keyframes glitchOut {
+        0% { transform: translateX(0) skewX(0); opacity: 1; filter: brightness(1); }
+        30% { transform: translateX(5px) skewX(-3deg); opacity: 0.8; }
+        60% { transform: translateX(-10px) skewX(5deg) scale(0.98); opacity: 0.5; filter: brightness(0.7) saturate(2); }
+        100% { transform: translateX(-120%) skewX(10deg) scale(0.9); opacity: 0; filter: brightness(0.5); }
+    }
+    @keyframes glitchIn {
+        0% { transform: translateX(120%) skewX(-10deg) scale(0.9); opacity: 0; filter: brightness(0.5); }
+        40% { transform: translateX(10px) skewX(5deg) scale(0.98); opacity: 0.5; filter: brightness(0.7) saturate(2); }
+        70% { transform: translateX(-5px) skewX(-3deg); opacity: 0.8; }
+        100% { transform: translateX(0) skewX(0) scale(1); opacity: 1; filter: brightness(1); }
+    }
+    body.page-transition-out .page-wrapper { animation: glitchOut 0.7s cubic-bezier(0.76, 0, 0.24, 1) forwards; }
+    body.page-transition-in .page-wrapper { animation: glitchIn 0.7s cubic-bezier(0.76, 0, 0.24, 1) forwards 0.1s; }
+    body:not(.page-transition-in):not(.page-transition-out) .page-wrapper { opacity: 0; animation: initialFadeInPage 0.7s ease-out forwards 0.1s; }
+    @keyframes initialFadeInPage { to { opacity: 1; transform: translateY(0) scale(1); } from { opacity: 0; transform: translateY(20px) scale(0.98); }}
+
+    /* Text Gradients */
+    .text-gradient-aurora { background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .text-gradient-ocean { background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 50%, #67e8f9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .text-gradient-emerald { background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    /* Navbar (Futuristic Light) */
+    .floating-navbar {
+        background-color: rgba(252, 253, 255, 0.8) !important; /* Whiter, more pristine */
+        backdrop-filter: blur(22px) saturate(160%) !important;
+        box-shadow: 0 8px 32px rgba(67, 80, 120, 0.15), 0 0 0 1px rgba(255,255,255,0.2) inset !important;
+        border: 1px solid rgba(220, 230, 245, 0.7) !important;
+        color: #374151 !important;
+    }
+    .floating-navbar .nav-brand-text { background: linear-gradient(120deg, #4f46e5, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Orbitron', sans-serif; }
+    .floating-navbar .floating-navbar-link { color: #4b5563; transition: color 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease; }
+    .floating-navbar .floating-navbar-link:hover, .floating-navbar .floating-navbar-link.active-nav-link {
+        color: #4f46e5; transform: scale(1.05) translateY(-2px); text-shadow: 0 0 8px rgba(124, 58, 237, 0.5);
+    }
+
+    /* --- NEW, SIMPLIFIED DROPDOWN CSS --- */
+    .light-navbar .dropdown-menu-tuf {
+        background-color: #ffffff;
+        color: #374151;
+        box-shadow: 0 12px 40px -10px rgba(79, 70, 229, 0.25); /* Indigo shadow */
+        border: 1px solid rgba(220, 230, 245, 0.8);
+        border-radius: 0.75rem; /* Standard rounding */
+        min-width: 160px; /* Adjust width as needed */
+        padding: 0.5rem; /* Simple padding */
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
+        z-index: 1001;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px) scale(0.95);
+        transform-origin: top right;
+        transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s;
+    }
+    .light-navbar .dropdown-menu-tuf.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+    }
+    .light-navbar .dropdown-item-tuf {
+        color: #374151;
+        padding: 0.6rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .light-navbar .dropdown-item-tuf:hover {
+        background-color: #eef2ff; /* Light indigo */
+        color: #ef4444; /* Red for sign out action */
+    }
+    .light-navbar .dropdown-item-tuf i {
+        width: 1.25em;
+        text-align: center;
+        color: #6b7280;
+        transition: color 0.2s ease;
+    }
+    .light-navbar .dropdown-item-tuf:hover i {
+        color: #ef4444; /* Red icon on hover */
+    }
+
+    #navProfilePic { border-color: #a78bfa !important; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; }
+    #navProfilePic:hover { transform: scale(1.25) rotate(10deg) !important; box-shadow: 0 0 25px #a78bfa, 0 0 10px #f472b6 !important; border-color: #f472b6 !important;}
+
+    /* Added to resize the navigation profile picture */
+    #navProfileImg {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    /* Added to control size of main profile picture placeholder/icon */
+    .profile-banner-container img,
+    .profile-banner-container i.fas.fa-user,
+    .profile-banner-container i.fas.fa-user-circle,
+    .profile-banner-container i.fas.fa-user-alt {
+        max-width: 40px !important;
+        max-height: 40px !important;
+        font-size: 40px !important;
+        object-fit: cover;
+        margin: 0 auto;
+        display: block;
+    }
+
+    /* Added to control size of any potentially large default user icon/image */
+    body i.fas.fa-user,
+    body i.fas.fa-user-circle,
+    body i.fas.fa-user-alt,
+    body img:not([id="navProfileImg"]):not([id="profilePic"]) {
+        max-width: 20px !important; /* Force a very small size */
+        max-height: 20px !important; /* Force a very small size */
+        font-size: 20px !important; /* Force a very small icon size */
+        object-fit: contain !important; /* Ensure images scale down properly */
+    }
+
+    /* NEW AGGRESSIVE RULE: Attempt to hide any large default profile icon/image */
+    .profile-banner-container i.fas.fa-user,
+    .profile-banner-container i.fas.fa-user-circle,
+    .profile-banner-container i.fas.fa-user-alt,
+    .profile-banner-container img,
+    .profile-banner-container svg {
+        width: 1px !important;
+        height: 1px !important;
+        font-size: 1px !important;
+        opacity: 0 !important;
+        position: absolute !important;
+        pointer-events: none !important;
+    }
+
+    /* Profile Banner & Initial Display (Cyber Core Style) */
+    .profile-banner-container {
+        background: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(230,240,255,0.1) 100%),
+                    linear-gradient(160deg, #f0f5ff 5%, #fdfaff 95%);
+        border-radius: 2.5rem; /* More pronounced rounding */
+        padding: 3rem 2.5rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 20px 60px -20px rgba(80, 100, 150, 0.25), 0 0 0 1px rgba(220,230,245,0.5);
+        border: 1px solid rgba(255,255,255,0.3);
+        position: relative;
+        overflow: hidden; /* For pseudo-elements */
+    }
+    .profile-banner-container::before { /* Holographic shimmer effect */
+        content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+        background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+        transform: skewX(-25deg); animation: shimmer 5s infinite linear 1s; opacity:0;
+    }
+    @keyframes shimmer {
+        0% { left: -100%; opacity: 0; } 40% { opacity: 0.7; } 60% { opacity: 0.7; } 100% { left: 150%; opacity: 0;}
+    }
+
+    #profileInitialDisplayLogo {
+        width: 40px; height: 40px; border-radius: 30%; /* Hex-like */
+        background: linear-gradient(145deg, #6366f1, #8b5cf6, #d946ef); /* Indigo, Violet, Fuchsia */
+        color: white; display: flex; justify-content: center; align-items: center;
+        font-size: 1.5rem; /* Adjusted font size for smaller logo */
+        font-weight: 900; font-family: 'Orbitron', sans-serif;
+        box-shadow: 0 0 0 6px rgba(255,255,255,0.2), 0 0 30px #8b5cf6, 0 5px 15px rgba(0,0,0,0.2),
+                    inset 0 0 15px rgba(255,255,255,0.3);
+        transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+        text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        border: 2px solid rgba(255,255,255,0.5);
+        transform: rotate(-5deg);
+    }
+    #profileInitialDisplayLogo:hover {
+        transform: scale(1.15) rotate(5deg) translateY(-5px);
+        box-shadow: 0 0 0 8px rgba(255,255,255,0.3), 0 0 45px #ec4899, 0 10px 25px rgba(0,0,0,0.3),
+                    inset 0 0 20px rgba(255,255,255,0.4);
+    }
+    #profileDisplayName { font-size: 2.5rem; font-weight: 800; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; }
+    #profileLeetcodeUsernameDisplay { font-size: 1.1rem; color: #7c3aed; font-weight: 600; }
+
+    .login-status-dot {
+      display: inline-block; width: 10px; height: 10px;
+      border-radius: 50%; background-color: #4CAF50;
+      margin-left: 10px; vertical-align: middle;
+      box-shadow: 0 0 10px #4CAF50, 0 0 5px #4CAF50 inset;
+      animation: pulse-green-bright 1.5s infinite ease-in-out;
+    }
+    @keyframes pulse-green-bright {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 10px #4CAF50, 0 0 5px #4CAF50 inset; opacity: 1;}
+      50% { transform: scale(1.1); box-shadow: 0 0 15px #66bb6a, 0 0 8px #66bb6a inset; opacity: 0.7;}
+    }
+
+
+    /* Content Pod (Neo-Glassmorphism) */
+    .content-pod-vibrant {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(18px) saturate(120%);
+        border-radius: 1.8rem; padding: 2.2rem;
+        box-shadow: 0 12px 35px rgba(100, 120, 180, 0.15), 0 0 0 1px rgba(255,255,255,0.4) inset;
+        border: 1px solid rgba(230, 238, 255, 0.7);
+        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        position:relative; /* for pseudo-elements */
+    }
+     .content-pod-vibrant::before { /* Inner border light effect */
+        content: ''; position: absolute; top:0; left:0; right:0; bottom:0;
+        border-radius: inherit;
+        padding: 1px; /* effectively the border thickness */
+        background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.1));
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: destination-out;
+        mask-composite: exclude;
+        pointer-events: none; opacity: 0.7;
+    }
+    .content-pod-vibrant:hover {
+        transform: translateY(-12px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(100, 120, 180, 0.2), 0 0 0 1px rgba(255,255,255,0.5) inset;
+    }
+    .pod-header-vibrant { font-size: 1.35rem; font-weight: 700; margin-bottom: 1.8rem; display: flex; align-items: center; }
+    .pod-header-vibrant i { margin-right: 0.9rem; font-size: 1.25em; }
+
+    /* Circular Progress Bars (Vibrant Edition) */
+    .progress-circle-wrapper-vibrant { position: relative; width: var(--circle-size, 100px); height: var(--circle-size, 100px); display: flex; align-items: center; justify-content: center; flex-direction: column; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .progress-circle-wrapper-vibrant:hover { transform: scale(1.12) translateY(-3px); }
+    .progress-circle-wrapper-vibrant svg { position: absolute; top: 0; left: 0; transform: rotate(-90deg); filter: drop-shadow(0 2px 3px rgba(var(--progress-shadow-color, 0,0,0), 0.3)); }
+    .progress-circle-bg-vibrant { stroke: rgba(var(--progress-color-rgb, 100,100,100), 0.15); }
+    .progress-circle-fg-vibrant { stroke-linecap: round; transition: stroke-dashoffset 1.3s cubic-bezier(0.19, 1, 0.22, 1) 0.1s, filter 0.3s; } /* Slight delay added */
+    .progress-circle-wrapper-vibrant:hover .progress-circle-fg-vibrant { filter: brightness(1.2); }
+    .progress-circle-percentage-vibrant {
+        font-size: calc(var(--circle-size, 100px) * 0.22); font-weight: 700;
+        color: var(--progress-text-color, #2d3748); line-height: 1;
+        opacity: 0; transform: translateY(8px) scale(0.9);
+        transition: opacity 0.4s ease 0.2s, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s;
+        font-family: 'Orbitron', sans-serif;
+        z-index: 1; /* Ensure text is above SVG */
+    }
+    .progress-circle-wrapper-vibrant:hover .progress-circle-percentage-vibrant { opacity: 1; transform: translateY(0) scale(1); }
+    .progress-circle-module-name-vibrant {
+        font-size: calc(var(--circle-size, 100px) * 0.1); color: #4a5568; /* gray-600 */
+        margin-top: 5px; font-weight: 500; transition: opacity 0.3s ease;
+        text-transform: uppercase; letter-spacing: 0.5px;
+        z-index: 1; /* Ensure text is above SVG */
+    }
+    .progress-circle-wrapper-vibrant:hover .progress-circle-module-name-vibrant { opacity: 0; }
+    /* For Overall circle, make text always visible */
+    #overallProgressCircleWrapper .progress-circle-percentage-vibrant { opacity: 1; transform: translateY(0) scale(1); }
+    #overallProgressCircleWrapper .progress-circle-module-name-vibrant { opacity: 1; margin-top: 8px; font-size: calc(var(--circle-size) * 0.08); }
+
+
+    /* Vibrant Progress Colors */
+    .stroke-aptitude-vibrant  { stroke: #8b5cf6; --progress-color-rgb: 139,92,246; --progress-text-color: #7c3aed; --progress-shadow-color: 139,92,246;} /* Violet */
+    .stroke-coding-vibrant   { stroke: #ec4899; --progress-color-rgb: 236,72,153; --progress-text-color: #db2777; --progress-shadow-color: 236,72,153;} /* Fuchsia */
+    .stroke-technical-vibrant{ stroke: #22d3ee; --progress-color-rgb: 34,211,238; --progress-text-color: #0ea5e9; --progress-shadow-color: 34,211,238;} /* Cyan */
+    .stroke-hr-vibrant       { stroke: #f97316; --progress-color-rgb: 249,115,22; --progress-text-color: #ea580c; --progress-shadow-color: 249,115,22;} /* Orange */
+    .stroke-overall-vibrant  { stroke: url(#overallGradientVibrant); --progress-text-color: #4338ca; --progress-shadow-color: 79,70,229;} /* Indigo-Violet Gradient */
+
+    /* Site Login Activity Heatmap (Vibrant OLD - for reference if needed, but new dark theme is primary) */
+    .site-login-heatmap-pod { /* uses .content-pod-vibrant */ }
+    .heatmap-title-stats { font-size: 1.25rem; font-weight: 700; font-family: 'Orbitron', sans-serif;}
+    .heatmap-sub-stats { font-size: 0.9rem; color: #64748b; }
+
+    .login-heatmap-grid-container { /* Old vibrant theme scroll */
+        overflow-x: auto; padding-bottom: 0.75rem; /* for scrollbar space */
+        scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9;
+    }
+    .login-heatmap-grid-container::-webkit-scrollbar { height: 8px; }
+    .login-heatmap-grid-container::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+    .login-heatmap-grid-container::-webkit-scrollbar-thumb { background-color: #a5b4fc; border-radius: 4px; } /* Indigo 300 for thumb */
+    .login-heatmap-grid-container::-webkit-scrollbar-thumb:hover { background-color: #818cf8; } /* Indigo 400 */
+
+
+    /* LeetCode related credential input - styled like login input */
+    #leetcodeInputField {
+        width: 100%; padding: 0.75rem 1rem; border-radius: 0.5rem;
+        border: 1px solid #cbd5e1; /* slate-300 */
+        background: rgba(255,255,255,0.7); color: #1e293b; /* slate-800 */
+        transition: border-color 0.3s, box-shadow 0.3s;
+        font-size: 0.95rem;
+    }
+    #leetcodeInputField::placeholder { color: #94a3b8; /* slate-400 */ }
+    #leetcodeInputField:focus {
+        outline: none; border-color: #4ade80; /* green-400 */
+        box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.3);
+    }
+
+    /* --- Dark Theme Heatmap Pod (GitHub/LeetCode Style) --- */
+    .new-dark-heatmap-pod {
+        background-color: #22272b;
+        color: #adbac7;
+        border: 1px solid #373e47;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        border-radius: 10px;
+        padding: 1.25rem;
+    }
+
+    .new-dark-heatmap-pod:hover {
+        transform: none;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    #heatmapTotalLoginsText { color: #e6edf3; font-size: 1.2rem; }
+    #heatmapTotalLoginsText > span { color: #e6edf3; }
+    .new-dark-heatmap-pod .text-xs { color: #768390; }
+    .new-dark-heatmap-pod .text-gray-300 { color: #adbac7; }
+
+    /* New Monthly Block Heatmap Styles */
+    .login-heatmap-grid-container-new {
+        background-color: transparent;
+        padding: 0;
+        overflow-x: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #484f58 #22272b;
+    }
+
+    .login-heatmap-grid-container-new::-webkit-scrollbar { height: 6px; }
+    .login-heatmap-grid-container-new::-webkit-scrollbar-track { background: #22272b; border-radius: 3px; }
+    .login-heatmap-grid-container-new::-webkit-scrollbar-thumb { background-color: #484f58; border-radius: 3px; }
+
+    /* For padding cells in the new month block view */
+    .new-dark-heatmap-pod .login-heatmap-cell-vibrant[data-level="-1"] {
+        background-color: rgba(72, 79, 88, 0.2);
+    }
+
+    /* Styling for the individual month blocks */
+    .month-view-block-style {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .month-view-block-style .month-label {
+        color: #768390;
+        font-size: 10px;
+        margin-bottom: 5px;
+    }
+
+    .month-view-block-style .cells-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(5, 1fr);
+        gap: 3px;
+    }
+
+    .login-heatmap-cell-vibrant {
+        width: 11px;
+        height: 11px;
+        border-radius: 2px;
+        transition: background-color 0.15s ease-in-out;
+    }
+
+    .new-dark-heatmap-pod .login-heatmap-cell-vibrant[data-level="0"] {
+        background-color: rgba(255, 255, 255, 0.06);
+    }
+
+    .new-dark-heatmap-pod .login-heatmap-cell-vibrant[data-level="1"],
+    .new-dark-heatmap-pod .login-heatmap-cell-vibrant[data-level="2"],
+    .new-dark-heatmap-pod .login-heatmap-cell-vibrant[data-level="3"],
+    .new-dark-heatmap-pod .login-heatmap-cell-vibrant[data-level="4"] {
+        background-color: #39d353 !important;
+    }
+
+    .new-dark-heatmap-pod .login-heatmap-cell-vibrant:hover:not([data-level="0"]):not([data-level="-1"]) {
+        filter: brightness(1.2);
+    }
+
+    .login-heatmap-months-new {
+        height: 20px;
+        font-size: 10px;
+        color: #768390;
+        position: relative; /* Changed from absolute to relative to be part of normal flow under grid */
+        width: 100%; /* Ensure it spans the width of heatmapWithMonthsWrapper */
+        /* top, left, transform removed */
+    }
+    .login-heatmap-months-new span {
+        /* position: absolute; already applied inline */
+        white-space: nowrap;
+    }
+  </style>
+</head>
+<body class="page-transition-in">
+    <svg width="0" height="0" style="position:absolute;">
+      <defs>
+        <linearGradient id="overallGradientVibrant" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#4f46e5; stop-opacity:1" /> <!-- Indigo 600 -->
+          <stop offset="100%" style="stop-color:#a855f7; stop-opacity:1" /> <!-- Purple 500 -->
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <!-- Navbar -->
+    <nav class="floating-navbar py-3 px-4 sm:px-6 fixed top-4 left-1/2 transform -translate-x-1/2 rounded-xl shadow-2xl z-[1000] w-[80%]">
+        <div class="mx-auto flex justify-between items-center">
+            <!-- Brand/Logo (No Change) -->
+            <a href="index.html" class="nav-transition-link flex items-center space-x-2 group">
+                <img src="logo.png" alt="AceYourPlacement Logo" class="w-8 h-8 sm:w-9 sm:h-9 mr-2">
+                <span class="font-black text-lg sm:text-xl nav-brand-text hidden sm:inline tracking-tight group-hover:text-white transition-colors">AceYourPlacement</span>
+                <span class="font-black text-lg nav-brand-text sm:hidden group-hover:text-white transition-colors">AYP</span>
+            </a>
+
+            <!-- Main Navigation Links (No Change) -->
+            <div class="hidden md:flex items-center space-x-4 lg:space-x-6">
+                <a href="index.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Home <i class="fas fa-home ml-1"></i></a>
+                <a href="aptitude.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Aptitude <i class="fas fa-calculator ml-1"></i></a>
+                <a href="coding.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Coding <i class="fas fa-laptop-code ml-1"></i></a>
+                <a href="technical.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Technical <i class="fas fa-book ml-1"></i></a>
+                <a href="roadmap.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Roadmaps <i class="fas fa-map-marked-alt ml-1"></i></a>
+                <a href="hr_interview.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">HR <i class="fas fa-handshake ml-1"></i></a>
+                <a href="assessment-home.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Assessment <i class="fas fa-clipboard-list ml-1"></i></a>
+            </div>
+
+            <!-- Right-side controls (Simplified) -->
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <!-- Profile Dropdown -->
+                <div class="profile-dropdown-tuf relative">
+                    <!-- Trigger Button: The Profile Picture -->
+                    <button aria-label="Profile Menu" id="profileDropdownBtn" class="focus:outline-none block">
+                        <img id="navProfileImg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-violet-300 hover:border-violet-500 transition-all object-cover" src="static/default-profile.jpg" alt="Profile" referrerpolicy="no-referrer">
+                    </button>
+                    
+                    <!-- Dropdown Menu: Contains Profile and Sign Out -->
+                    <div id="profileDropdownMenu" class="dropdown-menu-tuf hidden absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-50">
+                    
+                        <div onclick="logoutUserWithTransition()" class="dropdown-item-tuf block px-4 py-2 text-red-500 hover:bg-red-100">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Sign Out
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Burger Icon -->
+            <button class="md:hidden text-xl text-gray-500 focus:outline-none hover:text-indigo-600" id="mobileMenuBtnTUF" aria-label="Open Menu">
+                <i class="fas fa-bars-staggered"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenuTUF" class="fixed inset-0 bg-gray-900 bg-opacity-95 backdrop-blur-sm z-[999] p-6 text-white transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+        <div class="flex justify-between items-center mb-10">
+            <a href="index.html" class="nav-transition-link flex items-center space-x-2">
+                <i class="fas fa-rocket text-3xl nav-brand-text"></i>
+                <span class="font-black text-2xl nav-brand-text">AYP</span>
+            </a>
+            <button class="text-3xl text-gray-300 hover:text-white" id="closeMobileMenuBtnTUF" aria-label="Close menu">×</button>
+        </div>
+        <nav class="space-y-5 text-center">
+            <a href="index.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Home <i class="fas fa-house-chimney-user ml-2"></i></a>
+            <a href="aptitude.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Aptitude <i class="fas fa-calculator ml-2"></i></a>
+            <a href="coding.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Coding <i class="fas fa-code ml-2"></i></a>
+            <a href="technical.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Technical <i class="fas fa-book ml-2"></i></a>
+            <a href="roadmap.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Roadmaps <i class="fas fa-map-marked-alt ml-2"></i></a>
+            <a href="hr_interview.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">HR Interview <i class="fas fa-user-tie ml-2"></i></a>
+            <a href="assessment-home.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">Assessment <i class="fas fa-clipboard-list ml-2"></i></a>
+            <hr class="border-gray-700 my-4">
+            <a href="profile.html" class="nav-transition-link block text-xl py-3 rounded-lg hover:bg-gray-700 transition-colors">My Profile <i class="fas fa-id-card ml-2"></i></a>
+        </nav>
+    </div>
+
+
+  <div class="page-wrapper">
+      <main class="pt-28 sm:pt-32 pb-20 px-4 md:px-6 lg:px-8">
+          <div class="max-w-7xl mx-auto space-y-8 lg:space-y-10">
+
+              <header class="profile-banner-container relative flex flex-col items-center justify-center p-8 text-center bg-white rounded-3xl shadow-lg transform transition-all duration-500 ease-in-out hover:shadow-xl">
+                  <div class="flex items-center justify-center mb-6">
+                      <div id="profileInitialDisplayLogo" class="relative z-10"></div>
+                  </div>
+                  <div class="profile-info-text text-center md:text-left">
+                      <h1 id="profileDisplayName" class="text-gradient-aurora">Loading Commander... <span class="login-status-dot"></span></h1>
+                      <p id="profileLeetcodeUsernameDisplay" class="text-purple-600 mt-1">LeetCode ID: Not Linked</p>
+                </div>
+            </header>
+
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
+                  <!-- Left Column: Credentials & LeetCode Link -->
+                  <div class="lg:col-span-1 space-y-8 lg:space-y-10">
+                      <div class="content-pod-vibrant" data-aos="fade-right" data-aos-delay="100" data-aos-duration="800">
+                          <h3 class="pod-header-vibrant text-gradient-ocean"><i class="fas fa-id-badge"></i>Stellar Credentials</h3>
+                          <div class="detail-item text-gray-600"><i class="fas fa-envelope text-sky-500 mr-3"></i><span id="userEmailDisplay">ace@your.placement</span></div>
+                          <div class="detail-item text-gray-600 mt-3"><i class="fas fa-user-graduate text-sky-500 mr-3"></i><span id="userSchoolDisplay">Placement Academy</span></div>
+                          <div class="detail-item text-gray-600 mt-3"><i class="fas fa-map-pin text-sky-500 mr-3"></i><span id="userLocationDisplay">Digital Cosmos</span></div>
+                      </div>
+
+                      <div class="content-pod-vibrant" data-aos="fade-right" data-aos-delay="250" data-aos-duration="800">
+                          <h3 class="pod-header-vibrant text-gradient-emerald"><i class="fab fa-dev"></i>Link LeetCode ID</h3>
+                          <input type="text" id="leetcodeInputField" class="w-full p-3 rounded-lg border border-emerald-300 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-all bg-white/70 placeholder-gray-400" placeholder="Your LeetCode Username">
+                          <button id="saveLeetcodeBtn" class="mt-4 w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all transform hover:scale-102 active:scale-98 duration-300 ease-in-out">
+                              <i class="fas fa-link mr-2"></i>Connect & Sync
+                          </button>
+                      </div>
+                    </div>
+
+                  <!-- Right Column: Progress Metrics -->
+                  <div class="lg:col-span-2 content-pod-vibrant" data-aos="fade-left" data-aos-delay="150" data-aos-duration="800">
+                      <h2 class="pod-header-vibrant text-gradient-aurora"><i class="fas fa-tasks-alt"></i>Module Performance Matrix</h2>
+                      <div id="overallProgressCircleWrapper" class="flex justify-center items-center my-8 progress-circle-wrapper-vibrant" data-aos="zoom-in" data-aos-delay="300" data-aos-duration="1000">
+                          <!-- Overall SVG will be injected here -->
+                        </div>
+                      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 justify-items-center">
+                          <div id="aptitudeProgress" class="progress-circle-wrapper-vibrant" data-aos="fade-up" data-aos-delay="400"></div>
+                          <div id="codingProgress" class="progress-circle-wrapper-vibrant" data-aos="fade-up" data-aos-delay="500"></div>
+                          <div id="technicalProgress" class="progress-circle-wrapper-vibrant" data-aos="fade-up" data-aos-delay="600"></div>
+                          <div id="hrProgress" class="progress-circle-wrapper-vibrant" data-aos="fade-up" data-aos-delay="700"></div>
+                        </div>
+                    </div>
+                </div>
+
+              <!-- Site Login Activity Heatmap (Dark Theme) -->
+              <div class="content-pod-vibrant site-login-heatmap-pod new-dark-heatmap-pod" data-aos="fade-up" data-aos-delay="200" data-aos-duration="900">
+                  <div id="siteLoginActivityLoading" class="text-center py-10 text-gray-400">
+                      <i class="fas fa-atom fa-spin text-4xl text-emerald-400 mb-4"></i>
+                      <p class="font-semibold text-lg">Scanning Activity Logs...</p>
+                    </div>
+                  <div id="siteLoginActivityContent" class="hidden">
+                      <div class="flex justify-between items-center mb-3">
+                          <div>
+                              <h3 id="heatmapTotalLoginsText" class="text-xl font-bold">
+                                  <span id="siteLoginTotalActiveDaysCount">0</span> submissions in the past one year
+                              </h3>
+                          </div>
+                          <div class="text-right text-xs">
+                              <p>Total active days: <span id="siteLoginTotalActiveDaysSummary" class="font-medium text-gray-300">0</span></p>
+                              <p class="mt-0.5">Max streak: <span id="siteLoginMaxStreakSummary" class="font-medium text-gray-300">0</span></p>
+                          </div>
+                      </div>
+                      <div class="login-heatmap-grid-container-new">
+                          <div id="siteLoginHeatmapGrid">
+                              <!-- Monthly blocks will be generated here by JS -->
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/dark-mode.js"></script>
+
+  <script>
+      // --- Utility Functions & Constants ---
+      const SVG_NS = "http://www.w3.org/2000/svg";
+
+      function handlePageTransition(event) {
+          event.preventDefault();
+          const targetUrl = event.currentTarget.href;
+          document.body.classList.add('page-transition-out');
+          setTimeout(() => {
+              window.location.href = targetUrl;
+          }, 500);
+      }
+
+      AOS.init({ duration: 850, once: true, offset: 50, easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)' });
+
+      function createVibrantCircularProgressBar(containerId, percentage, size, strokeWidth, moduleName, strokeClass) {
+          const container = document.getElementById(containerId);
+          if (!container) { console.error(`Container not found for progress bar: ${containerId}`); return; }
+          container.innerHTML = '';
+          container.style.setProperty('--circle-size', `${size}px`);
+
+          const svg = document.createElementNS(SVG_NS, "svg");
+          svg.setAttribute("width", size);
+          svg.setAttribute("height", size);
+          svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
+
+          const radius = (size - strokeWidth) / 2;
+          const circumference = 2 * Math.PI * radius;
+          const offset = circumference - (percentage / 100) * circumference;
+
+          const bgCircle = document.createElementNS(SVG_NS, "circle");
+          bgCircle.setAttribute("class", "progress-circle-bg-vibrant");
+          bgCircle.setAttributeNS(null, "cx", size / 2);
+          bgCircle.setAttributeNS(null, "cy", size / 2);
+          bgCircle.setAttributeNS(null, "r", radius);
+          bgCircle.setAttributeNS(null, "fill", "transparent");
+          bgCircle.setAttributeNS(null, "stroke-width", strokeWidth * 0.8);
+          svg.appendChild(bgCircle);
+
+          const fgCircle = document.createElementNS(SVG_NS, "circle");
+          fgCircle.setAttribute("class", `progress-circle-fg-vibrant ${strokeClass}`);
+          fgCircle.setAttributeNS(null, "cx", size / 2);
+          fgCircle.setAttributeNS(null, "cy", size / 2);
+          fgCircle.setAttributeNS(null, "r", radius);
+          fgCircle.setAttributeNS(null, "fill", "transparent");
+          fgCircle.setAttributeNS(null, "stroke-width", strokeWidth);
+          fgCircle.setAttributeNS(null, "stroke-dasharray", circumference);
+          fgCircle.setAttributeNS(null, "stroke-dashoffset", circumference);
+          svg.appendChild(fgCircle);
+          container.appendChild(svg);
+
+          const textWrapper = document.createElement("div");
+          textWrapper.className = "absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none";
+
+          const percentageTextEl = document.createElement("div");
+          percentageTextEl.className = "progress-circle-percentage-vibrant";
+          percentageTextEl.textContent = `${Math.round(percentage)}%`;
+
+          const nameTextEl = document.createElement("div");
+          nameTextEl.className = "progress-circle-module-name-vibrant";
+          nameTextEl.textContent = moduleName;
+
+          textWrapper.appendChild(percentageTextEl);
+          if (containerId !== 'overallProgressCircleWrapper') {
+            textWrapper.appendChild(nameTextEl);
+          } else {
+             const overallLabel = document.createElement("div");
+             overallLabel.className = "progress-circle-module-name-vibrant";
+             overallLabel.textContent = "Overall Matrix";
+             textWrapper.appendChild(overallLabel);
+          }
+          container.appendChild(textWrapper);
+          setTimeout(() => fgCircle.style.strokeDashoffset = offset, 100);
+      }
+
+      // --- Client-Side Platform Engagement Heatmap ---
+      // MODIFIED: For fixed Jan-Dec view of current year
+      function generateClientSideLoginHeatmap(containerId, totalActiveDaysCountElId, totalActiveSummaryElId, maxStreakSummaryElId, oldMonthContainerIdToRemove, activityDataFromCaller) {
+          const mainHeatmapGridElement = document.getElementById(containerId);
+          if (!mainHeatmapGridElement) {
+              console.error("Heatmap grid container not found:", containerId);
+              return;
+          }
+          mainHeatmapGridElement.innerHTML = '';
+          mainHeatmapGridElement.className = '';
+
+          mainHeatmapGridElement.style.display = 'flex';
+          mainHeatmapGridElement.style.flexDirection = 'row';
+          mainHeatmapGridElement.style.gap = '20px';
+          mainHeatmapGridElement.style.padding = '5px 0';
+
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+
+          function getDaysInMonth(year, month) { // month is 0-indexed
+              return new Date(year, month + 1, 0).getDate();
+          }
+
+          // --- CORRECTED Month Display Data Generation ---
+          const monthDisplayData = [];
+          const targetYear = today.getFullYear(); // Display months of the current year
+
+          for (let monthIdx = 0; monthIdx < 12; monthIdx++) { // Iterate from January (0) to December (11)
+              const monthDateObject = new Date(targetYear, monthIdx, 1);
+              monthDisplayData.push({
+                  year: targetYear,
+                  monthIndex: monthIdx, // 0-indexed
+                  monthName: monthDateObject.toLocaleDateString('en-US', { month: 'short' })
+              });
+          }
+
+          const numRowsPerMonth = 5;
+          const numColsPerMonth = 6;
+          const cellsPerMonthBlock = numRowsPerMonth * numColsPerMonth;
+
+          monthDisplayData.forEach(monthData => {
+              const monthBlockDiv = document.createElement('div');
+              monthBlockDiv.className = 'month-view-block-style';
+              monthBlockDiv.style.display = 'flex';
+              monthBlockDiv.style.flexDirection = 'column';
+              monthBlockDiv.style.alignItems = 'center';
+
+              const monthLabelDiv = document.createElement('div');
+              monthLabelDiv.textContent = monthData.monthName;
+              monthLabelDiv.style.color = '#768390';
+              monthLabelDiv.style.fontSize = '10px';
+              monthLabelDiv.style.marginBottom = '5px';
+              monthBlockDiv.appendChild(monthLabelDiv);
+
+              const cellsGridDiv = document.createElement('div');
+              cellsGridDiv.style.display = 'grid';
+              cellsGridDiv.style.gridTemplateColumns = `repeat(${numColsPerMonth}, 1fr)`;
+              cellsGridDiv.style.gridTemplateRows = `repeat(${numRowsPerMonth}, 1fr)`;
+              cellsGridDiv.style.gap = '3px';
+
+              const cellVisualSize = 11;
+              const cellGapSize = 3;
+              cellsGridDiv.style.width = `${(cellVisualSize * numColsPerMonth) + (cellGapSize * (numColsPerMonth - 1))}px`;
+              cellsGridDiv.style.height = `${(cellVisualSize * numRowsPerMonth) + (cellGapSize * (numRowsPerMonth - 1))}px`;
+
+              const daysInThisActualMonth = getDaysInMonth(monthData.year, monthData.monthIndex);
+
+              for (let cellIdx = 0; cellIdx < cellsPerMonthBlock; cellIdx++) {
+                  const cell = document.createElement('div');
+                  cell.className = 'login-heatmap-cell-vibrant';
+
+                  const dayOfMonthForCell = cellIdx + 1;
+
+                  if (dayOfMonthForCell <= daysInThisActualMonth) {
+                      const currentDateForCell = new Date(monthData.year, monthData.monthIndex, dayOfMonthForCell);
+                      currentDateForCell.setHours(0,0,0,0);
+
+                      const iterYear = currentDateForCell.getFullYear();
+                      const iterMonth = (currentDateForCell.getMonth() + 1).toString().padStart(2, '0');
+                      const iterDay = currentDateForCell.getDate().toString().padStart(2, '0');
+                      const dateStr = `${iterYear}-${iterMonth}-${iterDay}`;
+
+                      let level = 0;
+                      // Check activity ONLY IF the cell's date is not in the future
+                      if (currentDateForCell.getTime() <= today.getTime()) {
+                          if (activityDataFromCaller[dateStr] && activityDataFromCaller[dateStr] > 0) {
+                              level = 1; // Active day
+                          }
+                      } else {
+                              level = 0; // Future dates are level 0 (inactive but not padding)
+                          }
+
+                      cell.dataset.level = level.toString();
+                      cell.title = `${level > 0 ? 'Active on ' : (currentDateForCell.getTime() > today.getTime() ? 'Future date: ' : '')}${currentDateForCell.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+
+                  } else {
+                      cell.dataset.level = "-1"; // Padding cell
+                      cell.title = "Empty";
+                  }
+                  cellsGridDiv.appendChild(cell);
+              }
+              monthBlockDiv.appendChild(cellsGridDiv);
+              mainHeatmapGridElement.appendChild(monthBlockDiv);
+          });
+
+          const oldMonthLabelContainerEl = document.getElementById(oldMonthContainerIdToRemove);
+          if (oldMonthLabelContainerEl) {
+              oldMonthLabelContainerEl.innerHTML = '';
+              oldMonthLabelContainerEl.style.display = 'none';
+          }
+          const heatmapWrapperEl = document.getElementById('heatmapWithMonthsWrapper');
+          if (heatmapWrapperEl) {
+              heatmapWrapperEl.style.paddingBottom = '0';
+              heatmapWrapperEl.style.display = 'block';
+              heatmapWrapperEl.style.minWidth = 'auto';
+          }
+
+          // Stats calculation (activeDaysCount, streak)
+          // IMPORTANT: The stats (total active days, max streak) are still calculated based on the "past one year"
+          // from today, not just the visible Jan-Dec period. This matches the text "submissions in the past one year".
+          const oneYearAgoForStats = new Date(today);
+          oneYearAgoForStats.setFullYear(today.getFullYear() - 1);
+          oneYearAgoForStats.setDate(oneYearAgoForStats.getDate() + 1);
+          oneYearAgoForStats.setHours(0,0,0,0);
+
+          let activeDaysCount = 0;
+          let currentStreakVal = 0;
+          let longestStreakVal = 0;
+          let lastActiveDateForStreak = null;
+
+          for (let d = new Date(oneYearAgoForStats); d.getTime() <= today.getTime(); d.setDate(d.getDate() + 1)) {
+              d.setHours(0,0,0,0);
+              const statYear = d.getFullYear();
+              const statMonth = (d.getMonth() + 1).toString().padStart(2, '0');
+              const statDay = d.getDate().toString().padStart(2, '0');
+              const dateStrLoop = `${statYear}-${statMonth}-${statDay}`;
+
+              if (activityDataFromCaller[dateStrLoop] && activityDataFromCaller[dateStrLoop] > 0) {
+                  activeDaysCount++;
+                  const currentActiveDay = new Date(d);
+                  if (lastActiveDateForStreak) {
+                      const diffTime = currentActiveDay.getTime() - lastActiveDateForStreak.getTime();
+                      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+                      if (diffDays === 1) {
+                          currentStreakVal++;
+                      } else if (diffDays > 1) {
+                          currentStreakVal = 1;
+                      }
+                  } else {
+                      currentStreakVal = 1;
+                  }
+                  lastActiveDateForStreak = new Date(currentActiveDay);
+                  longestStreakVal = Math.max(longestStreakVal, currentStreakVal);
+              } else {
+                  currentStreakVal = 0;
+              }
+          }
+
+          document.getElementById(totalActiveDaysCountElId).textContent = activeDaysCount;
+          document.getElementById(totalActiveSummaryElId).textContent = activeDaysCount;
+          document.getElementById(maxStreakSummaryElId).textContent = longestStreakVal;
+
+          const scrollableContainer = mainHeatmapGridElement.parentElement;
+          if (scrollableContainer && typeof scrollableContainer.scrollLeft !== 'undefined') {
+             setTimeout(() => {
+                  // Scroll to show the current month. Find the current month's block.
+                  const currentMonthIndex = today.getMonth(); // 0-11
+                  const allMonthBlocks = mainHeatmapGridElement.children;
+                  if (allMonthBlocks.length === 12 && currentMonthIndex < allMonthBlocks.length) {
+                      const targetBlock = allMonthBlocks[currentMonthIndex];
+                      if (targetBlock) {
+                          // Calculate approximate scroll position to bring this block into view
+                          let scrollPos = 0;
+                          for(let i=0; i < currentMonthIndex; i++) {
+                              scrollPos += allMonthBlocks[i].offsetWidth + parseFloat(getComputedStyle(mainHeatmapGridElement).gap || '0');
+                          }
+                          // Center it a bit if possible, or just scroll to its start
+                          const containerWidth = scrollableContainer.offsetWidth;
+                          const targetBlockWidth = targetBlock.offsetWidth;
+                          scrollPos = Math.max(0, scrollPos - (containerWidth / 2) + (targetBlockWidth / 2) );
+
+                          scrollableContainer.scrollLeft = Math.min(scrollPos, scrollableContainer.scrollWidth - containerWidth);
+                      } else {
+                           scrollableContainer.scrollLeft = scrollableContainer.scrollWidth; // Fallback to end
+                      }
+                  } else {
+                      scrollableContainer.scrollLeft = scrollableContainer.scrollWidth; // Fallback to end
+                  }
+             }, 100);
+          }
+      }
+
+      function logoutUser() {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          localStorage.removeItem('platformProgress');
+          localStorage.removeItem('platformLoginActivity'); // Clear any client-side heatmap cache
+          window.location.href = 'login.html';
+      }
+
+      function logoutUserWithTransition() {
+          document.body.classList.remove('page-transition-in');
+          document.body.classList.add('page-transition-out');
+          setTimeout(logoutUser, 650);
+      }
+
+      document.addEventListener('DOMContentLoaded', async () => {
+          document.querySelectorAll('.nav-transition-link').forEach(link => {
+            link.addEventListener('click', handlePageTransition);
+        });
+
+        // --- CORRECTED Navbar Profile Dropdown & Mobile Menu Logic ---
+        const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+        const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+
+        if (profileDropdownBtn && profileDropdownMenu) {
+            profileDropdownBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevents the window click from closing it immediately
+                profileDropdownMenu.classList.toggle('open');
+            });
+        }
+
+        // Close dropdown if clicked outside
+        document.addEventListener('click', (e) => {
+            if (profileDropdownMenu && profileDropdownMenu.classList.contains('open') && !profileDropdownBtn.contains(e.target)) {
+                profileDropdownMenu.classList.remove('open');
+            }
+        });
+
+        // Mobile Menu Logic (Unchanged)
+        const mobileMenuBtnTUF = document.getElementById('mobileMenuBtnTUF');
+        const mobileMenuTUF = document.getElementById('mobileMenuTUF');
+        const closeMobileMenuBtnTUF = document.getElementById('closeMobileMenuBtnTUF');
+        if (mobileMenuBtnTUF && mobileMenuTUF) { mobileMenuBtnTUF.addEventListener('click', () => { mobileMenuTUF.classList.remove('-translate-x-full'); mobileMenuTUF.classList.add('translate-x-0'); document.body.style.overflow = 'hidden'; }); }
+        if (closeMobileMenuBtnTUF && mobileMenuTUF) { closeMobileMenuBtnTUF.addEventListener('click', () => { mobileMenuTUF.classList.remove('translate-x-0'); mobileMenuTUF.classList.add('-translate-x-full'); document.body.style.overflow = ''; }); }
+        if (mobileMenuTUF) {
+              mobileMenuTUF.querySelectorAll('a.nav-transition-link, div[onclick*="logoutUser"]').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenuTUF.classList.remove('translate-x-0');
+                    mobileMenuTUF.classList.add('-translate-x-full');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+
+          const localProgressTracker = new ProgressTracker();
+          await localProgressTracker.init();
+
+          let userDetails = {
+              displayName: "Stellar Cadet",
+              leetcodeUsername: null,
+              email: "",
+              school: "Placement Academy",
+              location: "Digital Cosmos",
+              profilePic: 'static/default-profile.jpg',
+              loginActivity: {} // Initialize as an empty plain object for heatmap data
+          };
+
+          const authToken = localStorage.getItem('token');
+          if (authToken) {
+              try {
+                  const profileResponse = await fetch('/api/users/profile', {
+                      headers: {
+                          'Authorization': `Bearer ${authToken}`,
+                          'Content-Type': 'application/json'
+                      },
+                      credentials: 'include'
+                  });
+                  if (profileResponse.ok) {
+                      const profileData = await profileResponse.json();
+                      if (profileData.user) {
+                          userDetails.displayName = profileData.user.name || userDetails.displayName;
+                          userDetails.email = profileData.user.email || userDetails.email;
+                          userDetails.school = profileData.user.school || userDetails.school;
+                          userDetails.location = profileData.user.location || userDetails.location;
+                          userDetails.leetcodeUsername = profileData.user.leetcodeUsername || null;
+                          userDetails.profilePic = profileData.user.profilePicture && profileData.user.profilePicture !== "null" && profileData.user.profilePicture !== "" ?
+                                                    profileData.user.profilePicture :
+                                                    'static/default-profile.jpg';
+                          
+                          userDetails.loginActivity = profileData.user.loginActivity && typeof profileData.user.loginActivity === 'object' ?
+                                                      { ...profileData.user.loginActivity } : {};
+
+                          localStorage.setItem('user', JSON.stringify(profileData.user));
+                      }
+                  } else {
+                      console.warn("Failed to fetch profile from server, using localStorage if available.");
+                      const storedUser = JSON.parse(localStorage.getItem('user'));
+                      if (storedUser) userDetails = { ...userDetails, ...storedUser, loginActivity: storedUser.loginActivity || {} };
+                  }
+              } catch (err) {
+                  console.error("Error fetching profile:", err, "Using localStorage if available.");
+                  const storedUser = JSON.parse(localStorage.getItem('user'));
+                  if (storedUser) userDetails = { ...userDetails, ...storedUser, loginActivity: storedUser.loginActivity || {} };
+              }
+          } else {
+              console.log("No auth token found, using localStorage for user details if available.");
+              const storedUser = JSON.parse(localStorage.getItem('user'));
+              if (storedUser) userDetails = { ...userDetails, ...storedUser, loginActivity: storedUser.loginActivity || {} };
+          }
+          console.log('Initial userDetails (after fetch/localStorage):', JSON.parse(JSON.stringify(userDetails)));
+
+
+          // Populate User Info Display
+          const nameInitial = userDetails.leetcodeUsername ? userDetails.leetcodeUsername.charAt(0).toUpperCase() : (userDetails.displayName ? userDetails.displayName.charAt(0).toUpperCase() : '🚀');
+          document.getElementById('profileInitialDisplayLogo').textContent = nameInitial;
+          
+          // --- MODIFIED: Use LeetCode username (cleaned) for main display name ---
+          let cleanedLeetcodeName = userDetails.leetcodeUsername ? userDetails.leetcodeUsername.replace(/[^a-zA-Z\s]/g, '').trim() : '';
+          cleanedLeetcodeName = cleanedLeetcodeName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); // Capitalize each word
+
+          document.getElementById('profileDisplayName').innerHTML = `${cleanedLeetcodeName || userDetails.displayName || "Profile Data Anomaly"} <span class="login-status-dot"></span>`;
+          document.getElementById('profileLeetcodeUsernameDisplay').textContent = userDetails.leetcodeUsername ? `LeetCode ID: @${userDetails.leetcodeUsername}` : "LeetCode ID: Not Linked";
+          document.getElementById('userEmailDisplay').textContent = userDetails.email;
+          document.getElementById('userSchoolDisplay').textContent = userDetails.school;
+          document.getElementById('userLocationDisplay').textContent = userDetails.location;
+
+          // --- FIX: Robust profile image handling with fallback ---
+          const defaultPic = 'static/default-profile.jpg';
+          const userPicUrl = userDetails.profilePic || defaultPic;
+
+          const navProfileImg = document.getElementById('navProfileImg');
+          if (navProfileImg) {
+              navProfileImg.src = userPicUrl;
+              navProfileImg.onerror = function() {
+                  console.warn('Failed to load nav profile picture, falling back to default.');
+                  this.onerror = null;
+                  this.src = defaultPic;
+              };
+          }
+
+          const dropdownProfilePic = document.getElementById('dropdownProfilePic');
+          if (dropdownProfilePic) {
+              dropdownProfilePic.src = userPicUrl;
+              dropdownProfilePic.onerror = function() {
+                  console.warn('Failed to load dropdown profile picture, falling back to default.');
+                  this.onerror = null;
+                  this.src = defaultPic;
+              };
+          }
+
+          // Populate Progress Bars
+          const modulesToDisplay = [
+              { id: 'aptitudeProgress', key: 'aptitude', name: 'Aptitude', colorClass: 'stroke-aptitude-vibrant', size: 110, stroke: 10 },
+              { id: 'codingProgress', key: 'coding', name: 'Coding', colorClass: 'stroke-coding-vibrant', size: 110, stroke: 10 },
+              { id: 'technicalProgress', key: 'technical', name: 'Technical', colorClass: 'stroke-technical-vibrant', size: 110, stroke: 10 },
+              { id: 'hrProgress', key: 'hr_interview', name: 'HR Combat', colorClass: 'stroke-hr-vibrant', size: 110, stroke: 10 },
+          ];
+          let totalProgressSum = 0;
+          let validModulesCount = 0;
+
+          modulesToDisplay.forEach(mod => {
+              const progressValue = localProgressTracker.progress[mod.key] !== undefined ? localProgressTracker.progress[mod.key] : 0;
+              createVibrantCircularProgressBar(mod.id, progressValue, mod.size, mod.stroke, mod.name, mod.colorClass);
+              totalProgressSum += progressValue;
+              validModulesCount++;
+          });
+          const overallAvgProgress = validModulesCount > 0 ? totalProgressSum / validModulesCount : 0;
+          createVibrantCircularProgressBar('overallProgressCircleWrapper', overallAvgProgress, 180, 16, 'Overall Matrix', 'stroke-overall-vibrant');
+
+
+          // --- MODIFIED: Log current day's activity to backend & prepare data for heatmap ---
+          const localTodayForLog = new Date(); // User's current local date
+          const year = localTodayForLog.getFullYear();
+          const month = (localTodayForLog.getMonth() + 1).toString().padStart(2, '0');
+          const day = localTodayForLog.getDate().toString().padStart(2, '0');
+          const localTodayDateKey = `${year}-${month}-${day}`; // YYYY-MM-DD based on client's local time
+
+          let heatmapActivityData = { ...userDetails.loginActivity }; // Start with data from server profile
+
+          if (authToken) {
+              try {
+                  console.log(`Attempting to log activity for local date: ${localTodayDateKey} to backend.`);
+                  const logResponse = await fetch('/api/users/activity/log', {
+                      method: 'POST',
+                      headers: {
+                          'Authorization': authToken ? `Bearer ${authToken}` : '', // Ensure Authorization header is included only if token exists
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ dateKey: localTodayDateKey })
+                  });
+                  if (logResponse.ok) {
+                      console.log(`Activity successfully logged with backend for local date: ${localTodayDateKey}`);
+                      // Increment count for today in our local copy for immediate heatmap update
+                      heatmapActivityData[localTodayDateKey] = (heatmapActivityData[localTodayDateKey] || 0) + 1;
+                  } else {
+                      const errorData = await logResponse.json().catch(() => ({}));
+                      console.error(`Failed to log activity with backend (${logResponse.status}):`, errorData.message || "Unknown error");
+                      // Fallback: Still increment locally if server log fails, so heatmap reflects current session at least.
+                      heatmapActivityData[localTodayDateKey] = (heatmapActivityData[localTodayDateKey] || 0) + 1;
+                      console.log("Incremented activity for today locally due to backend log failure for immediate heatmap display.");
+                  }
+              } catch (err) {
+                  console.error("Network error logging activity with backend:", err);
+                  // Fallback: Still increment locally if network error
+                  heatmapActivityData[localTodayDateKey] = (heatmapActivityData[localTodayDateKey] || 0) + 1;
+                  console.log("Incremented activity for today locally due to network error for immediate heatmap display.");
+              }
+          } else {
+              // No token, just update local copy for non-persistent heatmap display if desired
+              // This branch might be removed if heatmap should only show persisted data.
+              // For now, let's assume if not logged in, heatmap still reflects this session's activity on a temporary basis.
+              heatmapActivityData[localTodayDateKey] = (heatmapActivityData[localTodayDateKey] || 0) + 1;
+              console.log("No auth token. Activity for today updated for local heatmap display only.");
+          }
+          console.log('Final heatmapActivityData to be used:', JSON.parse(JSON.stringify(heatmapActivityData)));
+
+
+          // Populate Site Login Heatmap
+          const siteLoginActivityLoadingEl = document.getElementById('siteLoginActivityLoading');
+          const siteLoginActivityContentEl = document.getElementById('siteLoginActivityContent');
+          
+          if(siteLoginActivityLoadingEl) siteLoginActivityLoadingEl.classList.remove('hidden');
+          if(siteLoginActivityContentEl) siteLoginActivityContentEl.classList.add('hidden');
+
+          setTimeout(() => {
+              try {
+                  generateClientSideLoginHeatmap(
+                      'siteLoginHeatmapGrid',
+                      'siteLoginTotalActiveDaysCount',
+                      'siteLoginTotalActiveDaysSummary',
+                      'siteLoginMaxStreakSummary',
+                      'siteLoginHeatmapMonths',
+                      heatmapActivityData // MODIFIED: Pass the prepared activity data
+                  );
+                  if(siteLoginActivityLoadingEl) siteLoginActivityLoadingEl.classList.add('hidden');
+                  if(siteLoginActivityContentEl) siteLoginActivityContentEl.classList.remove('hidden');
+                  AOS.refreshHard();
+              } catch (err) {
+                  console.error('Error rendering client-side login heatmap:', err);
+                  if(siteLoginActivityLoadingEl) siteLoginActivityLoadingEl.innerHTML = `<p class="text-red-500">Error loading engagement grid. Check console.</p>`;
+              }
+          }, 100);
+
+          // LeetCode Username Link Functionality
+          document.getElementById('leetcodeInputField').value = userDetails.leetcodeUsername || '';
+          document.getElementById('saveLeetcodeBtn').addEventListener('click', async () => {
+              const newLCUsername = document.getElementById('leetcodeInputField').value.trim();
+
+              const lcBtn = document.getElementById('saveLeetcodeBtn');
+              const originalLcBtnText = lcBtn.innerHTML;
+              lcBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Syncing...`;
+              lcBtn.disabled = true;
+
+              try {
+                  const response = await fetch('/api/users/profile/leetcode', {
+                      method: 'PUT',
+                      headers: {
+                          'Content-Type': 'application/json',
+                          'Authorization': `Bearer ${authToken}`
+                      },
+                      body: JSON.stringify({ leetcodeUsername: newLCUsername || null }),
+                      credentials: 'include'
+                  });
+
+                  if (response.ok) {
+                      const updatedProfileData = await response.json();
+                      if (updatedProfileData.user) {
+                          userDetails.leetcodeUsername = updatedProfileData.user.leetcodeUsername;
+                          let currentUserDataInStorage = JSON.parse(localStorage.getItem('user')) || {};
+                          currentUserDataInStorage.leetcodeUsername = updatedProfileData.user.leetcodeUsername;
+                          localStorage.setItem('user', JSON.stringify(currentUserDataInStorage));
+                      } else {
+                          userDetails.leetcodeUsername = newLCUsername || null;
+                          let currentUserDataInStorage = JSON.parse(localStorage.getItem('user')) || {};
+                          currentUserDataInStorage.leetcodeUsername = newLCUsername || null;
+                          localStorage.setItem('user', JSON.stringify(currentUserDataInStorage));
+                      }
+
+                      const newInitialForLC = userDetails.leetcodeUsername ? userDetails.leetcodeUsername.charAt(0).toUpperCase() : (userDetails.displayName ? userDetails.displayName.charAt(0).toUpperCase() : '🚀');
+                      document.getElementById('profileInitialDisplayLogo').textContent = newInitialForLC;
+                      document.getElementById('profileLeetcodeUsernameDisplay').textContent = userDetails.leetcodeUsername ? `LeetCode ID: @${userDetails.leetcodeUsername}` : "LeetCode ID: Not Linked";
+
+                      lcBtn.innerHTML = `<i class="fas fa-check-circle mr-2"></i>Synced!`;
+                      lcBtn.classList.remove('from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700');
+                      lcBtn.classList.add('from-violet-500', 'to-purple-600', 'hover:from-violet-600', 'hover:to-purple-700');
+                    } else {
+                      const errorData = await response.json().catch(() => ({ message: "Failed to update. Server error."}));
+                      console.error("Failed to save LeetCode username to server:", errorData.message);
+                      alert(`Error: ${errorData.message || "Could not save LeetCode username."}`);
+                      lcBtn.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i>Sync Failed`;
+                      lcBtn.classList.remove('from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700');
+                      lcBtn.classList.add('from-red-500', 'to-pink-600', 'hover:from-red-600', 'hover:to-pink-700');
+                  }
+              } catch (err) {
+                  console.error("Network error saving LeetCode username:", err);
+                  alert("Network error. Could not save LeetCode username.");
+                  lcBtn.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i>Network Error`;
+                  lcBtn.classList.remove('from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700');
+                  lcBtn.classList.add('from-red-500', 'to-pink-600', 'hover:from-red-600', 'hover:to-pink-700');
+              } finally {
+                  setTimeout(() => {
+                      lcBtn.innerHTML = originalLcBtnText;
+                      lcBtn.disabled = false;
+                      lcBtn.classList.remove('from-violet-500', 'to-purple-600', 'hover:from-violet-600', 'hover:to-purple-700', 'from-red-500', 'to-pink-600', 'hover:from-red-600', 'hover:to-pink-700');
+                      lcBtn.classList.add('from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700');
+                  }, 2500);
+              }
+          });
+      });
+  </script>
+
+  <!-- === DARK MODE LOGIC (Self-contained, like index.html) === -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+      // Set default theme to light
+      const currentTheme = localStorage.getItem('theme') || 'light';
+      if (currentTheme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          if (darkModeToggle) darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+      } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+          if (darkModeToggle) darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+      }
+      function toggleTheme() {
+          const currentTheme = document.documentElement.getAttribute('data-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          if (darkModeToggle) darkModeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      }
+      if (darkModeToggle) darkModeToggle.addEventListener('click', toggleTheme);
+      prefersDarkScheme.addEventListener('change', (e) => {
+          if (!localStorage.getItem('theme')) {
+              const newTheme = e.matches ? 'dark' : 'light';
+              document.documentElement.setAttribute('data-theme', newTheme);
+              if (darkModeToggle) darkModeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+          }
+      });
+  });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownBtn = document.getElementById('profileDropdownBtn');
+        const dropdownMenu = document.getElementById('profileDropdownMenu');
+
+        // Toggle dropdown visibility
+        if (dropdownBtn && dropdownMenu) { // Ensure elements exist
+            dropdownBtn.addEventListener('click', function (e) {
+                e.stopPropagation(); // prevent bubbling up
+                dropdownMenu.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (e) {
+                if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownMenu.classList.add('hidden');
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>
