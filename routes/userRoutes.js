@@ -10,6 +10,25 @@ const { sendOtpSms } = require('../utils/smsService');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 
+// Define module totals and percentage increases as constants
+const MODULE_TOTALS = {
+  aptitude: 12, // Sync with frontend count on aptitude.html
+  coding: 36, // 5+5+5+10+11 = 36 total coding checkboxes
+  technical: 8, // 8 total technical category checkboxes
+  hr_interview: 21,
+};
+
+// Define fixed percentage increases for each category
+const PERCENTAGE_INCREASES = {
+  aptitude: 100 / 12, // ~8.33%
+  coding: 100 / 36,   // ~2.78%
+  technical: 100 / 8, // 12.5%
+  hr_interview: 100 / 21, // ~4.76% -- Let's use a fixed 5% as you had
+};
+
+// Define categories to remove
+const CATEGORIES_TO_REMOVE = ['roadmap', 'logical_reasoning', 'verbal_ability'];
+
 router.post('/register', async (req, res) => {
     const { name, username, email, password } = req.body;
 
@@ -161,242 +180,106 @@ router.put('/profile/leetcode', auth, async (req, res) => {
 });
 
 // Helper to categorize subtopics
-function categorize(subtopic) {
-  if (subtopic.startsWith('aptitude_')) return 'aptitude';
-  if (subtopic.startsWith('coding_')) return 'coding';
-  if (subtopic.startsWith('technical_')) return 'technical';
-  if (subtopic.startsWith('hr_interview_')) return 'hr_interview';
-  return null;
+function categorizeSubtopic(subtopicId) {
+    if (!subtopicId) return null;
+    if (subtopicId.startsWith('hr_')) return 'hr_interview';
+    if (subtopicId.startsWith('technical_')) return 'technical';
+    if (subtopicId.startsWith('coding_')) return 'coding';
+    if (subtopicId.startsWith('aptitude_')) return 'aptitude';
+    return null;
 }
 
 // GET /api/users/me/progress
 router.get('/me/progress', auth, async (req, res) => {
-  console.log(`\n[Backend] GET /api/users/me/progress called by user: ${req.user.userId}`);
-  try {
-    const user = await User.findById(req.user.userId);
-    if (!user) {
-      console.log(`[Backend] User not found: ${req.user.userId}`);
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Ensure completedSubjects and progress are Maps and initialize if necessary
-    if (!user.completedSubjects || !(user.completedSubjects instanceof Map)) {
-        user.completedSubjects = new Map();
-    }
-    
-    // Only ensure categories that are still active exist
-    const activeCategories = [
-      'aptitude', 'coding', 'technical', 'hr_interview'
-    ];
-    
-    // Clean up removed categories from completedSubjects if they exist
-    const categoriesToRemove = ['roadmap', 'logical_reasoning', 'verbal_ability'];
-    let needsSave = false;
-    categoriesToRemove.forEach(cat => {
-        if (user.completedSubjects.has(cat)) {
-            user.completedSubjects.delete(cat);
-            needsSave = true;
+    try {
+        // .lean() gets a plain, fast JavaScript object. 
+        const user = await User.findById(req.user.userId).lean(); 
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
-    });
-
-    activeCategories.forEach(cat => {
-      if (!user.completedSubjects.has(cat) || !Array.isArray(user.completedSubjects.get(cat))) {
-        user.completedSubjects.set(cat, []);
-        needsSave = true;
-      }
-    });
-
-    if (!user.progress || !(user.progress instanceof Map)) {
-        user.progress = new Map();
-    }
-
-     // Define moduleTotals only for active categories
-    const moduleTotals = {
-      aptitude: 12, // Sync with frontend count on aptitude.html
-      coding: 25,
-      technical: 15,
-      hr_interview: 7,
-    };
-
-    // Clean up removed categories from progress if they exist
-     categoriesToRemove.forEach(cat => {
-        if (user.progress.has(cat)) {
-            user.progress.delete(cat);
-            needsSave = true;
-        }
-    });
-     if (user.progress.has('overall') && !user.progress.get('overall')) { // Remove overall if it's 0, will be recalculated
-         user.progress.delete('overall');
-         needsSave = true;
-     }
-
-     // Recalculate progress for active categories and overall
-    const allCategoriesForProgress = Object.keys(moduleTotals);
-
-    let totalOverallProgress = 0;
-    let validCategoriesCount = 0;
-
-    for (const moduleName of allCategoriesForProgress) { // Iterate through defined modules
-      const completedArray = user.completedSubjects.has(moduleName) ? 
-        user.completedSubjects.get(moduleName) : [];
         
-      const completedInModule = Array.isArray(completedArray) ? completedArray.length : 0;
-      const totalInModule = moduleTotals[moduleName] || 0;
-      let percentage = 0;
+        // This route now ONLY reads and returns what is in the DB. It NEVER saves.
+        res.json({
+            completedSubjects: user.completedSubjects || {},
+            progress: user.progress || {}
+        });
 
-      if (totalInModule > 0) {
-        percentage = Math.round((completedInModule / totalInModule) * 100);
-      }
-      
-      // Update the progress Map entry
-      user.progress.set(moduleName, percentage);
-
-      // Accumulate for overall progress, only if the category exists in completedSubjects
-       if (user.completedSubjects.has(moduleName)) { 
-           totalOverallProgress += percentage;
-           validCategoriesCount++;
-       }
+    } catch (err) {
+        console.error('[Backend] Error in GET /me/progress:', err.stack);
+        res.status(500).json({ message: 'Server error fetching progress' });
     }
-    
-    // Calculate and set overall progress
-    const overallPercentage = validCategoriesCount > 0 ? Math.round(totalOverallProgress / validCategoriesCount) : 0;
-    user.progress.set('overall', overallPercentage);
-    needsSave = true; // Always save after recalculating progress
-
-    if (needsSave) {
-        await user.save();
-        console.log(`[Backend] User ${user.email} progress structure updated/cleaned.`);
-    }
-
-    console.log(`[Backend] Sending progress data for user ${user.email}:`, {
-      completedSubjects: Object.fromEntries(user.completedSubjects),
-      progress: Object.fromEntries(user.progress)
-    });
-
-    res.json({
-      completedSubjects: Object.fromEntries(user.completedSubjects), // Send back as object for frontend ease
-      progress: Object.fromEntries(user.progress) // Send back as object
-    });
-
-  } catch (err) {
-    console.error('[Backend] Server error in GET /me/progress:', err.message, err.stack);
-    res.status(500).json({ message: 'Server error fetching progress', error: err.message });
-  }
 });
 
 // POST /api/users/me/progress
 router.post('/me/progress', auth, async (req, res) => {
-  console.log(`\n[Backend] POST /api/users/me/progress called by user: ${req.user.userId}`);
+  console.log(`\n[Backend] POST /me/progress`);
   try {
     const { subtopicId, completed } = req.body;
-    console.log(`[Backend] Received subtopicId: ${subtopicId}, completed: ${completed}`);
-
     const user = await User.findById(req.user.userId);
-    if (!user) {
-      console.log(`[Backend] User not found: ${req.user.userId}`);
-      return res.status(404).json({ message: 'User not found' });
-    }
 
-    const category = categorize(subtopicId);
-    if (!category) {
-      console.log(`[Backend] Invalid category for subtopicId: ${subtopicId}. It might belong to a removed category.`);
-      return res.status(400).json({ message: 'Invalid or removed subtopic ID category' });
-    }
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!subtopicId || typeof completed !== 'boolean') return res.status(400).json({ message: 'Invalid request' });
 
-    // Ensure completedSubjects is a Map and category array exists
-    if (!user.completedSubjects || !(user.completedSubjects instanceof Map)) {
-        user.completedSubjects = new Map();
-    }
-    if (!user.completedSubjects.has(category) || !Array.isArray(user.completedSubjects.get(category))) {
-        user.completedSubjects.set(category, []);
-    }
+    const category = categorizeSubtopic(subtopicId);
+    if (!category) return res.status(400).json({ message: 'Invalid subtopic category' });
 
-    let completedInCategory = user.completedSubjects.get(category);
-
-    console.log(`[Backend] User ${user.email} - Initial completedSubjects for category '${category}':`, completedInCategory);
+    // --- 1. Update the Completed Subjects List ---
+    if (!user.completedSubjects) user.completedSubjects = new Map();
+    let completedInCategory = user.completedSubjects.get(category) || [];
 
     if (completed) {
       if (!completedInCategory.includes(subtopicId)) {
         completedInCategory.push(subtopicId);
-        console.log(`[Backend] Added ${subtopicId} to category '${category}'`);
-      } else {
-        console.log(`[Backend] ${subtopicId} already in category '${category}'`);
       }
     } else {
-      const initialLength = completedInCategory.length;
       completedInCategory = completedInCategory.filter(id => id !== subtopicId);
-      // Update the Map entry with the filtered array
-      user.completedSubjects.set(category, completedInCategory);
-
-      if (completedInCategory.length < initialLength) {
-        console.log(`[Backend] Removed ${subtopicId} from category '${category}'`);
-      } else {
-        console.log(`[Backend] ${subtopicId} was not in category '${category}' to remove`);
-      }
-    }
-
-    // Recalculate all progress percentages for active categories and update the user.progress Map
-     const moduleTotals = {
-      aptitude: 12, // Sync with frontend count on aptitude.html
-      coding: 25,
-      technical: 15,
-      hr_interview: 7,
-    };
-
-    // Ensure user.progress is a Map
-    if (!user.progress || !(user.progress instanceof Map)) {
-        user.progress = new Map();
-    }
-
-    const allCategories = Object.keys(moduleTotals); // Use keys from moduleTotals for consistency
-
-    let totalOverallProgress = 0;
-    let validCategoriesCount = 0;
-
-    for (const moduleName of allCategories) { // Iterate through defined modules
-      const completedArray = user.completedSubjects.has(moduleName) ? 
-        user.completedSubjects.get(moduleName) : [];
-        
-      const completedInModule = Array.isArray(completedArray) ? completedArray.length : 0;
-      const totalInModule = moduleTotals[moduleName] || 0;
-      let percentage = 0;
-
-      if (totalInModule > 0) {
-        percentage = Math.round((completedInModule / totalInModule) * 100);
-      }
-      
-      // Update the progress Map entry
-      user.progress.set(moduleName, percentage);
-
-      // Accumulate for overall progress
-       if (user.completedSubjects.has(moduleName)) { 
-           totalOverallProgress += percentage;
-           validCategoriesCount++;
-       }
     }
     
-    // Calculate and set overall progress
-    const overallPercentage = validCategoriesCount > 0 ? Math.round(totalOverallProgress / validCategoriesCount) : 0;
-    user.progress.set('overall', overallPercentage);
+    user.completedSubjects.set(category, completedInCategory);
+    user.markModified('completedSubjects');
 
-    console.log(`[Backend] User ${user.email} - State before saving:`, { 
-        completedSubjects: Object.fromEntries(user.completedSubjects),
-        progress: Object.fromEntries(user.progress)
+    // --- 2. Recalculate ALL Progress Values From Scratch ---
+    if (!user.progress) user.progress = new Map();
+    let totalOverallProgress = 0;
+    const allModuleKeys = ['aptitude', 'coding', 'technical', 'hr_interview'];
+
+    allModuleKeys.forEach(moduleName => {
+        const currentCompletedArray = user.completedSubjects.get(moduleName) || [];
+        const completedCount = currentCompletedArray.length;
+        let percentage = 0;
+
+        // Use the centralized calculation logic
+        if (completedCount > 0) {
+            // Using your desired fixed percentages
+            if (moduleName === 'coding') percentage = completedCount * 2.78;
+            else if (moduleName === 'technical') percentage = completedCount * 12.5;
+            else if (moduleName === 'hr_interview') percentage = completedCount * 5;
+            else if (moduleName === 'aptitude') percentage = completedCount * (100 / 12);
+        }
+        
+        const finalPercentage = Math.min(100, Math.round(percentage));
+        user.progress.set(moduleName, finalPercentage);
+        totalOverallProgress += finalPercentage;
     });
 
-    await user.save();
-    console.log(`[Backend] User ${user.email} - Progress saved successfully to DB.`);
+    const overallPercentage = Math.round(totalOverallProgress / allModuleKeys.length);
+    user.progress.set('overall', overallPercentage);
+    user.markModified('progress');
 
-    // Respond with the updated state
+    // --- 3. Save Everything to DB ---
+    await user.save();
+    console.log(`[Backend] DB SAVE SUCCESS. New Progress:`, Object.fromEntries(user.progress));
+
+    // --- 4. Respond with the new, correct state ---
     res.json({
-      message: `Progress for ${subtopicId} updated to ${completed}`,
-      completedSubjects: Object.fromEntries(user.completedSubjects), // Send back as object for frontend ease
-      progress: Object.fromEntries(user.progress) // Send back as object
+      message: `Progress for ${subtopicId} updated successfully.`,
+      completedSubjects: Object.fromEntries(user.completedSubjects),
+      progress: Object.fromEntries(user.progress)
     });
 
   } catch (err) {
-    console.error('[Backend] Server error in POST /me/progress:', err.message, err.stack);
-    res.status(500).json({ message: 'Server error updating progress', error: err.message });
+    console.error('[Backend] CRITICAL ERROR in POST /me/progress:', err.stack);
+    res.status(500).json({ message: 'Server error updating progress' });
   }
 });
 

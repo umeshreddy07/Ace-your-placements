@@ -6,16 +6,9 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: {
     type: String,
-    required: function() {
-      return !this.googleId && !this.appleId;
-    }
+    required: function() { return !this.googleId; }
   },
-  name: {
-    type: String,
-    required: function() {
-      return !this.googleId && !this.appleId;
-    }
-  },
+  name: { type: String, required: true },
   leetcodeUsername: { type: String, trim: true, default: null },
   school: { type: String, default: "AYP ACADEMY" },
   location: { type: String, default: "HYDERABAD" },
@@ -24,33 +17,28 @@ const userSchema = new mongoose.Schema({
   completedSubjects: {
     type: Map,
     of: [String],
-    default: {
-      aptitude: [],
-      coding: [],
-      technical: [],
-      roadmap: [],
-      hr_interview: [],
-      logical_reasoning: [],
-      verbal_ability: []
-    }
+    default: () => new Map([
+      ['aptitude', []],
+      ['coding', []],
+      ['technical', []],
+      ['hr_interview', []]
+    ])
   },
   progress: {
     type: Map,
     of: Number,
-    default: {
-      aptitude: 0,
-      coding: 0,
-      technical: 0,
-      roadmap: 0,
-      hr_interview: 0,
-      logical_reasoning: 0,
-      verbal_ability: 0
-    }
+    default: () => new Map([
+      ['aptitude', 0],
+      ['coding', 0],
+      ['technical', 0],
+      ['hr_interview', 0],
+      ['overall', 0]
+    ])
   },
   loginActivity: {
     type: Map,
     of: Number,
-    default: new Map()
+    default: () => new Map()
   },
   lastLoginAt: {
     type: Date

@@ -218,151 +218,31 @@
     </main>
 
     <!-- External and Dummy Scripts -->
-    <script src="js/utils.js"></script> <!-- Assuming this exists -->
-    <script src="js/progress.js"></script> <!-- Assuming this exists -->
+    <script src="js/utils.js"></script>
+    <script src="js/progress.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
     <!-- FULLY INTEGRATED JAVASCRIPT LOGIC -->
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // --- UNIVERSAL DARK MODE TOGGLE SCRIPT ---
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const floatingNavbar = document.querySelector('.floating-navbar');
-        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-
-        function applyTheme(theme) {
-            if (theme === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                if (darkModeToggle) darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                if (floatingNavbar) floatingNavbar.classList.remove('light-navbar');
-            } else {
-                document.documentElement.setAttribute('data-theme', 'light');
-                if (darkModeToggle) darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                if (floatingNavbar) floatingNavbar.classList.add('light-navbar');
-            }
-        }
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('theme', newTheme);
-            applyTheme(newTheme);
-        }
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) { applyTheme(savedTheme); } 
-        else { applyTheme(prefersDarkScheme.matches ? 'dark' : 'light'); }
-        if (darkModeToggle) { darkModeToggle.addEventListener('click', toggleTheme); }
-        prefersDarkScheme.addEventListener('change', (e) => {
-            if (!localStorage.getItem('theme')) { applyTheme(e.matches ? 'dark' : 'light'); }
-        });
-
-        // --- PAGE TRANSITION SCRIPT ---
-        function handlePageTransition(event) {
-            const link = event.currentTarget;
-            const targetUrl = link.href;
-            if (targetUrl && (link.hostname === window.location.hostname || !link.hostname) && !link.getAttribute('target')) {
-                event.preventDefault();
-                document.body.style.transition = 'opacity 0.4s ease';
-                document.body.style.opacity = '0';
-                setTimeout(() => { window.location.href = targetUrl; }, 400);
-            }
-        }
-        document.querySelectorAll('.nav-transition-link').forEach(link => {
-            link.addEventListener('click', handlePageTransition);
-        });
-
-        // --- UNIVERSAL NAVBAR & PROFILE LOGIC ---
-        const profileDropdownBtn = document.getElementById('profileDropdownBtn');
-        const profileDropdownMenu = document.getElementById('profileDropdownMenu');
-        if (profileDropdownBtn) {
-            profileDropdownBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                profileDropdownMenu.classList.toggle('open');
+    document.addEventListener('DOMContentLoaded', async function() {
+        AOS.init({ duration: 800, once: true, offset: 70 });
+        window.progressTrackerInstance = window.progressTrackerInstance || new ProgressTracker();
+        await window.progressTrackerInstance.init();
+        
+        const updateAptitudeUI = () => {
+            const checkboxes = document.querySelectorAll('.aptitude-checkbox');
+            checkboxes.forEach(cb => { cb.checked = window.progressTrackerInstance.isCompleted(cb.dataset.subtopicId); });
+            const progress = window.progressTrackerInstance.progress.aptitude || 0;
+            document.getElementById('aptitudeProgressBarFill').style.width = `${progress}%`;
+            document.getElementById('aptitudeModulePercent').textContent = `${Math.round(progress)}%`;
+        };
+        updateAptitudeUI();
+        document.querySelectorAll('.aptitude-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', async (e) => {
+                await window.progressTrackerInstance.setCompleted(e.target.dataset.subtopicId, e.target.checked);
+                updateAptitudeUI();
             });
-        }
-        document.addEventListener('click', (e) => {
-            if (profileDropdownMenu && profileDropdownMenu.classList.contains('open') && !profileDropdownBtn.contains(e.target)) {
-                profileDropdownMenu.classList.remove('open');
-            }
         });
-
-        function logoutUserWithTransition() {
-            document.body.style.transition = 'opacity 0.3s ease-out';
-            document.body.style.opacity = '0';
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            localStorage.removeItem('platformProgress');
-            setTimeout(() => { window.location.href = 'login.html'; }, 300);
-        }
-        // Make it globally accessible for the onclick attribute
-        window.logoutUserWithTransition = logoutUserWithTransition;
-
-        try {
-            const userString = localStorage.getItem('user');
-            if (userString) {
-                const user = JSON.parse(userString);
-                const profilePicUrl = user.profilePicture || 'static/default-profile.jpg';
-                const navImg = document.getElementById('navProfileImg');
-                if (navImg) {
-                    navImg.src = profilePicUrl;
-                    navImg.onerror = function() { this.src = 'static/default-profile.jpg'; };
-                }
-            }
-        } catch(e) { console.error('Could not parse user data for profile picture.', e); }
-
-        // --- MOBILE MENU LOGIC ---
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenuTUF');
-        const closeMobileMenuBtn = document.getElementById('closeMobileMenuBtnTUF');
-        if (mobileMenuBtn && mobileMenu && closeMobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('-translate-x-full'));
-            closeMobileMenuBtn.addEventListener('click', () => mobileMenu.classList.add('-translate-x-full'));
-        }
-
-        // --- APTITUDE PAGE SPECIFIC LOGIC (PROGRESS TRACKER) ---
-        if (typeof ProgressTracker === 'undefined') {
-            console.error('ProgressTracker class is not defined. Make sure progress.js is loaded correctly.');
-        } else {
-            const progressTrackerInstance = new ProgressTracker();
-            async function initializeAptitudePage() {
-                try {
-                    await progressTrackerInstance.init();
-                    const updateAptitudeUI = () => {
-                        document.querySelectorAll('.aptitude-checkbox').forEach(checkbox => {
-                            const subtopicId = checkbox.dataset.subtopicId;
-                            if (progressTrackerInstance.isCompleted) {
-                                checkbox.checked = progressTrackerInstance.isCompleted(subtopicId);
-                            }
-                        });
-                        const aptitudeProgressData = progressTrackerInstance.progress;
-                        const aptitudeModuleVal = aptitudeProgressData?.aptitude ?? 0;
-                        const progressBarFill = document.getElementById('aptitudeProgressBarFill');
-                        const percentText = document.getElementById('aptitudeModulePercent');
-                        if(progressBarFill) { progressBarFill.style.width = aptitudeModuleVal + '%'; }
-                        if(percentText) { percentText.textContent = aptitudeModuleVal + '%'; }
-                    };
-                    updateAptitudeUI();
-
-                    document.querySelectorAll('.aptitude-checkbox').forEach(checkbox => {
-                        checkbox.addEventListener('change', async () => {
-                            if(progressTrackerInstance.setCompleted) {
-                                await progressTrackerInstance.setCompleted(checkbox.dataset.subtopicId, checkbox.checked);
-                                updateAptitudeUI();
-                            }
-                        });
-                    });
-                } catch (error) {
-                    console.error("Error initializing Aptitude Page progress:", error);
-                    const progressBarFill = document.getElementById('aptitudeProgressBarFill');
-                    const percentText = document.getElementById('aptitudeModulePercent');
-                    if(progressBarFill) progressBarFill.style.width = '0%';
-                    if(percentText) percentText.textContent = 'Error';
-                }
-            }
-            initializeAptitudePage();
-        }
-
-        // --- INITIALIZE LIBRARIES ---
-        AOS.init({ duration: 800, once: true, offset: 70, easing: 'ease-out-cubic' });
     });
     </script>
 </body>

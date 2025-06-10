@@ -624,8 +624,11 @@
 
       function createVibrantCircularProgressBar(containerId, percentage, size, strokeWidth, moduleName, strokeClass) {
           const container = document.getElementById(containerId);
-          if (!container) { console.error(`Container not found for progress bar: ${containerId}`); return; }
-          container.innerHTML = '';
+          if (!container) { 
+              console.error(`Container not found for progress bar: ${containerId}`); 
+              return; 
+          }
+          container.innerHTML = ''; // Clear previous content
           container.style.setProperty('--circle-size', `${size}px`);
 
           const svg = document.createElementNS(SVG_NS, "svg");
@@ -639,48 +642,73 @@
 
           const bgCircle = document.createElementNS(SVG_NS, "circle");
           bgCircle.setAttribute("class", "progress-circle-bg-vibrant");
-          bgCircle.setAttributeNS(null, "cx", size / 2);
-          bgCircle.setAttributeNS(null, "cy", size / 2);
-          bgCircle.setAttributeNS(null, "r", radius);
-          bgCircle.setAttributeNS(null, "fill", "transparent");
-          bgCircle.setAttributeNS(null, "stroke-width", strokeWidth * 0.8);
+          bgCircle.setAttribute("cx", size / 2);
+          bgCircle.setAttribute("cy", size / 2);
+          bgCircle.setAttribute("r", radius);
+          bgCircle.setAttribute("fill", "transparent");
+          bgCircle.setAttribute("stroke-width", strokeWidth * 0.8);
           svg.appendChild(bgCircle);
 
           const fgCircle = document.createElementNS(SVG_NS, "circle");
           fgCircle.setAttribute("class", `progress-circle-fg-vibrant ${strokeClass}`);
-          fgCircle.setAttributeNS(null, "cx", size / 2);
-          fgCircle.setAttributeNS(null, "cy", size / 2);
-          fgCircle.setAttributeNS(null, "r", radius);
-          fgCircle.setAttributeNS(null, "fill", "transparent");
-          fgCircle.setAttributeNS(null, "stroke-width", strokeWidth);
-          fgCircle.setAttributeNS(null, "stroke-dasharray", circumference);
-          fgCircle.setAttributeNS(null, "stroke-dashoffset", circumference);
+          fgCircle.setAttribute("cx", size / 2);
+          fgCircle.setAttribute("cy", size / 2);
+          fgCircle.setAttribute("r", radius);
+          fgCircle.setAttribute("fill", "transparent");
+          fgCircle.setAttribute("stroke-width", strokeWidth);
+          fgCircle.setAttribute("stroke-dasharray", circumference);
+          fgCircle.style.strokeDashoffset = offset;
           svg.appendChild(fgCircle);
+          
           container.appendChild(svg);
 
           const textWrapper = document.createElement("div");
-          textWrapper.className = "absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none";
-
-          const percentageTextEl = document.createElement("div");
-          percentageTextEl.className = "progress-circle-percentage-vibrant";
-          percentageTextEl.textContent = `${Math.round(percentage)}%`;
-
-          const nameTextEl = document.createElement("div");
-          nameTextEl.className = "progress-circle-module-name-vibrant";
-          nameTextEl.textContent = moduleName;
-
-          textWrapper.appendChild(percentageTextEl);
-          if (containerId !== 'overallProgressCircleWrapper') {
-            textWrapper.appendChild(nameTextEl);
-          } else {
-             const overallLabel = document.createElement("div");
-             overallLabel.className = "progress-circle-module-name-vibrant";
-             overallLabel.textContent = "Overall Matrix";
-             textWrapper.appendChild(overallLabel);
-          }
+          textWrapper.className = "progress-circle-text-wrapper";
+          
+          const percentageText = document.createElement("div");
+          percentageText.className = "progress-circle-percentage-vibrant";
+          percentageText.textContent = Math.round(percentage) + "%";
+          textWrapper.appendChild(percentageText);
+          
+          const moduleNameText = document.createElement("div");
+          moduleNameText.className = "progress-circle-module-name-vibrant";
+          moduleNameText.textContent = moduleName;
+          textWrapper.appendChild(moduleNameText);
+          
           container.appendChild(textWrapper);
-          setTimeout(() => fgCircle.style.strokeDashoffset = offset, 100);
       }
+
+      async function initializeProfilePage() {
+          try {
+              const localProgressTracker = new ProgressTracker();
+              await localProgressTracker.init();
+
+              // Populate Progress Bars
+              const modulesToDisplay = [
+                  { id: 'aptitudeProgress', key: 'aptitude', name: 'Aptitude', colorClass: 'stroke-aptitude-vibrant', size: 110, stroke: 10 },
+                  { id: 'codingProgress', key: 'coding', name: 'Coding', colorClass: 'stroke-coding-vibrant', size: 110, stroke: 10 },
+                  { id: 'technicalProgress', key: 'technical', name: 'Technical', colorClass: 'stroke-technical-vibrant', size: 110, stroke: 10 },
+                  { id: 'hrProgress', key: 'hr_interview', name: 'HR Combat', colorClass: 'stroke-hr-vibrant', size: 110, stroke: 10 },
+              ];
+              let totalProgressSum = 0;
+              let validModulesCount = 0;
+
+              modulesToDisplay.forEach(mod => {
+                  const progressValue = localProgressTracker.progress[mod.key] !== undefined ? localProgressTracker.progress[mod.key] : 0;
+                  createVibrantCircularProgressBar(mod.id, progressValue, mod.size, mod.stroke, mod.name, mod.colorClass);
+                  totalProgressSum += progressValue;
+                  validModulesCount++;
+              });
+              const overallAvgProgress = validModulesCount > 0 ? totalProgressSum / validModulesCount : 0;
+              createVibrantCircularProgressBar('overallProgressCircleWrapper', overallAvgProgress, 180, 16, 'Overall Matrix', 'stroke-overall-vibrant');
+
+          } catch (error) {
+              console.error("Error initializing Profile Page:", error);
+          }
+      }
+
+      // Initialize the profile page
+      initializeProfilePage();
 
       // --- Client-Side Platform Engagement Heatmap ---
       // MODIFIED: For fixed Jan-Dec view of current year

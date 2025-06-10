@@ -10,11 +10,10 @@
     <link rel="icon" href="logo.png" type="image/png">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- <link href="/css/style.css" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/dark-mode.css">
+    
 
     <style>
         html { scroll-behavior: smooth; }
@@ -42,36 +41,33 @@
         .gradient-text-page-main { background: linear-gradient(125deg, #4F46E5 0%, #A855F7 50%, #EC4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gradient-text-alt { background: linear-gradient(125deg, #2563EB 0%, #4F46E5 50%, #7C3AED 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } /* Blue to Purple */
 
-        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 15px 0px rgba(79, 70, 229, 0.4); } 50% { box-shadow: 0 0 25px 8px rgba(168, 85, 247, 0.5); } }
-        .animate-pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
         @keyframes subtle-float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
         .animate-subtle-float { animation: subtle-float 4s ease-in-out infinite; }
-         @keyframes subtle-float-icon { 0%, 100% { transform: translateY(0px) rotate(5deg); } 50% { transform: translateY(-6px) rotate(-3deg); } }
+        @keyframes subtle-float-icon { 0%, 100% { transform: translateY(0px) rotate(5deg); } 50% { transform: translateY(-6px) rotate(-3deg); } }
 
-
-        /* Section & Card Styling for Technical Page (Light Theme) */
+        /* Section & Card Styling for Technical Page */
         .content-section-wrapper {
             border-radius: 1.5rem;
             padding: 2rem 1.5rem;
             box-shadow: 0 15px 40px -15px rgba(0, 70, 200, 0.15);
         }
+        /* Card Background Gradients */
         .gradient-bg-blue-light { background: linear-gradient(135deg, #e0f2fe 0%, #eef2ff 100%); }
         .gradient-bg-green-light { background: linear-gradient(135deg, #dcfce7 0%, #e0f2fe 100%); }
         .gradient-bg-purple-light { background: linear-gradient(135deg, #f3e8ff 0%, #fae8ff 100%); }
         .gradient-bg-orange-light { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); }
         .gradient-bg-pink-light { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%); }
-
+        .gradient-bg-slate-light { background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); }
+        .gradient-bg-cyan-light { background: linear-gradient(135deg, #ecfeff 0%, #e0f2fe 100%); }
+        .gradient-bg-red-light { background: linear-gradient(135deg, #fee2e2 0%, #ffe4e6 100%); }
+        .gradient-bg-final-motivation { background: linear-gradient(125deg, #f0fdf4, #eef2ff, #fdf2f8); }
 
         .topic-card {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
+            background: white; border-radius: 1rem; padding: 1.5rem;
             box-shadow: 0 6px 15px -5px rgba(0,0,0,0.08);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            min-height: 200px; /* Ensure enough height for content */
-            display: flex;
-            flex-direction: column;
+            position: relative; min-height: 200px;
+            display: flex; flex-direction: column;
         }
         .topic-card:hover {
             transform: translateY(-8px) scale(1.02);
@@ -79,45 +75,22 @@
         }
         .topic-card .topic-header-tech { display: flex; align-items: center; margin-bottom: 1rem; }
         .topic-card .topic-icon-tech {
-            font-size: 1.75rem;
-            margin-right: 0.75rem; width: 48px; height: 48px;
-            border-radius: 0.75rem;
-            display: flex; align-items: center; justify-content: center;
-            color: white;
-            transition: transform 0.3s ease;
+            font-size: 1.75rem; margin-right: 0.75rem; width: 48px; height: 48px;
+            border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;
+            color: white; transition: transform 0.3s ease;
         }
          .topic-card:hover .topic-icon-tech { transform: scale(1.1) rotate(-8deg); }
 
-        .topic-card .topic-title-tech {
-            font-size: 1.35rem; /* Slightly larger for main subject titles */
-            font-weight: 700;
-            /* Tailwind color utilities will be used, e.g., text-blue-700 */
-        }
-        /* Styling for sub-topic links inside cards */
-        .topic-card .sub-topic-links-wrapper {
-            margin-top: 0.5rem; /* Space above the links block */
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem; /* space between links */
-        }
+        .topic-card .topic-title-tech { font-size: 1.35rem; font-weight: 700; }
+        .topic-card .sub-topic-links-wrapper { margin-top: 0.5rem; flex-grow: 1; display: flex; flex-direction: column; gap: 0.5rem; }
         .topic-card a.subtopic-link {
-            display: block;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
+            display: block; padding: 0.75rem 1rem; border-radius: 0.5rem;
             transition: background-color 0.2s ease, transform 0.2s ease;
             text-decoration: none;
         }
-        .topic-card a.subtopic-link:hover {
-            transform: translateX(3px);
-        }
-        .topic-card a.subtopic-link h4 { /* Sub-topic title */
-            font-weight: 600; font-size: 0.95rem; margin-bottom: 0.1rem;
-        }
-        .topic-card a.subtopic-link p { /* Sub-topic description */
-            font-size: 0.8rem; color: #6b7280; /* gray-500 */
-        }
-
+        .topic-card a.subtopic-link:hover { transform: translateX(3px); }
+        .topic-card a.subtopic-link h4 { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.1rem; }
+        .topic-card a.subtopic-link p { font-size: 0.8rem; color: #6b7280; }
 
         /* Floating Checkbox */
         .floating-checkbox {
@@ -130,104 +103,47 @@
         }
         .floating-checkbox:hover { transform: scale(1.1); }
         .floating-checkbox input[type="checkbox"].technical-checkbox {
-            width: 20px; height: 20px; accent-color: #a855f7; /* purple-500 for technical */ cursor: pointer;
-            appearance: none; -webkit-appearance: none; border: 2px solid #cbd5e1; /* slate-300 */
+            width: 20px; height: 20px; accent-color: #a855f7; cursor: pointer;
+            appearance: none; -webkit-appearance: none; border: 2px solid #cbd5e1; 
             border-radius: 50%; transition: background-color 0.2s, border-color 0.2s; position: relative;
         }
-        .floating-checkbox input[type="checkbox"].technical-checkbox:checked { background-color: #a855f7; border-color: #9333ea; /* purple-600 */ }
+        .floating-checkbox input[type="checkbox"].technical-checkbox:checked { background-color: #a855f7; border-color: #9333ea; }
         .floating-checkbox input[type="checkbox"].technical-checkbox:checked::after {
             content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
             color: white; font-size: 12px; position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
         }
 
-        /* Navbar & Profile Dropdown Styles */
+        /* Navbar & Dropdown Styles */
         .floating-navbar { background-color: rgba(31, 41, 55, 0.97); backdrop-filter: blur(16px); color: #e5e7eb; }
         .floating-navbar-link { color: #d1d5db; transition: color 0.2s ease, transform 0.2s ease; }
         .floating-navbar-link:hover, .floating-navbar-link.active-nav-link { color: #ffffff; transform: scale(1.05); text-shadow: 0 0 5px rgba(255,255,255,0.5);}
         .nav-brand-text { background: linear-gradient(120deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .profile-dropdown-tuf { position: relative; }
         .dropdown-menu-tuf {
-            position: absolute;
-            right: 0;
-            top: calc(100% + 12px); /* Spacing from the icon */
-            min-width: 200px;
-            z-index: 1050;
-            border-radius: 0.75rem;
-            padding: 0.5rem;
-            transform-origin: top right;
-            opacity: 0;
-            visibility: hidden;
+            position: absolute; right: 0; top: calc(100% + 12px);
+            min-width: 200px; z-index: 1050; border-radius: 0.75rem;
+            padding: 0.5rem; transform-origin: top right;
+            opacity: 0; visibility: hidden;
             transform: translateY(10px) scale(0.95);
             transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s;
-        }
-        .dropdown-menu-tuf.open {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-        }
-        .dropdown-item-tuf {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.7rem 1rem;
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 500;
-            border-radius: 0.5rem;
-            text-decoration: none; /* For the <a> tag */
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
-         .dropdown-item-tuf i {
-            width: 20px;
-            text-align: center;
-        }
-
-        /* --- Dark Theme Dropdown Specifics --- */
-        .floating-navbar:not(.light-navbar) .dropdown-menu-tuf {
-            background-color: #1f2937; /* Dark gray */
-            color: #d1d5db; /* Light gray text */
+            background-color: #1f2937; color: #d1d5db;
             box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2), 0 20px 40px -20px rgba(0,0,0,0.3);
         }
-        .floating-navbar:not(.light-navbar) .dropdown-item-tuf {
-            color: #d1d5db;
+        .dropdown-menu-tuf.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+        .dropdown-item-tuf {
+            display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 1rem;
+            cursor: pointer; font-size: 0.95rem; font-weight: 500; border-radius: 0.5rem;
+            text-decoration: none; color: #d1d5db; transition: background-color 0.2s ease, color 0.2s ease;
         }
-        .floating-navbar:not(.light-navbar) .dropdown-item-tuf:hover {
-            background-color: #374151; /* Lighter dark gray */
-            color: #ffffff;
-        }
-        .floating-navbar:not(.light-navbar) .dropdown-item-tuf i {
-            color: #9ca3af;
-        }
-        .floating-navbar:not(.light-navbar) .dropdown-item-tuf:hover i {
-            color: #60a5fa; /* Blue accent */
-        }
-
-        /* --- Light Theme Dropdown Specifics --- */
-        .light-navbar .dropdown-menu-tuf {
-            background-color: #ffffff;
-            color: #374151; /* Dark text */
-            box-shadow: 0 12px 40px -10px rgba(79, 70, 229, 0.2);
-            border: 1px solid #e5e7eb;
-        }
-        .light-navbar .dropdown-item-tuf {
-            color: #374151;
-        }
-        .light-navbar .dropdown-item-tuf:hover {
-            background-color: #eef2ff; /* Light indigo */
-            color: #4f46e5; /* Indigo */
-        }
-        .light-navbar .dropdown-item-tuf i {
-            color: #6b7280;
-        }
-        .light-navbar .dropdown-item-tuf:hover i {
-            color: #4f46e5;
-        }
+        .dropdown-item-tuf:hover { background-color: #374151; color: #ffffff; }
+        .dropdown-item-tuf i { width: 20px; text-align: center; color: #9ca3af; }
+        .dropdown-item-tuf:hover i { color: #60a5fa; }
 
         /* Progress Bar */
         .progress-bar-wrapper .text-lg { font-size: 1.125rem; }
         .progress-bar-container { background-color: #e5e7eb; border-radius: 9999px; height: 1.25rem; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); }
-        #technicalProgressBarFill.progress-bar { /* purple gradient for technical */
+        #technicalProgressBarFill.progress-bar {
             background: linear-gradient(90deg, #c084fc 0%, #9333ea 100%);
             height: 100%; border-radius: 9999px; transition: width 0.8s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative; overflow: hidden;
@@ -242,54 +158,43 @@
         /* Section Header Styling */
         .section-header-technical { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
         .section-header-technical .icon-bg { font-size: 2.25rem; padding: 0.75rem; border-radius: 0.75rem; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        .section-title-technical { font-size: 2rem; font-weight: 800; /* color: #1f2937; (indigo-800 like) */ }
+        .section-title-technical { font-size: 2rem; font-weight: 800; }
 
-         /* Fun quote boxes (light theme) */
-        .fun-quote-box {
-            background: #eef2ff; /* Light indigo/lavender */
-            border: 1px solid #dbeafe; /* Lighter blue border */
-            border-radius: 0.75rem; padding: 1.25rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        /* Final Motivation Quote Box */
+        .final-quote-box {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
         }
-        .fun-quote-box .main-quote { color: #4338ca; /* Indigo-700 */ }
-        .fun-quote-box .sub-quote { color: #64748b; /* Slate-500 */ font-size: 0.8rem; }
     </style>
 </head>
 <body class="text-gray-800 antialiased page-transition-in">
 
-<!-- ====================================================== -->
-<!-- === UNIVERSAL DARK NAVBAR === -->
-<!-- ====================================================== -->
+<!-- Navbar and Mobile Menu -->
 <nav class="floating-navbar py-3 px-4 sm:px-6 fixed top-4 left-1/2 transform -translate-x-1/2 rounded-xl shadow-2xl z-[1000] w-[90%]">
     <div class="container mx-auto flex justify-between items-center">
-        <!-- Brand/Logo -->
         <a href="index.html" class="nav-transition-link flex items-center space-x-2 group">
             <img src="logo.png" alt="AceYourPlacement Logo" class="w-8 h-8 sm:w-9 sm:h-9 mr-2">
             <span class="font-black text-lg sm:text-xl nav-brand-text hidden sm:inline tracking-tight group-hover:text-white transition-colors">AceYourPlacement</span>
             <span class="font-black text-lg nav-brand-text sm:hidden group-hover:text-white transition-colors">AYP</span>
         </a>
-
-        <!-- Main Navigation Links -->
         <div class="hidden md:flex items-center space-x-4 lg:space-x-6">
             <a href="index.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Home <i class="fas fa-home ml-1"></i></a>
             <a href="aptitude.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Aptitude <i class="fas fa-calculator ml-1"></i></a>
             <a href="coding.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Coding <i class="fas fa-laptop-code ml-1"></i></a>
-            <a href="technical.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Technical <i class="fas fa-book ml-1"></i></a>
+            <a href="technical.html" class="nav-transition-link floating-navbar-link font-semibold text-sm active-nav-link">Technical <i class="fas fa-book ml-1"></i></a>
             <a href="roadmap.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Roadmaps <i class="fas fa-map-marked-alt ml-1"></i></a>
             <a href="hr_interview.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">HR <i class="fas fa-handshake ml-1"></i></a>
             <a href="assessment-home.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Assessment <i class="fas fa-clipboard-list ml-1"></i></a>
         </div>
-
-        <!-- Right-side controls -->
         <div class="flex items-center space-x-3 sm:space-x-4">
-            <!-- Profile Dropdown -->
             <div class="profile-dropdown-tuf relative">
-                <!-- Trigger Button: The Profile Picture -->
                 <button aria-label="Profile Menu" id="profileDropdownBtn" class="focus:outline-none block">
                     <img id="navProfileImg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-gray-700 hover:border-blue-400 transition-all object-cover" src="static/default-profile.jpg" alt="Profile" referrerpolicy="no-referrer">
                 </button>
-                
-                <!-- Dropdown Menu: Contains Profile Only -->
                 <div id="profileDropdownMenu" class="dropdown-menu-tuf">
                     <a href="profile.html" class="nav-transition-link dropdown-item-tuf">
                         <i class="fas fa-user-circle"></i> My Profile
@@ -303,15 +208,9 @@
     </div>
 </nav>
 
-<!-- ====================================================== -->
-<!-- === CORRECTED MOBILE MENU === -->
-<!-- ====================================================== -->
 <div id="mobileMenuTUF" class="fixed inset-0 bg-gray-900 bg-opacity-95 backdrop-blur-sm z-[999] p-6 text-white transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
     <div class="flex justify-between items-center mb-10">
-        <a href="index.html" class="nav-transition-link flex items-center space-x-2">
-            <i class="fas fa-rocket text-3xl nav-brand-text"></i>
-            <span class="font-black text-2xl nav-brand-text">AYP</span>
-        </a>
+        <a href="index.html" class="nav-transition-link flex items-center space-x-2"><i class="fas fa-rocket text-3xl nav-brand-text"></i><span class="font-black text-2xl nav-brand-text">AYP</span></a>
         <button class="text-3xl text-gray-300 hover:text-white" id="closeMobileMenuBtnTUF" aria-label="Close menu">×</button>
     </div>
     <nav class="space-y-5 text-center">
@@ -328,167 +227,203 @@
     </nav>
 </div>
 
-    <div class="page-wrapper">
-    <main class="pt-28 sm:pt-32 pb-16 px-4">
-        <div class="max-w-7xl mx-auto">
-            <header class="text-center mb-16" data-aos="fade-down">
-                <h1 class="text-4xl sm:text-5xl md:text-6xl font-black gradient-text-page-main mb-4 relative inline-block">
-                    Technical Foundations
-                    <i class="fas fa-cogs text-blue-500 absolute -top-5 -right-12 text-4xl animate-subtle-float-icon filter drop-shadow-[0_0_8px_#3b82f6]"></i>
-                </h1>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Build a rock-solid understanding of core CS concepts to ace any technical interview.
-                </p>
-            </header>
+<div class="page-wrapper">
+<main class="pt-28 sm:pt-32 pb-16 px-4">
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-16" data-aos="fade-down">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-black gradient-text-page-main mb-4 relative inline-block">
+                Technical Foundations
+                <i class="fas fa-cogs text-blue-500 absolute -top-5 -right-12 text-4xl animate-subtle-float-icon filter drop-shadow-[0_0_8px_#3b82f6]"></i>
+            </h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Build a rock-solid understanding of core CS concepts to ace any technical interview.
+            </p>
+        </header>
 
-            <!-- Module Progress Bar -->
-            <div class="max-w-3xl mx-auto mt-4 mb-12 md:mb-16 progress-bar-wrapper" data-aos="fade-up" data-aos-delay="100">
-                <div class="mb-2 flex justify-between items-center">
-                    <span class="font-semibold text-lg text-purple-700">Your Technical Skill Tree</span>
-                    <span id="technicalModulePercent" class="text-purple-700 font-bold text-lg">0%</span>
-                </div>
-                <div class="progress-bar-container">
-                    <div id="technicalProgressBarFill" class="progress-bar" data-module="technical" style="width: 0%;"></div>
-                </div>
+        <!-- Module Progress Bar -->
+        <div class="max-w-3xl mx-auto mt-4 mb-12 md:mb-16 progress-bar-wrapper" data-aos="fade-up" data-aos-delay="100">
+            <div class="mb-2 flex justify-between items-center">
+                <span class="font-semibold text-lg text-purple-700">Your Technical Skill Tree</span>
+                <span id="technicalModulePercent" class="text-purple-700 font-bold text-lg">0%</span>
             </div>
-
-            <!-- Motivational Quote -->
-            <div class="max-w-3xl mx-auto mb-12 fun-quote-box bg-indigo-50 border-indigo-200 text-center" data-aos="zoom-in-up" data-aos-delay="150">
-                <p class="text-2xl font-bold main-quote text-indigo-600 mb-2">💡 Tech Interview Wisdom</p>
-                <p class="text-gray-600 italic sub-quote">"The best way to predict the future is to build it. The best way to ace technical interviews is to build a strong foundation!"</p>
+            <div class="progress-bar-container">
+                <div id="technicalProgressBarFill" class="progress-bar" data-module="technical" style="width: 0%;"></div>
             </div>
-
-            <!-- Core Subjects Section -->
-            <section class="mb-16" data-aos="fade-up" data-aos-delay="200">
-                <div class="section-header-technical mb-8">
-                    <span class="icon-bg p-3 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg text-3xl"><i class="fas fa-book-reader"></i></span>
-                    <h2 class="section-title-technical gradient-text-alt">Core Subjects Deep Dive</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- DBMS Card -->
-                    <div class="topic-card content-section-wrapper gradient-bg-blue-light" data-aos="fade-up" data-aos-delay="250">
-                        <span class="floating-checkbox"><input type="checkbox" class="technical-checkbox" data-subtopic-id="technical_dbms_category"></span>
-                        <div class="topic-header-tech">
-                            <div class="topic-icon-tech bg-blue-500"><i class="fas fa-database"></i></div>
-                            <h3 class="topic-title-tech text-blue-700">Database Management</h3>
-                        </div>
-                        <div class="sub-topic-links-wrapper">
-                            <a href="https://www.geeksforgeeks.org/dbms/" target="_blank" class="subtopic-link bg-blue-100 hover:bg-blue-200" data-subtopic-id="technical_dbms_fundamentals_link">
-                                <h4 class="text-blue-600">DBMS Fundamentals</h4><p>Core concepts, architecture.</p></a>
-                            <a href="https://www.geeksforgeeks.org/sql-tutorial/" target="_blank" class="subtopic-link bg-blue-100 hover:bg-blue-200" data-subtopic-id="technical_dbms_sql_link">
-                                <h4 class="text-blue-600">SQL Mastery</h4><p>Queries, Joins, Subqueries.</p></a>
-                            <a href="https://www.geeksforgeeks.org/normalization-in-dbms/" target="_blank" class="subtopic-link bg-blue-100 hover:bg-blue-200" data-subtopic-id="technical_dbms_normalization_link">
-                                <h4 class="text-blue-600">Normalization</h4><p>Reducing data redundancy.</p></a>
-                            <a href="https://www.geeksforgeeks.org/acid-properties-in-dbms/" target="_blank" class="subtopic-link bg-blue-100 hover:bg-blue-200" data-subtopic-id="technical_dbms_acid_link">
-                                <h4 class="text-blue-600">ACID Properties</h4><p>Transactions, Concurrency.</p></a>
-                        </div>
-                    </div>
-
-                    <!-- Operating Systems Card -->
-                    <div class="topic-card content-section-wrapper gradient-bg-green-light" data-aos="fade-up" data-aos-delay="300">
-                        <span class="floating-checkbox"><input type="checkbox" class="technical-checkbox" data-subtopic-id="technical_os_category"></span>
-                        <div class="topic-header-tech">
-                            <div class="topic-icon-tech bg-green-500"><i class="fas fa-microchip"></i></div>
-                            <h3 class="topic-title-tech text-green-700">Operating Systems</h3>
-                        </div>
-                         <div class="sub-topic-links-wrapper">
-                            <a href="https://www.geeksforgeeks.org/operating-systems/" target="_blank" class="subtopic-link bg-green-100 hover:bg-green-200" data-subtopic-id="technical_os_fundamentals_link">
-                                <h4 class="text-green-600">OS Fundamentals</h4><p>Architecture, System Calls.</p></a>
-                            <a href="https://www.geeksforgeeks.org/process-management-in-operating-system/" target="_blank" class="subtopic-link bg-green-100 hover:bg-green-200" data-subtopic-id="technical_os_process_mgmt_link">
-                                <h4 class="text-green-600">Process Management</h4><p>Processes, Threads, Scheduling.</p></a>
-                            <a href="https://www.geeksforgeeks.org/memory-management-in-operating-system/" target="_blank" class="subtopic-link bg-green-100 hover:bg-green-200" data-subtopic-id="technical_os_memory_mgmt_link">
-                                <h4 class="text-green-600">Memory Management</h4><p>Paging, Virtual Memory.</p></a>
-                            <a href="https://www.geeksforgeeks.org/deadlock-in-operating-system/" target="_blank" class="subtopic-link bg-green-100 hover:bg-green-200" data-subtopic-id="technical_os_deadlocks_link">
-                                <h4 class="text-green-600">Deadlocks</h4><p>Prevention, Detection.</p></a>
-                        </div>
-                    </div>
-
-                    <!-- Computer Networks Card -->
-                    <div class="topic-card content-section-wrapper gradient-bg-purple-light" data-aos="fade-up" data-aos-delay="350">
-                        <span class="floating-checkbox"><input type="checkbox" class="technical-checkbox" data-subtopic-id="technical_cn_category"></span>
-                        <div class="topic-header-tech">
-                            <div class="topic-icon-tech bg-purple-500"><i class="fas fa-network-wired"></i></div>
-                            <h3 class="topic-title-tech text-purple-700">Computer Networks</h3>
-                        </div>
-                        <div class="sub-topic-links-wrapper">
-                            <a href="https://www.geeksforgeeks.org/basics-of-computer-networking/" target="_blank" class="subtopic-link bg-purple-100 hover:bg-purple-200" data-subtopic-id="technical_cn_fundamentals_link">
-                                <h4 class="text-purple-600">Network Fundamentals</h4><p>OSI Model, Topologies.</p></a>
-                            <a href="https://www.geeksforgeeks.org/tcp-ip-model/" target="_blank" class="subtopic-link bg-purple-100 hover:bg-purple-200" data-subtopic-id="technical_cn_tcpip_link">
-                                <h4 class="text-purple-600">TCP/IP Suite</h4><p>TCP, UDP, IP Addressing.</p></a>
-                            <a href="https://www.geeksforgeeks.org/application-layer-protocols-http-https-ftp-smtp-dns-dhcp/" target="_blank" class="subtopic-link bg-purple-100 hover:bg-purple-200" data-subtopic-id="technical_cn_protocols_link">
-                                <h4 class="text-purple-600">Common Protocols</h4><p>HTTP, DNS, SMTP.</p></a>
-                            <a href="https://www.geeksforgeeks.org/network-security-basics/" target="_blank" class="subtopic-link bg-purple-100 hover:bg-purple-200" data-subtopic-id="technical_cn_security_link">
-                                <h4 class="text-purple-600">Network Security Basics</h4><p>Firewalls, Encryption.</p></a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Additional Topics Section -->
-            <section data-aos="fade-up" data-aos-delay="400">
-                <div class="section-header-technical mb-8">
-                    <span class="icon-bg p-3 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 text-white shadow-lg text-3xl"><i class="fas fa-puzzle-piece"></i></span>
-                    <h2 class="section-title-technical gradient-text-alt">Advanced & Applied Topics</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- System Design Card -->
-                    <div class="topic-card content-section-wrapper gradient-bg-orange-light" data-aos="fade-up" data-aos-delay="450">
-                        <span class="floating-checkbox"><input type="checkbox" class="technical-checkbox" data-subtopic-id="technical_systemdesign_category"></span>
-                        <div class="topic-header-tech">
-                            <div class="topic-icon-tech bg-orange-500"><i class="fas fa-sitemap"></i></div>
-                            <h3 class="topic-title-tech text-orange-700">System Design</h3>
-                        </div>
-                        <div class="sub-topic-links-wrapper">
-                            <a href="https://www.geeksforgeeks.org/introduction-to-system-design/" target="_blank" class="subtopic-link bg-orange-100 hover:bg-orange-200" data-subtopic-id="technical_sd_intro_link">
-                                <h4 class="text-orange-600">Intro to System Design</h4><p>Key concepts & principles.</p></a>
-                            <a href="https://www.geeksforgeeks.org/basics-of-load-balancing/" target="_blank" class="subtopic-link bg-orange-100 hover:bg-orange-200" data-subtopic-id="technical_sd_loadbalancing_link">
-                                <h4 class="text-orange-600">Scalability & Load Balancing</h4><p>Handling large scale.</p></a>
-                            <a href="https://www.geeksforgeeks.org/database-scaling/" target="_blank" class="subtopic-link bg-orange-100 hover:bg-orange-200" data-subtopic-id="technical_sd_dbscaling_link">
-                                <h4 class="text-orange-600">Database Scaling Strategies</h4><p>Sharding, Replication.</p></a>
-                            <a href="https://github.com/donnemartin/system-design-primer" target="_blank" class="subtopic-link bg-orange-100 hover:bg-orange-200" data-subtopic-id="technical_sd_primer_link">
-                                <h4 class="text-orange-600">System Design Primer (GitHub)</h4><p>Comprehensive guide.</p></a>
-                        </div>
-                    </div>
-
-                    <!-- Software Engineering Card -->
-                    <div class="topic-card content-section-wrapper gradient-bg-pink-light" data-aos="fade-up" data-aos-delay="500">
-                        <span class="floating-checkbox"><input type="checkbox" class="technical-checkbox" data-subtopic-id="technical_softeng_category"></span>
-                        <div class="topic-header-tech">
-                            <div class="topic-icon-tech bg-pink-500"><i class="fas fa-code-branch"></i></div>
-                            <h3 class="topic-title-tech text-pink-700">Software Engineering</h3>
-                        </div>
-                        <div class="sub-topic-links-wrapper">
-                           <a href="https://www.geeksforgeeks.org/software-development-life-cycle-sdlc/" target="_blank" class="subtopic-link bg-pink-100 hover:bg-pink-200" data-subtopic-id="technical_se_sdlc_link">
-                               <h4 class="text-pink-600">SDLC Models</h4><p>Waterfall, Agile, Scrum.</p></a>
-                           <a href="https://www.geeksforgeeks.org/software-design-patterns/" target="_blank" class="subtopic-link bg-pink-100 hover:bg-pink-200" data-subtopic-id="technical_se_designpatterns_link">
-                               <h4 class="text-pink-600">Design Patterns</h4><p>Creational, Structural, Behavioral.</p></a>
-                           <a href="https://www.geeksforgeeks.org/software-testing-basics/" target="_blank" class="subtopic-link bg-pink-100 hover:bg-pink-200" data-subtopic-id="technical_se_testing_link">
-                               <h4 class="text-pink-600">Software Testing</h4><p>Unit, Integration, System.</p></a>
-                           <a href="https://www.geeksforgeeks.org/version-control-systems/" target="_blank" class="subtopic-link bg-pink-100 hover:bg-pink-200" data-subtopic-id="technical_se_versioncontrol_link">
-                               <h4 class="text-pink-600">Version Control (Git)</h4><p>Branching, Merging.</p></a>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
-    </main>
-    </div> <!-- End Page Wrapper -->
 
-    <!-- Floating Icon -->
-    <div class="fixed bottom-6 right-6 z-[500] animate-subtle-float" style="animation-duration: 5s;">
-      <div class="bg-gradient-to-tr from-blue-500 via-indigo-500 to-purple-600 p-4 rounded-full shadow-2xl shadow-indigo-500/30 cursor-pointer hover:shadow-purple-400/50 transition-all transform hover:scale-110 hover:rotate-[360deg] duration-500">
-          <i class="fas fa-tools text-white text-3xl"></i>
-      </div>
+        <!-- Core Subjects Section -->
+        <section class="mb-16" data-aos="fade-up" data-aos-delay="200">
+            <div class="section-header-technical mb-8">
+                <span class="icon-bg p-3 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg text-3xl"><i class="fas fa-book-reader"></i></span>
+                <h2 class="section-title-technical gradient-text-alt">Core CS Subjects</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- DBMS Card -->
+                <div class="topic-card content-section-wrapper gradient-bg-blue-light" data-aos="fade-up" data-aos-delay="250">
+                    <span class="floating-checkbox"><input type="checkbox" class="technical-checkbox" data-subtopic-id="technical_dbms_category"></span>
+                    <div class="topic-header-tech"><div class="topic-icon-tech bg-blue-500"><i class="fas fa-database"></i></div><h3 class="topic-title-tech text-blue-700">Database Management</h3></div>
+                    <div class="sub-topic-links-wrapper">
+                        <a href="https://www.javatpoint.com/dbms-sql" target="_blank" class="subtopic-link bg-blue-100 hover:bg-blue-200" data-subtopic-id="technical_dbms_sql_link"><h4 class="text-blue-600">SQL Mastery</h4><p>Queries, Joins, Subqueries.</p></a>
+                        <a href="https://www.javatpoint.com/dbms-normalization" target="_blank" class="subtopic-link bg-blue-100 hover:bg-blue-200" data-subtopic-id="technical_dbms_normalization_link"><h4 class="text-blue-600">Normalization</h4><p>Reducing redundancy (1NF, 2NF, 3NF).</p></a>
+                        <a href="https://www.javatpoint.com/dbms-acid-properties" target="_blank" class="subtopic-link bg-blue-100 hover:bg-blue-200" data-subtopic-id="technical_dbms_acid_link"><h4 class="text-blue-600">ACID Properties</h4><p>Atomicity, Consistency, Isolation, Durability.</p></a>
+                        <a href="https://www.javatpoint.com/dbms-indexing" target="_blank" class="subtopic-link bg-blue-100 hover:bg-blue-200" data-subtopic-id="technical_dbms_indexing_link"><h4 class="text-blue-600">Indexing</h4><p>B-Trees, speeding up data retrieval.</p></a>
+                        <a href="https://www.javatpoint.com/sql-vs-nosql" target="_blank" class="subtopic-link bg-blue-100 hover:bg-blue-200" data-subtopic-id="technical_dbms_nosql_link"><h4 class="text-blue-600">SQL vs NoSQL</h4><p>Relational vs non-relational.</p></a>
+                        <a href="https://www.w3schools.com/sql/sql_injection.asp" target="_blank" class="subtopic-link bg-blue-100 hover:bg-blue-200" data-subtopic-id="technical_dbms_injection_link"><h4 class="text-blue-600">SQL Injection</h4><p>Understanding database security.</p></a>
+                        <a href="https://www.javatpoint.com/dbms-concurrency-control" target="_blank" class="subtopic-link bg-blue-100 hover:bg-blue-200" data-subtopic-id="technical_dbms_concurrency_link"><h4 class="text-blue-600">Concurrency Control</h4><p>Handling simultaneous access.</p></a>
+                    </div>
+                </div>
+
+                <!-- Operating Systems Card -->
+                <div class="topic-card content-section-wrapper gradient-bg-green-light" data-aos="fade-up" data-aos-delay="300">
+                    <span class="floating-checkbox"><input type="checkbox" class="technical-checkbox" data-subtopic-id="technical_os_category"></span>
+                    <div class="topic-header-tech"><div class="topic-icon-tech bg-green-500"><i class="fas fa-microchip"></i></div><h3 class="topic-title-tech text-green-700">Operating Systems</h3></div>
+                     <div class="sub-topic-links-wrapper">
+                        <a href="https://www.javatpoint.com/process-management-in-operating-system" target="_blank" class="subtopic-link bg-green-100 hover:bg-green-200" data-subtopic-id="technical_os_process_mgmt_link"><h4 class="text-green-600">Processes & Threads</h4><p>Scheduling, synchronization.</p></a>
+                        <a href="https://www.javatpoint.com/memory-management-in-operating-system" target="_blank" class="subtopic-link bg-green-100 hover:bg-green-200" data-subtopic-id="technical_os_memory_mgmt_link"><h4 class="text-green-600">Memory Management</h4><p>Paging, Segmentation, Virtual Memory.</p></a>
+                        <a href="https://www.javatpoint.com/os-deadlock" target="_blank" class="subtopic-link bg-green-100 hover:bg-green-200" data-subtopic-id="technical_os_deadlocks_link"><h4 class="text-green-600">Deadlocks</h4><p>Prevention, Avoidance, Detection.</p></a>
+                        <a href="https://www.javatpoint.com/os-system-calls" target="_blank" class="subtopic-link bg-green-100 hover:bg-green-200" data-subtopic-id="technical_os_syscalls_link"><h4 class="text-green-600">System Calls</h4><p>Interface between user and kernel.</p></a>
+                        <a href="https://www.javatpoint.com/inter-process-communication-in-operating-system" target="_blank" class="subtopic-link bg-green-100 hover:bg-green-200" data-subtopic-id="technical_os_ipc_link"><h4 class="text-green-600">Inter-Process Communication</h4><p>Pipes, sockets, shared memory.</p></a>
+                        <a href="https://www.javatpoint.com/os-process-synchronization" target="_blank" class="subtopic-link bg-green-100 hover:bg-green-200" data-subtopic-id="technical_os_sync_link"><h4 class="text-green-600">Concurrency & Sync</h4><p>Semaphores, Mutexes, Monitors.</p></a>
+                        <a href="https://www.javatpoint.com/os-file-system" target="_blank" class="subtopic-link bg-green-100 hover:bg-green-200" data-subtopic-id="technical_os_filesystems_link"><h4 class="text-green-600">File Systems</h4><p>FAT, NTFS, allocation methods.</p></a>
+                    </div>
+                </div>
+
+                <!-- Computer Networks Card -->
+                <div class="topic-card content-section-wrapper gradient-bg-purple-light" data-aos="fade-up" data-aos-delay="350">
+                    <span class="floating-checkbox"><input type="checkbox" class="technical-checkbox" data-subtopic-id="technical_cn_category"></span>
+                    <div class="topic-header-tech"><div class="topic-icon-tech bg-purple-500"><i class="fas fa-network-wired"></i></div><h3 class="topic-title-tech text-purple-700">Computer Networks</h3></div>
+                    <div class="sub-topic-links-wrapper">
+                        <a href="https://www.javatpoint.com/osi-model" target="_blank" class="subtopic-link bg-purple-100 hover:bg-purple-200" data-subtopic-id="technical_cn_osi_link"><h4 class="text-purple-600">OSI & TCP/IP Models</h4><p>Understanding network layers.</p></a>
+                        <a href="https://www.javatpoint.com/tcp-vs-udp" target="_blank" class="subtopic-link bg-purple-100 hover:bg-purple-200" data-subtopic-id="technical_cn_tcpudp_link"><h4 class="text-purple-600">TCP vs UDP</h4><p>Reliable vs connectionless protocols.</p></a>
+                        <a href="https://www.javatpoint.com/computer-network-application-layer" target="_blank" class="subtopic-link bg-purple-100 hover:bg-purple-200" data-subtopic-id="technical_cn_protocols_link"><h4 class="text-purple-600">Application Protocols</h4><p>HTTP, HTTPS, DNS, SMTP.</p></a>
+                        <a href="https://www.javatpoint.com/what-is-an-ip-address" target="_blank" class="subtopic-link bg-purple-100 hover:bg-purple-200" data-subtopic-id="technical_cn_ip_link"><h4 class="text-purple-600">IP Addressing</h4><p>IPv4/IPv6, Subnetting.</p></a>
+                        <a href="https://www.w3schools.com/whatis/whatis_how_the_web_works.asp" target="_blank" class="subtopic-link bg-purple-100 hover:bg-purple-200" data-subtopic-id="technical_cn_url_link"><h4 class="text-purple-600">URL to Page</h4><p>DNS lookup, TCP handshake, etc.</p></a>
+                        <a href="https://www.javatpoint.com/routing-algorithms-in-computer-network" target="_blank" class="subtopic-link bg-purple-100 hover:bg-purple-200" data-subtopic-id="technical_cn_routing_link"><h4 class="text-purple-600">Routing Algorithms</h4><p>Finding paths in a network.</p></a>
+                        <a href="https://www.javatpoint.com/computer-network-security" target="_blank" class="subtopic-link bg-purple-100 hover:bg-purple-200" data-subtopic-id="technical_cn_security_link"><h4 class="text-purple-600">Network Security</h4><p>Firewalls, Encryption, VPNs.</p></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced & Applied Topics Section -->
+        <section class="mb-16" data-aos="fade-up" data-aos-delay="200">
+            <div class="section-header-technical mb-8">
+                <span class="icon-bg p-3 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 text-white shadow-lg text-3xl"><i class="fas fa-puzzle-piece"></i></span>
+                <h2 class="section-title-technical gradient-text-alt">Applied & Modern Engineering</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Object-Oriented Programming -->
+                <div class="topic-card content-section-wrapper gradient-bg-slate-light" data-aos="fade-up" data-aos-delay="250">
+                    <span class="floating-checkbox"><input type="checkbox" class="technical-checkbox" data-subtopic-id="technical_oop_category"></span>
+                    <div class="topic-header-tech"><div class="topic-icon-tech bg-slate-500"><i class="fas fa-object-group"></i></div><h3 class="topic-title-tech text-slate-700">Object-Oriented Design</h3></div>
+                    <div class="sub-topic-links-wrapper">
+                       <a href="https://www.javatpoint.com/oops-concepts" target="_blank" class="subtopic-link bg-slate-100 hover:bg-slate-200" data-subtopic-id="technical_oop_pillars_link"><h4 class="text-slate-600">The Four Pillars</h4><p>Abstraction, Encapsulation, Inheritance...</p></a>
+                       <a href="https://www.javatpoint.com/solid-principles-in-java" target="_blank" class="subtopic-link bg-slate-100 hover:bg-slate-200" data-subtopic-id="technical_oop_solid_link"><h4 class="text-slate-600">SOLID Principles</h4><p>Guidelines for maintainable design.</p></a>
+                       <a href="https://www.javatpoint.com/design-patterns-in-java" target="_blank" class="subtopic-link bg-slate-100 hover:bg-slate-200" data-subtopic-id="technical_oop_patterns_link"><h4 class="text-slate-600">Design Patterns</h4><p>Singleton, Factory, Observer.</p></a>
+                       <a href="https://www.javatpoint.com/difference-between-abstract-class-and-interface" target="_blank" class="subtopic-link bg-slate-100 hover:bg-slate-200" data-subtopic-id="technical_oop_abstract_link"><h4 class="text-slate-600">Abstract Class vs Interface</h4><p>Key differences and use cases.</p></a>
+                       <a href="https://www.javatpoint.com/coupling-and-cohesion-in-java" target="_blank" class="subtopic-link bg-slate-100 hover:bg-slate-200" data-subtopic-id="technical_oop_coupling_link"><h4 class="text-slate-600">Coupling & Cohesion</h4><p>Principles of modular design.</p></a>
+                       <a href="https://www.javatpoint.com/method-overloading-vs-method-overriding-in-java" target="_blank" class="subtopic-link bg-slate-100 hover:bg-slate-200" data-subtopic-id="technical_oop_overloading_link"><h4 class="text-slate-600">Overloading vs Overriding</h4><p>Compile-time vs run-time polymorphism.</p></a>
+                    </div>
+                </div>
+
+                <!-- System Design Card -->
+                <div class="topic-card content-section-wrapper gradient-bg-orange-light" data-aos="fade-up" data-aos-delay="300">
+                    <span class="floating-checkbox"><input type="checkbox" class="technical-checkbox" data-subtopic-id="technical_systemdesign_category"></span>
+                    <div class="topic-header-tech"><div class="topic-icon-tech bg-orange-500"><i class="fas fa-sitemap"></i></div><h3 class="topic-title-tech text-orange-700">System Design</h3></div>
+                    <div class="sub-topic-links-wrapper">
+                        <a href="https://www.javatpoint.com/load-balancer" target="_blank" class="subtopic-link bg-orange-100 hover:bg-orange-200" data-subtopic-id="technical_sd_loadbalancing_link"><h4 class="text-orange-600">Load Balancing</h4><p>Distributing network traffic.</p></a>
+                        <a href="https://www.javatpoint.com/system-design-caching" target="_blank" class="subtopic-link bg-orange-100 hover:bg-orange-200" data-subtopic-id="technical_sd_caching_link"><h4 class="text-orange-600">Caching Strategies</h4><p>Improving data access speed.</p></a>
+                        <a href="https://www.javatpoint.com/what-is-sharding-in-database" target="_blank" class="subtopic-link bg-orange-100 hover:bg-orange-200" data-subtopic-id="technical_sd_sharding_link"><h4 class="text-orange-600">Database Sharding</h4><p>Partitioning data across servers.</p></a>
+                        <a href="https://www.javatpoint.com/cap-theorem" target="_blank" class="subtopic-link bg-orange-100 hover:bg-orange-200" data-subtopic-id="technical_sd_cap_link"><h4 class="text-orange-600">CAP Theorem</h4><p>Consistency, Availability, Partition Tolerance.</p></a>
+                        <a href="https://www.javatpoint.com/what-is-message-queue" target="_blank" class="subtopic-link bg-orange-100 hover:bg-orange-200" data-subtopic-id="technical_sd_messagequeue_link"><h4 class="text-orange-600">Message Queues</h4><p>Asynchronous communication.</p></a>
+                        <a href="https://www.javatpoint.com/what-is-cdn" target="_blank" class="subtopic-link bg-orange-100 hover:bg-orange-200" data-subtopic-id="technical_sd_cdn_link"><h4 class="text-orange-600">Content Delivery Network (CDN)</h4><p>Delivering content faster globally.</p></a>
+                        <a href="https://www.javatpoint.com/microservices" target="_blank" class="subtopic-link bg-orange-100 hover:bg-orange-200" data-subtopic-id="technical_sd_microservices_link"><h4 class="text-orange-600">Microservices Architecture</h4><p>Building apps as a suite of services.</p></a>
+                    </div>
+                </div>
+
+                <!-- DevOps & Version Control -->
+                <div class="topic-card content-section-wrapper gradient-bg-pink-light" data-aos="fade-up" data-aos-delay="350">
+                    <span class="floating-checkbox"><input type="checkbox" class="technical-checkbox" data-subtopic-id="technical_devops_category"></span>
+                    <div class="topic-header-tech"><div class="topic-icon-tech bg-pink-500"><i class="fas fa-code-branch"></i></div><h3 class="topic-title-tech text-pink-700">DevOps & Version Control</h3></div>
+                    <div class="sub-topic-links-wrapper">
+                       <a href="https://www.w3schools.com/git/" target="_blank" class="subtopic-link bg-pink-100 hover:bg-pink-200" data-subtopic-id="technical_se_git_link"><h4 class="text-pink-600">Git Fundamentals</h4><p>Commits, Branching, Merging, Rebase.</p></a>
+                       <a href="https://www.javatpoint.com/devops" target="_blank" class="subtopic-link bg-pink-100 hover:bg-pink-200" data-subtopic-id="technical_se_devops_link"><h4 class="text-pink-600">Intro to DevOps</h4><p>Culture, practices, and benefits.</p></a>
+                       <a href="https://www.javatpoint.com/ci-cd-pipeline" target="_blank" class="subtopic-link bg-pink-100 hover:bg-pink-200" data-subtopic-id="technical_se_cicd_link"><h4 class="text-pink-600">CI/CD Pipeline</h4><p>Automating build, test, deploy stages.</p></a>
+                       <a href="https://www.w3schools.com/docker/default.asp" target="_blank" class="subtopic-link bg-pink-100 hover:bg-pink-200" data-subtopic-id="technical_se_docker_link"><h4 class="text-pink-600">Containers (Docker)</h4><p>Packaging applications and dependencies.</p></a>
+                       <a href="https://www.javatpoint.com/kubernetes" target="_blank" class="subtopic-link bg-pink-100 hover:bg-pink-200" data-subtopic-id="technical_se_kubernetes_link"><h4 class="text-pink-600">Kubernetes</h4><p>Container orchestration.</p></a>
+                       <a href="https://www.javatpoint.com/agile-software-development-model" target="_blank" class="subtopic-link bg-pink-100 hover:bg-pink-200" data-subtopic-id="technical_se_agile_link"><h4 class="text-pink-600">Agile Methodology</h4><p>Scrum, Kanban, and sprints.</p></a>
+                       <a href="https://www.javatpoint.com/infrastructure-as-a-code" target="_blank" class="subtopic-link bg-pink-100 hover:bg-pink-200" data-subtopic-id="technical_se_iac_link"><h4 class="text-pink-600">Infrastructure as Code (IaC)</h4><p>Managing infrastructure via code.</p></a>
+                    </div>
+                </div>
+
+                <!-- Cloud Computing -->
+                <div class="topic-card content-section-wrapper gradient-bg-cyan-light" data-aos="fade-up" data-aos-delay="250">
+                    <span class="floating-checkbox"><input type="checkbox" class="technical-checkbox" data-subtopic-id="technical_cloud_category"></span>
+                    <div class="topic-header-tech"><div class="topic-icon-tech bg-cyan-500"><i class="fas fa-cloud"></i></div><h3 class="topic-title-tech text-cyan-700">Cloud Computing</h3></div>
+                    <div class="sub-topic-links-wrapper">
+                       <a href="https://www.javatpoint.com/iaas-paas-and-saas" target="_blank" class="subtopic-link bg-cyan-100 hover:bg-cyan-200" data-subtopic-id="technical_cloud_models_link"><h4 class="text-cyan-600">IaaS, PaaS, SaaS</h4><p>Cloud service models explained.</p></a>
+                       <a href="https://www.javatpoint.com/public-private-and-hybrid-cloud" target="_blank" class="subtopic-link bg-cyan-100 hover:bg-cyan-200" data-subtopic-id="technical_cloud_types_link"><h4 class="text-cyan-600">Deployment Models</h4><p>Public, Private, Hybrid Clouds.</p></a>
+                       <a href="https://www.javatpoint.com/aws-tutorial" target="_blank" class="subtopic-link bg-cyan-100 hover:bg-cyan-200" data-subtopic-id="technical_cloud_aws_link"><h4 class="text-cyan-600">Intro to AWS</h4><p>Core services like EC2, S3, Lambda.</p></a>
+                       <a href="https://www.javatpoint.com/serverless-computing" target="_blank" class="subtopic-link bg-cyan-100 hover:bg-cyan-200" data-subtopic-id="technical_cloud_serverless_link"><h4 class="text-cyan-600">Serverless Computing</h4><p>Running code without servers.</p></a>
+                       <a href="https://www.javatpoint.com/virtual-machine-vs-container" target="_blank" class="subtopic-link bg-cyan-100 hover:bg-cyan-200" data-subtopic-id="technical_cloud_vm_container_link"><h4 class="text-cyan-600">VMs vs Containers</h4><p>Key architectural differences.</p></a>
+                       <a href="https://www.javatpoint.com/aws-s3" target="_blank" class="subtopic-link bg-cyan-100 hover:bg-cyan-200" data-subtopic-id="technical_cloud_s3_link"><h4 class="text-cyan-600">Object Storage (S3)</h4><p>Scalable storage for the web.</p></a>
+                       <a href="https://www.javatpoint.com/aws-lambda" target="_blank" class="subtopic-link bg-cyan-100 hover:bg-cyan-200" data-subtopic-id="technical_cloud_lambda_link"><h4 class="text-cyan-600">Functions as a Service</h4><p>Understanding AWS Lambda.</p></a>
+                    </div>
+                </div>
+
+                <!-- Cybersecurity Fundamentals -->
+                <div class="topic-card content-section-wrapper gradient-bg-red-light" data-aos="fade-up" data-aos-delay="300">
+                    <span class="floating-checkbox"><input type="checkbox" class="technical-checkbox" data-subtopic-id="technical_security_category"></span>
+                    <div class="topic-header-tech"><div class="topic-icon-tech bg-red-500"><i class="fas fa-shield-alt"></i></div><h3 class="topic-title-tech text-red-700">Cybersecurity Basics</h3></div>
+                    <div class="sub-topic-links-wrapper">
+                       <a href="https://www.javatpoint.com/cia-triad" target="_blank" class="subtopic-link bg-red-100 hover:bg-red-200" data-subtopic-id="technical_sec_cia_link"><h4 class="text-red-600">CIA Triad</h4><p>Confidentiality, Integrity, Availability.</p></a>
+                       <a href="https://www.javatpoint.com/authentication-vs-authorization" target="_blank" class="subtopic-link bg-red-100 hover:bg-red-200" data-subtopic-id="technical_sec_auth_link"><h4 class="text-red-600">AuthN vs AuthZ</h4><p>Who you are vs what you can do.</p></a>
+                       <a href="https://www.javatpoint.com/cryptography-hash-functions" target="_blank" class="subtopic-link bg-red-100 hover:bg-red-200" data-subtopic-id="technical_sec_hashing_link"><h4 class="text-red-600">Hashing & Encryption</h4><p>Securing data at rest and in transit.</p></a>
+                       <a href="https://www.w3schools.com/sql/sql_injection.asp" target="_blank" class="subtopic-link bg-red-100 hover:bg-red-200" data-subtopic-id="technical_sec_attacks_link"><h4 class="text-red-600">Common Web Attacks</h4><p>SQL Injection, XSS, CSRF.</p></a>
+                       <a href="https://www.w3schools.com/whatis/whatis_http.asp" target="_blank" class="subtopic-link bg-red-100 hover:bg-red-200" data-subtopic-id="technical_sec_https_link"><h4 class="text-red-600">HTTP vs HTTPS</h4><p>The importance of SSL/TLS.</p></a>
+                       <a href="https://www.javatpoint.com/what-is-firewall" target="_blank" class="subtopic-link bg-red-100 hover:bg-red-200" data-subtopic-id="technical_sec_firewall_link"><h4 class="text-red-600">Firewalls</h4><p>Network's first line of defense.</p></a>
+                       <a href="https://owasp.org/www-project-top-ten/" target="_blank" class="subtopic-link bg-red-100 hover:bg-red-200" data-subtopic-id="technical_sec_owasp_link"><h4 class="text-red-600">OWASP Top 10</h4><p>Most critical web security risks.</p></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Motivation Section -->
+        <section class="mt-16 content-section-wrapper gradient-bg-final-motivation" data-aos="zoom-in-up" data-aos-delay="200">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-black gradient-text-alt">Your Final Byte of Wisdom</h2>
+                <p class="text-gray-600 mt-2">You've put in the work. Now go ace that interview!</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="final-quote-box text-center" data-aos="fade-right" data-aos-delay="300">
+                    <i class="fas fa-quote-left text-3xl text-blue-500 mb-3"></i>
+                    <p class="text-lg font-semibold text-blue-800">"Why do programmers prefer dark mode? Because light attracts bugs!"</p>
+                </div>
+                <div class="final-quote-box text-center" data-aos="fade-up" data-aos-delay="400">
+                    <i class="fas fa-lightbulb text-3xl text-yellow-500 mb-3"></i>
+                    <p class="text-lg font-semibold text-yellow-800">"An algorithm is like a recipe. A concurrency issue is like too many cooks in the kitchen."</p>
+                </div>
+                <div class="final-quote-box text-center" data-aos="fade-left" data-aos-delay="500">
+                    <i class="fas fa-rocket text-3xl text-purple-500 mb-3"></i>
+                    <p class="text-lg font-semibold text-purple-800">"Remember, you're not just a developer. You're a bug breeder on your way to becoming a bug exterminator."</p>
+                </div>
+            </div>
+        </section>
     </div>
+</main>
+</div> <!-- End Page Wrapper -->
 
-    <!-- Scripts -->
-    <script src="js/utils.js"></script>
-    <script src="js/progress.js"></script>
-    <script src="js/script.js"></script>
-    <script src="js/navbar.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
-    <script>
+<!-- Scripts -->
+<script src="js/utils.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/script.js"></script>
+<script src="js/navbar.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async function() {
+        AOS.init({ duration: 800, once: true, offset: 70, easing: 'ease-out-cubic' });
+        
         // --- PAGE TRANSITION SCRIPT ---
         function handlePageTransition(event) {
             const link = event.currentTarget;
@@ -499,137 +434,93 @@
                 setTimeout(() => { window.location.href = targetUrl; }, 400);
             }
         }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            AOS.init({ duration: 800, once: true, offset: 70, easing: 'ease-out-cubic' });
-
-            document.querySelectorAll('.nav-transition-link').forEach(link => {
-                link.addEventListener('click', handlePageTransition);
+        
+        document.querySelectorAll('.nav-transition-link').forEach(link => {
+            link.addEventListener('click', handlePageTransition);
+        });
+        
+        // --- UNIVERSAL NAVBAR PROFILE DROPDOWN LOGIC ---
+        const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+        const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+        if (profileDropdownBtn && profileDropdownMenu) {
+            profileDropdownBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                profileDropdownMenu.classList.toggle('open');
             });
+        }
+        document.addEventListener('click', (e) => {
+            if (profileDropdownMenu && profileDropdownMenu.classList.contains('open') && !profileDropdownBtn.contains(e.target)) {
+                profileDropdownMenu.classList.remove('open');
+            }
+        });
 
-            // --- UNIVERSAL NAVBAR PROFILE DROPDOWN LOGIC ---
-            const profileDropdownBtn = document.getElementById('profileDropdownBtn');
-            const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+        // Universal function to handle sign out - defined here for completeness
+        function logoutUserWithTransition() {
+            console.log('Logging out...');
+            document.body.style.transition = 'opacity 0.3s ease-out';
+            document.body.style.opacity = '0';
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('platformProgress');
+            setTimeout(() => { window.location.href = 'login.html'; }, 300);
+        }
 
-            if (profileDropdownBtn && profileDropdownMenu) {
-                profileDropdownBtn.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevents the window click from closing it immediately
-                    profileDropdownMenu.classList.toggle('open');
+        // Universal function to update profile picture
+        try {
+            const userString = localStorage.getItem('user');
+            if (userString) {
+                const user = JSON.parse(userString);
+                const profilePicUrl = user.profilePicture || 'static/default-profile.jpg';
+                const navImg = document.getElementById('navProfileImg');
+                if (navImg) {
+                    navImg.src = profilePicUrl;
+                    navImg.onerror = function() { this.src = 'static/default-profile.jpg'; };
+                }
+            }
+        } catch(e) { console.error('Could not parse user data for profile picture.', e); }
+
+        // --- MOBILE MENU LOGIC ---
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenuTUF');
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('-translate-x-full'));
+            document.getElementById('closeMobileMenuBtnTUF').addEventListener('click', () => mobileMenu.classList.add('-translate-x-full'));
+        }
+
+        // --- TECHNICAL PAGE Progress & Checkbox Logic ---
+        if (typeof ProgressTracker === 'undefined') return;
+        window.progressTrackerInstance = window.progressTrackerInstance || new ProgressTracker();
+
+        try {
+            await window.progressTrackerInstance.init();
+            
+            const updateTechnicalUI = () => {
+                const checkboxes = document.querySelectorAll('.technical-checkbox');
+                checkboxes.forEach(cb => { 
+                    cb.checked = window.progressTrackerInstance.isCompleted(cb.dataset.subtopicId); 
                 });
-            }
+                
+                // THE FIX: Use the pre-calculated value from the tracker
+                const technicalProgress = window.progressTrackerInstance.progress.technical || 0;
+                
+                const progressBarFill = document.getElementById('technicalProgressBarFill');
+                const percentText = document.getElementById('technicalModulePercent');
 
-            // Close dropdown if clicked outside
-            document.addEventListener('click', (e) => {
-                if (profileDropdownMenu && profileDropdownMenu.classList.contains('open') && !profileDropdownBtn.contains(e.target)) {
-                    profileDropdownMenu.classList.remove('open');
-                }
-            });
+                if (progressBarFill) progressBarFill.style.width = `${technicalProgress}%`;
+                if (percentText) percentText.textContent = `${Math.round(technicalProgress)}%`;
+            };
             
-            // Universal function to handle sign out
-            function logoutUserWithTransition() {
-                console.log('Logging out...');
-                // Optional: Add a fade-out effect
-                document.body.style.transition = 'opacity 0.3s ease-out';
-                document.body.style.opacity = '0';
+            updateTechnicalUI();
 
-                // Clear local storage
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                localStorage.removeItem('platformProgress');
-
-                // Redirect to login page after the fade-out
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 300);
-            }
-            
-            // Universal function to update the profile picture from localStorage
-            try {
-                const userString = localStorage.getItem('user');
-                if (userString) {
-                    const user = JSON.parse(userString);
-                    const profilePicUrl = user.profilePicture || 'static/default-profile.jpg';
-                    const navImg = document.getElementById('navProfileImg');
-                    if (navImg) {
-                        navImg.src = profilePicUrl;
-                        navImg.onerror = function() { this.src = 'static/default-profile.jpg'; };
-                    }
-                }
-            } catch(e) { console.error('Could not parse user data for profile picture.', e); }
-
-            // --- Mobile Menu Logic ---
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const mobileMenu = document.getElementById('mobileMenuTUF');
-            if (mobileMenuBtn && mobileMenu) {
-                mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('-translate-x-full'));
-                document.getElementById('closeMobileMenuBtnTUF').addEventListener('click', () => mobileMenu.classList.add('-translate-x-full'));
-            }
-
-            // --- TECHNICAL PAGE Progress & Checkbox Logic ---
-            if (typeof ProgressTracker === 'undefined') {
-                console.error('ProgressTracker class is not defined. Make sure progress.js is loaded correctly.');
-                return;
-            }
-            const progressTrackerInstance = new ProgressTracker();
-
-            async function initializeTechnicalPage() {
-                try {
-                    await progressTrackerInstance.init();
-                    const updateTechnicalUI = () => {
-                        document.querySelectorAll('.technical-checkbox').forEach(checkbox => {
-                            const subtopicId = checkbox.dataset.subtopicId;
-                            if (progressTrackerInstance.isCompleted) {
-                                checkbox.checked = progressTrackerInstance.isCompleted(subtopicId);
-                            }
-                        });
-
-                        const technicalProgressData = progressTrackerInstance.progress;
-                        const technicalModuleVal = technicalProgressData && technicalProgressData.technical !== undefined ? technicalProgressData.technical : 0;
-
-                        const progressBarFill = document.getElementById('technicalProgressBarFill');
-                        const percentText = document.getElementById('technicalModulePercent');
-
-                        if(progressBarFill) {
-                            progressBarFill.style.width = technicalModuleVal + '%';
-                        }
-                        if(percentText) {
-                            percentText.textContent = technicalModuleVal + '%';
-                        }
-                    };
+            document.querySelectorAll('.technical-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', async (event) => {
+                    await window.progressTrackerInstance.setCompleted(event.target.dataset.subtopicId, event.target.checked);
                     updateTechnicalUI();
+                });
+            });
 
-                    // Event listener for main category checkboxes
-                    document.querySelectorAll('.technical-checkbox').forEach(checkbox => {
-                        checkbox.addEventListener('change', async () => {
-                            if(progressTrackerInstance.setCompleted) {
-                                await progressTrackerInstance.setCompleted(checkbox.dataset.subtopicId, checkbox.checked);
-                                updateTechnicalUI();
-                            }
-                        });
-                    });
-
-                    // Event listener for resource links to also mark the main card's checkbox
-                    document.querySelectorAll('a.subtopic-link').forEach(link => {
-                        link.addEventListener('click', async (e) => {
-                            const subtopicIdForLink = link.dataset.subtopicId;
-                            if (progressTrackerInstance.setCompleted && subtopicIdForLink) {
-                                await progressTrackerInstance.setCompleted(subtopicIdForLink, true);
-                                updateTechnicalUI();
-                                console.log(`Marked link ${subtopicIdForLink} as complete.`);
-                            }
-                        });
-                    });
-
-                } catch (error) {
-                    console.error("Error initializing Technical Page progress:", error);
-                    const progressBarFill = document.getElementById('technicalProgressBarFill');
-                    const percentText = document.getElementById('technicalModulePercent');
-                    if(progressBarFill) progressBarFill.style.width = '0%';
-                    if(percentText) percentText.textContent = 'Error';
-                }
-            }
-            initializeTechnicalPage();
-        }); // End of DOMContentLoaded
-    </script>
+        } catch (error) { console.error("Error initializing Technical Page:", error); }
+    });
+</script>
 </body>
 </html>

@@ -52,10 +52,8 @@
             box-shadow: 0 15px 40px -15px rgba(236, 72, 153, 0.15); /* Pinkish shadow */
         }
         .gradient-bg-hr-questions { background: linear-gradient(135deg, #fdf2f8 0%, #fae8ff 100%); } /* Light Pink to Light Purple */
-        .gradient-bg-hr-tips { background: linear-gradient(135deg, #fff7ed 0%, #fef9c3 100%); } /* Light Orange to Light Yellow */
 
-
-        .topic-card { /* General card style from aptitude/technical */
+        .topic-card {
             background: white;
             border-radius: 1rem;
             padding: 1.5rem;
@@ -84,7 +82,6 @@
         .topic-card .topic-title-hr {
             font-size: 1.25rem;
             font-weight: 700;
-            /* Color to be set by Tailwind utility, e.g., text-pink-700 */
         }
          .topic-card .topic-title-hr a.subtopic-link {
             text-decoration: none; /* Remove underline from main title links */
@@ -93,7 +90,6 @@
         .topic-card .topic-title-hr a.subtopic-link:hover {
              filter: brightness(1.1); /* Slight brightness on hover for title link */
         }
-
 
         .topic-card .content-area-hr {
             margin-top: 0.5rem;
@@ -106,17 +102,18 @@
             line-height: 1.6;
         }
         .topic-card .content-area-hr ul { list-style-position: outside; padding-left: 1.25rem;}
-        .topic-card .content-area-hr .sub-section {
-            margin-top: 0.75rem; padding: 0.75rem; border-radius: 0.5rem;
-        }
         .topic-card .content-area-hr .pro-tip-hr {
             margin-top: auto; /* Pushes to bottom if .content-area-hr is flex col */
             padding: 0.75rem; border-radius: 0.5rem;
             font-style: italic; font-size: 0.85rem;
             text-align: center;
         }
+        .topic-card .content-area-hr .star-method-box {
+            border-left: 3px solid; padding-left: 0.75rem; margin: 0.75rem 0;
+        }
+        .topic-card .content-area-hr .star-method-box p { font-size: 0.85rem; }
 
-        /* Floating Checkbox (Pink accent for HR page) */
+        /* Floating Checkbox */
         .floating-checkbox {
             position: absolute; top: 1rem; right: 1rem; z-index: 10;
             background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(4px);
@@ -126,111 +123,53 @@
             transition: transform 0.2s ease-out;
         }
         .floating-checkbox:hover { transform: scale(1.1); }
-        .floating-checkbox input[type="checkbox"].hr-interview-checkbox { /* Specific class */
-            width: 20px; height: 20px; accent-color: #ec4899; /* pink-500 */ cursor: pointer;
-            appearance: none; -webkit-appearance: none; border: 2px solid #cbd5e1; /* slate-300 */
+        .floating-checkbox input[type="checkbox"].hr-interview-checkbox {
+            width: 20px; height: 20px; accent-color: #ec4899; cursor: pointer;
+            appearance: none; -webkit-appearance: none; border: 2px solid #cbd5e1;
             border-radius: 50%; transition: background-color 0.2s, border-color 0.2s; position: relative;
         }
-        .floating-checkbox input[type="checkbox"].hr-interview-checkbox:checked { background-color: #ec4899; border-color: #db2777; /* pink-600 */ }
+        .floating-checkbox input[type="checkbox"].hr-interview-checkbox:checked { background-color: #ec4899; border-color: #db2777; }
         .floating-checkbox input[type="checkbox"].hr-interview-checkbox:checked::after {
             content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
             color: white; font-size: 12px; position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
         }
 
-        /* Navbar & Profile Dropdown Styles (from previous examples) */
+        /* Navbar & Profile Dropdown Styles */
         .floating-navbar { background-color: rgba(31, 41, 55, 0.97); backdrop-filter: blur(16px); color: #e5e7eb; }
         .floating-navbar-link { color: #d1d5db; transition: color 0.2s ease, transform 0.2s ease; }
         .floating-navbar-link:hover, .floating-navbar-link.active-nav-link { color: #ffffff; transform: scale(1.05); text-shadow: 0 0 5px rgba(255,255,255,0.5);}
         .nav-brand-text { background: linear-gradient(120deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        /* ... (Rest of navbar styles from previous, assumed to be the same) ... */
         .profile-dropdown-tuf { position: relative; }
         .dropdown-menu-tuf {
-            position: absolute;
-            right: 0;
-            top: calc(100% + 12px); /* Spacing from the icon */
-            min-width: 200px;
-            z-index: 1050;
-            border-radius: 0.75rem;
-            padding: 0.5rem;
-            transform-origin: top right;
-            opacity: 0;
-            visibility: hidden;
+            position: absolute; right: 0; top: calc(100% + 12px);
+            min-width: 200px; z-index: 1050; border-radius: 0.75rem;
+            padding: 0.5rem; transform-origin: top right;
+            opacity: 0; visibility: hidden;
             transform: translateY(10px) scale(0.95);
             transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s;
-        }
-        .dropdown-menu-tuf.open {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-        }
-        .dropdown-item-tuf {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.7rem 1rem;
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 500;
-            border-radius: 0.5rem;
-            text-decoration: none; /* For the <a> tag */
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
-         .dropdown-item-tuf i {
-            width: 20px;
-            text-align: center;
-        }
-
-        /* --- Dark Theme Dropdown Specifics --- */
-        .floating-navbar:not(.light-navbar) .dropdown-menu-tuf {
-            background-color: #1f2937; /* Dark gray */
-            color: #d1d5db; /* Light gray text */
+            background-color: #1f2937; color: #d1d5db;
             box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2), 0 20px 40px -20px rgba(0,0,0,0.3);
         }
-        .floating-navbar:not(.light-navbar) .dropdown-item-tuf {
-            color: #d1d5db;
+        .dropdown-menu-tuf.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+        .dropdown-item-tuf {
+            display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 1rem;
+            cursor: pointer; font-size: 0.95rem; font-weight: 500; border-radius: 0.5rem;
+            text-decoration: none; color: #d1d5db; transition: background-color 0.2s ease, color 0.2s ease;
         }
-        .floating-navbar:not(.light-navbar) .dropdown-item-tuf:hover {
-            background-color: #374151; /* Lighter dark gray */
-            color: #ffffff;
-        }
-        .floating-navbar:not(.light-navbar) .dropdown-item-tuf i {
-            color: #9ca3af;
-        }
-        .floating-navbar:not(.light-navbar) .dropdown-item-tuf:hover i {
-            color: #60a5fa; /* Blue accent */
-        }
-
-        /* --- Light Theme Dropdown Specifics --- */
-        .light-navbar .dropdown-menu-tuf {
-            background-color: #ffffff;
-            color: #374151; /* Dark text */
-            box-shadow: 0 12px 40px -10px rgba(79, 70, 229, 0.2);
-            border: 1px solid #e5e7eb;
-        }
-        .light-navbar .dropdown-item-tuf {
-            color: #374151;
-        }
-        .light-navbar .dropdown-item-tuf:hover {
-            background-color: #eef2ff; /* Light indigo */
-            color: #4f46e5; /* Indigo */
-        }
-        .light-navbar .dropdown-item-tuf i {
-            color: #6b7280;
-        }
-        .light-navbar .dropdown-item-tuf:hover i {
-            color: #4f46e5;
-        }
+        .dropdown-item-tuf:hover { background-color: #374151; color: #ffffff; }
+        .dropdown-item-tuf i { width: 20px; text-align: center; color: #9ca3af; }
+        .dropdown-item-tuf:hover i { color: #60a5fa; }
 
         /* Progress Bar (Pink accent for HR page) */
         .progress-bar-wrapper .text-lg { font-size: 1.125rem; }
         .progress-bar-container { background-color: #e5e7eb; border-radius: 9999px; height: 1.25rem; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); }
-        #hrInterviewProgressBarFill.progress-bar { /* Pink gradient for HR */
-            background: linear-gradient(90deg, #f9a8d4 0%, #ec4899 100%); /* light-pink to pink-500 */
+        #hrInterviewProgressBarFill.progress-bar {
+            background: linear-gradient(90deg, #f9a8d4 0%, #ec4899 100%);
             height: 100%; border-radius: 9999px; transition: width 0.8s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative; overflow: hidden;
         }
-        #hrInterviewProgressBarFill.progress-bar::after { /* Shine effect */
+        #hrInterviewProgressBarFill.progress-bar::after {
             content: ''; position: absolute;top: 0; left: 0; bottom: 0; right: 0;
             background-image: linear-gradient( -45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent );
             z-index: 1; background-size: 50px 50px; animation: progress-shine 2s linear infinite; opacity: 0.3;
@@ -241,53 +180,32 @@
         .section-header-hr { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
         .section-header-hr .icon-bg { font-size: 2.25rem; padding: 0.75rem; border-radius: 0.75rem; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         .section-title-hr { font-size: 2rem; font-weight: 800; }
-
-         /* Fun quote boxes (light theme for HR) */
-        .fun-quote-box-hr {
-            background: #fdf2f8; /* Light pink */
-            border: 1px solid #fbcfe8; /* Lighter pink border */
-            border-radius: 0.75rem; padding: 1.25rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        .fun-quote-box-hr .main-quote { color: #be185d; /* Pink-700 */ }
-        .fun-quote-box-hr .sub-quote { color: #9d174d; /* Pink-800 */ font-size: 0.8rem; }
     </style>
 </head>
 <body class="text-gray-800 antialiased page-transition-in">
 
-<!-- ====================================================== -->
-<!-- === UNIVERSAL DARK NAVBAR === -->
-<!-- ====================================================== -->
+<!-- Navbar -->
 <nav class="floating-navbar py-3 px-4 sm:px-6 fixed top-4 left-1/2 transform -translate-x-1/2 rounded-xl shadow-2xl z-[1000] w-[90%]">
     <div class="container mx-auto flex justify-between items-center">
-        <!-- Brand/Logo -->
         <a href="index.html" class="nav-transition-link flex items-center space-x-2 group">
             <img src="logo.png" alt="AceYourPlacement Logo" class="w-8 h-8 sm:w-9 sm:h-9 mr-2">
             <span class="font-black text-lg sm:text-xl nav-brand-text hidden sm:inline tracking-tight group-hover:text-white transition-colors">AceYourPlacement</span>
             <span class="font-black text-lg nav-brand-text sm:hidden group-hover:text-white transition-colors">AYP</span>
         </a>
-
-        <!-- Main Navigation Links -->
         <div class="hidden md:flex items-center space-x-4 lg:space-x-6">
             <a href="index.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Home <i class="fas fa-home ml-1"></i></a>
             <a href="aptitude.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Aptitude <i class="fas fa-calculator ml-1"></i></a>
             <a href="coding.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Coding <i class="fas fa-laptop-code ml-1"></i></a>
             <a href="technical.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Technical <i class="fas fa-book ml-1"></i></a>
             <a href="roadmap.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Roadmaps <i class="fas fa-map-marked-alt ml-1"></i></a>
-            <a href="hr_interview.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">HR <i class="fas fa-handshake ml-1"></i></a>
+            <a href="hr_interview.html" class="nav-transition-link floating-navbar-link font-semibold text-sm active-nav-link">HR <i class="fas fa-handshake ml-1"></i></a>
             <a href="assessment-home.html" class="nav-transition-link floating-navbar-link font-semibold text-sm">Assessment <i class="fas fa-clipboard-list ml-1"></i></a>
         </div>
-
-        <!-- Right-side controls -->
         <div class="flex items-center space-x-3 sm:space-x-4">
-            <!-- Profile Dropdown -->
             <div class="profile-dropdown-tuf relative">
-                <!-- Trigger Button: The Profile Picture -->
                 <button aria-label="Profile Menu" id="profileDropdownBtn" class="focus:outline-none block">
                     <img id="navProfileImg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-gray-700 hover:border-blue-400 transition-all object-cover" src="static/default-profile.jpg" alt="Profile" referrerpolicy="no-referrer">
                 </button>
-                
-                <!-- Dropdown Menu: Contains Profile Only -->
                 <div id="profileDropdownMenu" class="dropdown-menu-tuf">
                     <a href="profile.html" class="nav-transition-link dropdown-item-tuf">
                         <i class="fas fa-user-circle"></i> My Profile
@@ -301,15 +219,10 @@
     </div>
 </nav>
 
-<!-- ====================================================== -->
-<!-- === CORRECTED MOBILE MENU === -->
-<!-- ====================================================== -->
+<!-- Mobile Menu -->
 <div id="mobileMenuTUF" class="fixed inset-0 bg-gray-900 bg-opacity-95 backdrop-blur-sm z-[999] p-6 text-white transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
     <div class="flex justify-between items-center mb-10">
-        <a href="index.html" class="nav-transition-link flex items-center space-x-2">
-            <i class="fas fa-rocket text-3xl nav-brand-text"></i>
-            <span class="font-black text-2xl nav-brand-text">AYP</span>
-        </a>
+        <a href="index.html" class="nav-transition-link flex items-center space-x-2"><i class="fas fa-rocket text-3xl nav-brand-text"></i><span class="font-black text-2xl nav-brand-text">AYP</span></a>
         <button class="text-3xl text-gray-300 hover:text-white" id="closeMobileMenuBtnTUF" aria-label="Close menu">×</button>
     </div>
     <nav class="space-y-5 text-center">
@@ -351,210 +264,82 @@
                 </div>
             </div>
 
-            <!-- Motivational Quote -->
-            <div class="max-w-3xl mx-auto mb-12 fun-quote-box-hr text-center" data-aos="zoom-in-up" data-aos-delay="150">
-                <p class="text-2xl font-bold main-quote mb-2">🚀 Ready to Launch Your Charm Offensive?</p>
-                <p class="text-gray-700 italic sub-quote">"Authenticity is your superpower. Preparation is your launch sequence. Go get 'em!"</p>
-            </div>
-
             <!-- Common HR Questions Section -->
             <section class="mb-16 content-section-wrapper gradient-bg-hr-questions" data-aos="fade-up" data-aos-delay="200">
                 <div class="section-header-hr mb-8">
                     <span class="icon-bg p-3 rounded-xl bg-gradient-to-br from-pink-500 to-fuchsia-600 text-white shadow-lg text-3xl"><i class="fas fa-comments-dollar"></i></span>
-                    <h2 class="section-title-hr gradient-text-alt-hr">Classic HR Conundrums (and how to solve 'em!)</h2>
+                    <h2 class="section-title-hr gradient-text-alt-hr">The HR Gauntlet: Winning Strategies</h2>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Tell Me About Yourself -->
-                    <div class="topic-card" data-aos="zoom-in-right" data-aos-delay="250">
-                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_tell_me_about_yourself"></span>
-                        <div class="topic-header-hr">
-                            <div class="topic-icon-hr bg-blue-500"><i class="fas fa-user-astronaut"></i></div>
-                            <h3 class="topic-title-hr text-blue-700">
-                                <a href="https://www.indeed.com/career-advice/interviewing/tell-me-about-yourself-interview-question" target="_blank" class="subtopic-link hover:text-blue-500" data-subtopic-id="hr_tell_me_link">
-                                "Tell Me About Yourself?"
-                                </a>
-                            </h3>
-                        </div>
-                        <div class="content-area-hr">
-                            <p>Your elevator pitch to the stars! Focus on:</p>
-                            <ul class="list-disc mt-2">
-                                <li>Your current "mission" (role/studies).</li>
-                                <li>Key skills & "spaceflights" (achievements).</li>
-                                <li>Why this "galaxy" (company/role) excites you.</li>
-                            </ul>
-                            <div class="pro-tip-hr bg-blue-50 text-blue-700">
-                                ✨ Pro Tip: Keep it concise (1-2 mins) and relevant to the job description. Think of it as your "origin story"!
-                            </div>
-                        </div>
-                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Q1: Tell Me About Yourself -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q1"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-blue-500"><i class="fas fa-user-astronaut"></i></div><h3 class="topic-title-hr text-blue-700"><a href="https://www.themuse.com/advice/tell-me-about-yourself-interview-question-answer-examples" target="_blank" class="subtopic-link hover:text-blue-500">"Tell me about yourself."</a></h3></div><div class="content-area-hr"><p>This is your 90-second commercial. Structure it as Past, Present, Future.</p><ul class="list-disc mt-2"><li><b>Past:</b> Briefly mention your key experience.</li><li><b>Present:</b> Describe your current role/skills.</li><li><b>Future:</b> Connect it all to why you want this job.</li></ul><div class="pro-tip-hr bg-blue-50 text-blue-700">✨ Pro Tip: Don't recite your resume. Tell a compelling story that ends with this role as the logical next step.</div></div></div>
+                    
+                    <!-- Q2: Strengths -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q2"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-green-500"><i class="fas fa-bolt"></i></div><h3 class="topic-title-hr text-green-700"><a href="https://www.themuse.com/advice/interview-question-what-are-your-greatest-strengths-examples" target="_blank" class="subtopic-link hover:text-green-500">"What are your greatest strengths?"</a></h3></div><div class="content-area-hr"><p>Pick 2-3 strengths highly relevant to the job description.</p><ul class="list-disc mt-2"><li>Claim the strength (e.g., "I'm an excellent problem-solver").</li><li>Back it up with a brief, concrete example.</li><li>Explain how it will benefit the company.</li></ul><div class="pro-tip-hr bg-green-50 text-green-700">✨ Pro Tip: Use words from the job description. If they need a "detail-oriented" person, highlight your meticulous nature.</div></div></div>
 
-                    <!-- Strengths and Weaknesses -->
-                    <div class="topic-card" data-aos="zoom-in-left" data-aos-delay="300">
-                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_strengths_weaknesses"></span>
-                        <div class="topic-header-hr">
-                            <div class="topic-icon-hr bg-green-500"><i class="fas fa-meteor"></i></div>
-                             <h3 class="topic-title-hr text-green-700">
-                                <a href="https://www.indeed.com/career-advice/interviewing/strengths-and-weaknesses-interview-question" target="_blank" class="subtopic-link hover:text-green-500" data-subtopic-id="hr_strengths_weaknesses_link">
-                                "Strengths & Weaknesses?"
-                                </a>
-                            </h3>
-                        </div>
-                        <div class="content-area-hr">
-                            <div class="sub-section bg-green-50">
-                                <h4 class="font-semibold text-green-700">Superpowers (Strengths):</h4>
-                                <ul class="list-disc"><li>Problem-solving agility</li> <li>Teamwork synergy</li> <li>Rapid learning warp drive</li></ul>
-                            </div>
-                            <div class="sub-section bg-red-50 mt-2">
-                                <h4 class="font-semibold text-red-700">Kryptonite (Weaknesses) <span class="text-xs">(but with a plan!)</span>:</h4>
-                                <ul class="list-disc"><li>"Sometimes I try to juggle too many asteroids... I'm learning to prioritize using a task manager."</li></ul>
-                            </div>
-                             <div class="pro-tip-hr bg-teal-50 text-teal-700">
-                                ✨ Pro Tip: Turn weaknesses into growth stories. Honesty + self-awareness = Hire!
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Q3: Weaknesses -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q3"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-red-500"><i class="fas fa-shield-virus"></i></div><h3 class="topic-title-hr text-red-700"><a href="https://www.themuse.com/advice/what-are-your-greatest-weaknesses-interview-question" target="_blank" class="subtopic-link hover:text-red-500">"What is your greatest weakness?"</a></h3></div><div class="content-area-hr"><p>The goal is to show self-awareness and a commitment to growth.</p><ul class="list-disc mt-2"><li>Choose a real, but not-critical, weakness.</li><li>Explain the steps you're taking to improve it.</li><li>End on a positive note about your progress.</li></ul><div class="pro-tip-hr bg-red-50 text-red-700">✨ Pro Tip: Avoid fake weaknesses like "I'm a perfectionist" or "I work too hard." It sounds insincere.</div></div></div>
 
-                    <!-- Why Should We Hire You -->
-                    <div class="topic-card" data-aos="zoom-in-right" data-aos-delay="350">
-                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_why_hire_you"></span>
-                        <div class="topic-header-hr">
-                            <div class="topic-icon-hr bg-purple-500"><i class="fas fa-rocket"></i></div>
-                             <h3 class="topic-title-hr text-purple-700">
-                                <a href="https://www.indeed.com/career-advice/interviewing/why-should-we-hire-you" target="_blank" class="subtopic-link hover:text-purple-500" data-subtopic-id="hr_why_hire_you_link">
-                                "Why Should We Hire You?"
-                                </a>
-                            </h3>
-                        </div>
-                        <div class="content-area-hr">
-                            <p>This is your moment to shine like a supernova! Highlight:</p>
-                            <ul class="list-disc mt-2">
-                                <li>Your unique "constellation" of skills.</li>
-                                <li>How you'll help their "starship" reach new heights.</li>
-                                <li>Your perfect alignment with their "galactic culture."</li>
-                            </ul>
-                             <div class="pro-tip-hr bg-purple-50 text-purple-700">
-                                ✨ Pro Tip: Connect your abilities directly to their needs. You're not just good, you're the *right kind* of good for *them*.
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Q4: Why This Company? -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q4"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-purple-500"><i class="fas fa-building"></i></div><h3 class="topic-title-hr text-purple-700"><a href="https://www.themuse.com/advice/why-do-you-want-to-work-for-this-company-interview-question" target="_blank" class="subtopic-link hover:text-purple-500">"Why do you want to work here?"</a></h3></div><div class="content-area-hr"><p>Show you've done your homework. They want to see genuine interest.</p><ul class="list-disc mt-2"><li>Mention their mission, values, or a specific product you admire.</li><li>Connect their goals with your own career aspirations.</li><li>Show excitement about their culture or industry impact.</li></ul><div class="pro-tip-hr bg-purple-50 text-purple-700">✨ Pro Tip: Mention something you learned from their recent news, a blog post, or a social media update. Specificity is key!</div></div></div>
 
-                    <!-- Where Do You See Yourself in 5 Years -->
-                    <div class="topic-card" data-aos="zoom-in-left" data-aos-delay="400">
-                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_5_year_plan"></span>
-                        <div class="topic-header-hr">
-                            <div class="topic-icon-hr bg-orange-500"><i class="fas fa-telescope"></i></div>
-                            <h3 class="topic-title-hr text-orange-700">
-                                <a href="https://www.indeed.com/career-advice/interviewing/where-do-you-see-yourself-in-5-years" target="_blank" class="subtopic-link hover:text-orange-500" data-subtopic-id="hr_5_year_plan_link">
-                                "Your 5-Year Trajectory?"
-                                </a>
-                            </h3>
-                        </div>
-                         <div class="content-area-hr">
-                            <p>Show them your "long-range scan" abilities:</p>
-                            <ul class="list-disc mt-2">
-                                <li>Growing with the company's fleet.</li>
-                                <li>Mastering new "technologies" & skills.</li>
-                                <li>Potentially leading your own "away missions."</li>
-                            </ul>
-                             <div class="pro-tip-hr bg-orange-50 text-orange-700">
-                                ✨ Pro Tip: Ambition is great, but show you're committed to growing *with them*, not just using them as a launchpad to another galaxy.
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Q5: Why Should We Hire You? -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q5"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-orange-500"><i class="fas fa-rocket"></i></div><h3 class="topic-title-hr text-orange-700"><a href="https://www.indeed.com/career-advice/interviewing/why-should-we-hire-you" target="_blank" class="subtopic-link hover:text-orange-500">"Why should we hire you?"</a></h3></div><div class="content-area-hr"><p>Your sales pitch. Combine your skills, experience, and enthusiasm.</p><ul class="list-disc mt-2"><li>Summarize your top 3 qualifications for the role.</li><li>Express passion for the company's mission.</li><li>Convey that you're a great cultural fit and a dedicated team player.</li></ul><div class="pro-tip-hr bg-orange-50 text-orange-700">✨ Pro Tip: This is the perfect time to show confidence. Frame your answer as "you need X, and I provide X, Y, and Z."</div></div></div>
+
+                    <!-- Q6: Where Do You See Yourself in 5 Years? -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q6"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-sky-500"><i class="fas fa-telescope"></i></div><h3 class="topic-title-hr text-sky-700"><a href="https://www.indeed.com/career-advice/interviewing/where-do-you-see-yourself-in-5-years" target="_blank" class="subtopic-link hover:text-sky-500">"Where do you see yourself in 5 years?"</a></h3></div><div class="content-area-hr"><p>They're checking your ambition and if your goals align with their growth path.</p><ul class="list-disc mt-2"><li>Show you want to grow *within* the company.</li><li>Mention specific skills you want to master.</li><li>Talk about taking on more responsibility or mentorship roles.</li></ul><div class="pro-tip-hr bg-sky-50 text-sky-700">✨ Pro Tip: Avoid answers like "In your job!" or "Starting my own company." Focus on realistic growth within their structure.</div></div></div>
+
+                    <!-- Q7: Handling Pressure -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q7"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-rose-500"><i class="fas fa-fire-extinguisher"></i></div><h3 class="topic-title-hr text-rose-700"><a href="https://www.indeed.com/career-advice/interviewing/how-do-you-handle-pressure" target="_blank" class="subtopic-link hover:text-rose-500">"How do you handle pressure?"</a></h3></div><div class="content-area-hr"><p>They want to know you won't crumble under deadlines or stress.</p><div class="star-method-box border-rose-500"><p>Use the <b>STAR Method</b>: Describe a stressful <b>S</b>ituation, your <b>T</b>ask, the <b>A</b>ction you took (e.g., prioritized tasks, communicated), and the positive <b>R</b>esult.</p></div><div class="pro-tip-hr bg-rose-50 text-rose-700">✨ Pro Tip: Focus on your proactive strategies like staying organized and communicating early, not just on enduring the stress.</div></div></div>
+
+                    <!-- Q8: A Time You Failed -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q8"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-slate-500"><i class="fas fa-heart-crack"></i></div><h3 class="topic-title-hr text-slate-700"><a href="https://www.themuse.com/advice/tell-me-about-a-time-you-failed-interview-question" target="_blank" class="subtopic-link hover:text-slate-500">"Tell me about a time you failed."</a></h3></div><div class="content-area-hr"><p>They're testing your resilience, honesty, and ability to learn from mistakes.</p><div class="star-method-box border-slate-500"><p>Use the <b>STAR Method</b>: Explain the <b>S</b>ituation and your mistake. Focus on the <b>A</b>ction you took to fix it and what you learned. The <b>R</b>esult is your personal growth.</p></div><div class="pro-tip-hr bg-slate-50 text-slate-700">✨ Pro Tip: Pick a real, but not catastrophic, failure. The most important part is the "what I learned" section.</div></div></div>
+
+                    <!-- Q9: Conflict with a Coworker -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q9"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-teal-500"><i class="fas fa-handshake-angle"></i></div><h3 class="topic-title-hr text-teal-700"><a href="https://www.indeed.com/career-advice/interviewing/interview-question-tell-me-about-a-time-you-had-a-conflict" target="_blank" class="subtopic-link hover:text-teal-500">"Describe a conflict with a coworker."</a></h3></div><div class="content-area-hr"><p>This assesses your communication skills and emotional intelligence.</p><div class="star-method-box border-teal-500"><p>Use the <b>STAR Method</b>. Describe the <b>S</b>ituation (a professional disagreement). Explain your <b>A</b>ction (active listening, finding common ground). The <b>R</b>esult should be a positive resolution.</p></div><div class="pro-tip-hr bg-teal-50 text-teal-700">✨ Pro Tip: Never blame the other person. Show maturity and focus on resolving the issue for the good of the team.</div></div></div>
+
+                     <!-- Q10: Salary Expectations -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q10"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-lime-500"><i class="fas fa-sack-dollar"></i></div><h3 class="topic-title-hr text-lime-700"><a href="https://www.themuse.com/advice/what-are-your-salary-expectations-interview-question" target="_blank" class="subtopic-link hover:text-lime-500">"What are your salary expectations?"</a></h3></div><div class="content-area-hr"><p>This can be tricky. The goal is to be reasonable and informed.</p><ul class="list-disc mt-2"><li>Do your research on industry averages for this role and location.</li><li>Provide a salary range, not a single number.</li><li>State that your range is flexible based on the overall compensation package (benefits, bonuses, etc.).</li></ul><div class="pro-tip-hr bg-lime-50 text-lime-700">✨ Pro Tip: If possible, try to deflect by asking for their budgeted range for the role first. "I'd love to learn more about the role's responsibilities and your budget for this position."</div></div></div>
+
+                    <!-- Q11: Questions for Us? -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q11"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-indigo-500"><i class="fas fa-circle-question"></i></div><h3 class="topic-title-hr text-indigo-700"><a href="https://www.themuse.com/advice/questions-to-ask-an-interviewer" target="_blank" class="subtopic-link hover:text-indigo-500">"Do you have any questions for us?"</a></h3></div><div class="content-area-hr"><p>YES, you always have questions. This shows your engagement and interest.</p><ul class="list-disc mt-2"><li>Ask about the team culture or daily responsibilities.</li><li>Ask about challenges the team is facing.</li><li>Ask about what success looks like in this role.</li></ul><div class="pro-tip-hr bg-indigo-50 text-indigo-700">✨ Pro Tip: Prepare at least 3-5 thoughtful questions beforehand. Do NOT ask about salary or vacation time here unless they bring it up.</div></div></div>
+                    
+                    <!-- Q12: A Time You Showed Leadership -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q12"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-amber-500"><i class="fas fa-flag"></i></div><h3 class="topic-title-hr text-amber-700"><a href="https://www.indeed.com/career-advice/interviewing/leadership-interview-questions" target="_blank" class="subtopic-link hover:text-amber-500">"Describe a time you showed leadership."</a></h3></div><div class="content-area-hr"><p>Leadership isn't just about being a manager. It's about taking initiative.</p><div class="star-method-box border-amber-500"><p>Use the <b>STAR Method</b>. Describe a <b>S</b>ituation where a project was stalled or a problem existed. Your <b>A</b>ction was to step up, organize, or motivate. The <b>R</b>esult was the team's success.</p></div><div class="pro-tip-hr bg-amber-50 text-amber-700">✨ Pro Tip: This can be from a project, volunteer work, or even an academic setting. Focus on influence and initiative, not just formal authority.</div></div></div>
+
+                    <!-- Q13: How Do You Handle Feedback? -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q13"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-fuchsia-500"><i class="fas fa-comments"></i></div><h3 class="topic-title-hr text-fuchsia-700"><a href="https://www.indeed.com/career-advice/interviewing/how-do-you-handle-feedback" target="_blank" class="subtopic-link hover:text-fuchsia-500">"How do you handle feedback?"</a></h3></div><div class="content-area-hr"><p>They want a coachable employee who is open to improvement.</p><ul class="list-disc mt-2"><li>State that you view feedback as a gift for growth.</li><li>Describe your process: listen carefully, ask clarifying questions, and thank the person.</li><li>Give a brief example of feedback you received and how you acted on it.</li></ul><div class="pro-tip-hr bg-fuchsia-50 text-fuchsia-700">✨ Pro Tip: Frame your answer around being proactive and positive. Never sound defensive or dismissive of past feedback.</div></div></div>
+
+                    <!-- Q14: What Motivates You? -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q14"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-cyan-500"><i class="fas fa-lightbulb"></i></div><h3 class="topic-title-hr text-cyan-700"><a href="https://www.themuse.com/advice/what-motivates-you-interview-question" target="_blank" class="subtopic-link hover:text-cyan-500">"What motivates you?"</a></h3></div><div class="content-area-hr"><p>Connect your personal drivers with the aspects of the job.</p><ul class="list-disc mt-2"><li>Talk about solving challenging problems.</li><li>Mention collaborating with a talented team.</li><li>Express satisfaction from seeing a project through to completion and making an impact.</li></ul><div class="pro-tip-hr bg-cyan-50 text-cyan-700">✨ Pro Tip: Avoid generic answers like "money." Focus on intrinsic motivators that show you'd enjoy the actual work.</div></div></div>
+
+                    <!-- Q15: Why Are You Leaving Your Current Job? -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q15"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-blue-500"><i class="fas fa-person-running"></i></div><h3 class="topic-title-hr text-blue-700"><a href="https://www.themuse.com/advice/why-are-you-leaving-your-job-interview-question" target="_blank" class="subtopic-link hover:text-blue-500">"Why are you leaving your job?"</a></h3></div><div class="content-area-hr"><p>Be positive and forward-looking. Never bad-mouth your previous employer.</p><ul class="list-disc mt-2"><li>Focus on "pull" factors (what draws you to this new role).</li><li>Talk about seeking new challenges or growth opportunities.</li><li>Frame it as a natural step in your career progression.</li></ul><div class="pro-tip-hr bg-blue-50 text-blue-700">✨ Pro Tip: A great answer is, "I've learned a lot in my current role, but I'm looking for an opportunity to [mention something this new job offers that your old one doesn't]."</div></div></div>
+                    
+                    <!-- Q16: A time you went above and beyond -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q16"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-green-500"><i class="fas fa-jet-fighter-up"></i></div><h3 class="topic-title-hr text-green-700"><a href="https://www.indeed.com/career-advice/interviewing/interview-question-tell-me-about-a-time-you-went-above-and-beyond" target="_blank" class="subtopic-link hover:text-green-500">"A time you went above and beyond."</a></h3></div><div class="content-area-hr"><p>Show your work ethic and initiative.</p><div class="star-method-box border-green-500"><p>Use <b>STAR</b>. What was the <b>S</b>ituation? What was expected (<b>T</b>ask)? What extra effort did you put in (<b>A</b>ction)? What was the outstanding <b>R</b>esult?</p></div><div class="pro-tip-hr bg-green-50 text-green-700">✨ Pro Tip: Choose an example where your extra effort directly benefited the team, a customer, or the company's bottom line.</div></div></div>
+                    
+                    <!-- Q17: How do you prioritize your work? -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q17"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-red-500"><i class="fas fa-list-check"></i></div><h3 class="topic-title-hr text-red-700"><a href="https://www.indeed.com/career-advice/interviewing/how-do-you-prioritize-your-work" target="_blank" class="subtopic-link hover:text-red-500">"How do you prioritize your work?"</a></h3></div><div class="content-area-hr"><p>Demonstrate your organizational and time-management skills.</p><ul class="list-disc mt-2"><li>Talk about assessing tasks based on urgency and importance.</li><li>Mention tools you use (e.g., to-do lists, calendars, project management software).</li><li>Explain how you communicate with stakeholders about deadlines.</li></ul><div class="pro-tip-hr bg-red-50 text-red-700">✨ Pro Tip: Mentioning a specific framework like the Eisenhower Matrix (Urgent/Important) shows a sophisticated approach.</div></div></div>
+                    
+                    <!-- Q18: Describe a difficult problem you solved. -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q18"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-purple-500"><i class="fas fa-brain"></i></div><h3 class="topic-title-hr text-purple-700"><a href="https://www.themuse.com/advice/interview-questions-and-answers-problem-solving" target="_blank" class="subtopic-link hover:text-purple-500">"Describe a difficult problem."</a></h3></div><div class="content-area-hr"><p>They want to see your analytical and creative thinking process.</p><div class="star-method-box border-purple-500"><p>Use <b>STAR</b>. Explain the complex <b>S</b>ituation. Detail your thought process and the steps you took to analyze it (<b>A</b>ction). Conclude with the successful <b>R</b>esult and what you learned.</p></div><div class="pro-tip-hr bg-purple-50 text-purple-700">✨ Pro Tip: Focus more on *how* you approached the problem than the problem itself. Your process is what's being evaluated.</div></div></div>
+                    
+                    <!-- Q19: What makes a good team player? -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q19"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-orange-500"><i class="fas fa-users"></i></div><h3 class="topic-title-hr text-orange-700"><a href="https://www.indeed.com/career-advice/interviewing/interview-questions-about-teamwork" target="_blank" class="subtopic-link hover:text-orange-500">"What makes you a team player?"</a></h3></div><div class="content-area-hr"><p>Show you understand collaboration, reliability, and communication.</p><ul class="list-disc mt-2"><li>Talk about being a reliable and supportive colleague.</li><li>Mention your ability to communicate clearly and listen actively.</li><li>Give a brief example of how you've helped a team succeed.</li></ul><div class="pro-tip-hr bg-orange-50 text-orange-700">✨ Pro Tip: Emphasize flexibility and a willingness to help others, even when it's not your direct responsibility.</div></div></div>
+                    
+                    <!-- Q20: Tell me about your resume -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q20"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-sky-500"><i class="fas fa-file-lines"></i></div><h3 class="topic-title-hr text-sky-700"><a href="https://www.indeed.com/career-advice/interviewing/walk-me-through-your-resume" target="_blank" class="subtopic-link hover:text-sky-500">"Walk me through your resume."</a></h3></div><div class="content-area-hr"><p>A different take on "Tell me about yourself." Focus on the narrative.</p><ul class="list-disc mt-2"><li>Start from your earliest relevant experience and move forward.</li><li>For each role, briefly mention your key responsibility and one major achievement.</li><li>Create a story showing how each step led you to apply for this role.</li></ul><div class="pro-tip-hr bg-sky-50 text-sky-700">✨ Pro Tip: This is your chance to add color and context to the bullet points on your resume. Highlight the *why* behind your career moves.</div></div></div>
+
+                    <!-- Q21: What are your hobbies? -->
+                    <div class="topic-card" data-aos="zoom-in-up"><span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_q21"></span><div class="topic-header-hr"><div class="topic-icon-hr bg-rose-500"><i class="fas fa-person-snowboarding"></i></div><h3 class="topic-title-hr text-rose-700"><a href="https://www.themuse.com/advice/what-are-your-hobbies-interview-question" target="_blank" class="subtopic-link hover:text-rose-500">"What are your hobbies?"</a></h3></div><div class="content-area-hr"><p>They're looking for cultural fit and a well-rounded personality.</p><ul class="list-disc mt-2"><li>Be authentic and choose a real hobby.</li><li>Briefly connect it to a positive trait (e.g., "Playing chess has taught me strategic thinking").</li><li>Keep it short, professional, and positive.</li></ul><div class="pro-tip-hr bg-rose-50 text-rose-700">✨ Pro Tip: Choose hobbies that suggest positive attributes like teamwork (sports), creativity (art, music), or discipline (marathon running).</div></div></div>
+
                 </div>
             </section>
-
-            <!-- Interview Tips Section -->
-            <section class="content-section-wrapper gradient-bg-hr-tips" data-aos="fade-up" data-aos-delay="450">
-                <div class="section-header-hr mb-8">
-                     <span class="icon-bg p-3 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-lg text-3xl"><i class="fas-sparkles"></i></span> <!-- Using fas-sparkles for fun -->
-                    <h2 class="section-title-hr gradient-text-alt-hr">Pre-Flight, In-Flight & Post-Flight Checks</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Before Interview -->
-                    <div class="topic-card" data-aos="flip-left" data-aos-delay="500">
-                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_before_tips"></span>
-                        <div class="topic-header-hr">
-                            <div class="topic-icon-hr bg-sky-500"><i class="fas fa-clipboard-list-check"></i></div>
-                             <h3 class="topic-title-hr text-sky-700">
-                                <a href="https://www.indeed.com/career-advice/interviewing/how-to-prepare-for-an-interview" target="_blank" class="subtopic-link hover:text-sky-500" data-subtopic-id="hr_before_tips_link">
-                                Before the "Launch"
-                                </a>
-                            </h3>
-                        </div>
-                        <div class="content-area-hr">
-                            <ul class="list-disc">
-                                <li>Scan their "star charts" (research company).</li>
-                                <li>Rehearse your "prime directives" (common Qs).</li>
-                                <li>Prepare your own "probe questions" to ask.</li>
-                                <li>Enter "stasis mode" (get good rest!).</li>
-                            </ul>
-                             <div class="pro-tip-hr bg-sky-50 text-sky-700">
-                                ✨ Pro Tip: "Proper planning prevents poor performance," especially when exploring new job galaxies!
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- During Interview -->
-                     <div class="topic-card" data-aos="flip-up" data-aos-delay="550">
-                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_during_tips"></span>
-                        <div class="topic-header-hr">
-                            <div class="topic-icon-hr bg-lime-500"><i class="fas fa-user-tie"></i></div>
-                            <h3 class="topic-title-hr text-lime-700">
-                                <a href="https://www.indeed.com/career-advice/interviewing/interview-tips" target="_blank" class="subtopic-link hover:text-lime-500" data-subtopic-id="hr_during_tips_link">
-                                "Engage Warp Drive!" (During)
-                                </a>
-                            </h3>
-                        </div>
-                         <div class="content-area-hr">
-                            <ul class="list-disc">
-                                <li>Lock "tractor beam" (eye contact).</li>
-                                <li>Activate "universal translator" (listen actively).</li>
-                                <li>Project "confidence shields" (be cool, calm, collected).</li>
-                                <li>Use STAR method like a Jedi uses the Force.</li>
-                            </ul>
-                             <div class="pro-tip-hr bg-lime-50 text-lime-700">
-                                ✨ Pro Tip: Smile! It's the universal sign of "I'm friendly and not a space pirate."
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- After Interview -->
-                    <div class="topic-card" data-aos="flip-right" data-aos-delay="600">
-                        <span class="floating-checkbox"><input type="checkbox" class="hr-interview-checkbox" data-subtopic-id="hr_interview_after_tips"></span>
-                        <div class="topic-header-hr">
-                            <div class="topic-icon-hr bg-rose-500"><i class="fas fa-envelope-open-text"></i></div>
-                             <h3 class="topic-title-hr text-rose-700">
-                                <a href="https://www.indeed.com/career-advice/interviewing/after-interview" target="_blank" class="subtopic-link hover:text-rose-500" data-subtopic-id="hr_after_tips_link">
-                                "Transmission Complete" (After)
-                                </a>
-                            </h3>
-                        </div>
-                        <div class="content-area-hr">
-                            <ul class="list-disc">
-                                <li>Send a "thank you transmission" (email).</li>
-                                <li>Ping their "comms channel" (follow up smartly).</li>
-                                <li>Log "mission data" (reflect and learn).</li>
-                                <li>Don't just stare at the "viewscreen" (move on if needed).</li>
-                            </ul>
-                             <div class="pro-tip-hr bg-rose-50 text-rose-700">
-                                ✨ Pro Tip: A thoughtful thank-you note can be the asteroid that tips the scales in your favor.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
         </div>
     </main>
     </div> <!-- End Page Wrapper -->
-
-    <!-- Floating Icon -->
-    <div class="fixed bottom-6 right-6 z-[500] animate-subtle-float" style="animation-duration: 5s;">
-      <div class="bg-gradient-to-tr from-pink-500 via-rose-500 to-fuchsia-600 p-4 rounded-full shadow-2xl shadow-rose-500/30 cursor-pointer hover:shadow-fuchsia-400/50 transition-all transform hover:scale-110 hover:rotate-[360deg] duration-500">
-          <i class="fas fa-gift text-white text-3xl"></i> <!-- A 'gift' of advice -->
-      </div>
-    </div>
 
     <!-- Scripts -->
     <script src="js/utils.js"></script>
@@ -564,75 +349,53 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="js/dark-mode.js"></script>
     <script>
-        // --- PAGE TRANSITION SCRIPT ---
-        function handlePageTransition(event) {
-            const link = event.currentTarget;
-            const targetUrl = link.href;
-            if (targetUrl && (link.hostname === window.location.hostname || !link.hostname) && !link.getAttribute('target')) {
-                event.preventDefault();
-                document.body.classList.add('page-transition-out');
-                setTimeout(() => { window.location.href = targetUrl; }, 400);
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
             AOS.init({ duration: 800, once: true, offset: 70, easing: 'ease-out-cubic' });
-
+            
+            function handlePageTransition(event) {
+                const link = event.currentTarget;
+                const targetUrl = link.href;
+                if (targetUrl && (link.hostname === window.location.hostname || !link.hostname) && !link.getAttribute('target')) {
+                    event.preventDefault();
+                    document.body.classList.add('page-transition-out');
+                    setTimeout(() => { window.location.href = targetUrl; }, 400);
+                }
+            }
             document.querySelectorAll('.nav-transition-link').forEach(link => {
                 link.addEventListener('click', handlePageTransition);
             });
 
-            // --- UNIVERSAL NAVBAR PROFILE DROPDOWN LOGIC ---
             const profileDropdownBtn = document.getElementById('profileDropdownBtn');
             const profileDropdownMenu = document.getElementById('profileDropdownMenu');
-
             if (profileDropdownBtn && profileDropdownMenu) {
                 profileDropdownBtn.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevents the window click from closing it immediately
+                    e.stopPropagation();
                     profileDropdownMenu.classList.toggle('open');
                 });
             }
-
-            // Close dropdown if clicked outside
             document.addEventListener('click', (e) => {
                 if (profileDropdownMenu && profileDropdownMenu.classList.contains('open') && !profileDropdownBtn.contains(e.target)) {
                     profileDropdownMenu.classList.remove('open');
                 }
             });
             
-            // Universal function to handle sign out
-            function logoutUserWithTransition() {
-                console.log('Logging out...');
-                // Optional: Add a fade-out effect
+            window.logoutUserWithTransition = function() {
                 document.body.style.transition = 'opacity 0.3s ease-out';
                 document.body.style.opacity = '0';
-
-                // Clear local storage
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                localStorage.removeItem('platformProgress');
-
-                // Redirect to login page after the fade-out
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 300);
+                localStorage.clear();
+                setTimeout(() => { window.location.href = 'login.html'; }, 300);
             }
             
-            // Universal function to update the profile picture from localStorage
             try {
                 const userString = localStorage.getItem('user');
-                if (userString) {
+                if(userString) {
                     const user = JSON.parse(userString);
-                    const profilePicUrl = user.profilePicture || 'static/default-profile.jpg';
-                    const navImg = document.getElementById('navProfileImg');
-                    if (navImg) {
-                        navImg.src = profilePicUrl;
-                        navImg.onerror = function() { this.src = 'static/default-profile.jpg'; };
+                    if (user && user.profilePicture) {
+                        document.getElementById('navProfileImg').src = user.profilePicture;
                     }
                 }
-            } catch(e) { console.error('Could not parse user data for profile picture.', e); }
+            } catch (e) { console.error('Error loading profile picture:', e); }
 
-            // --- Mobile Menu Logic ---
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mobileMenu = document.getElementById('mobileMenuTUF');
             if (mobileMenuBtn && mobileMenu) {
@@ -653,44 +416,45 @@
                     const updateHRUI = () => {
                         document.querySelectorAll('.hr-interview-checkbox').forEach(checkbox => {
                             const subtopicId = checkbox.dataset.subtopicId;
-                            if (progressTrackerInstance.isCompleted) {
-                                checkbox.checked = progressTrackerInstance.isCompleted(subtopicId);
-                            }
+                            checkbox.checked = progressTrackerInstance.isCompleted(subtopicId);
                         });
 
                         const hrProgressData = progressTrackerInstance.progress;
                         const hrModuleVal = hrProgressData && hrProgressData.hr_interview !== undefined ? hrProgressData.hr_interview : 0;
-
+                        
                         const progressBarFill = document.getElementById('hrInterviewProgressBarFill');
                         const percentText = document.getElementById('hrInterviewModulePercent');
 
                         if(progressBarFill) {
-                            progressBarFill.style.width = hrModuleVal + '%';
+                            progressBarFill.style.width = Math.round(hrModuleVal) + '%';
                         }
                         if(percentText) {
-                            percentText.textContent = hrModuleVal + '%';
+                            percentText.textContent = Math.round(hrModuleVal) + '%';
                         }
                     };
+                    
                     updateHRUI();
 
-                    // Event listener for main category checkboxes
+                    // Listener for checkboxes
                     document.querySelectorAll('.hr-interview-checkbox').forEach(checkbox => {
                         checkbox.addEventListener('change', async () => {
-                            if(progressTrackerInstance.setCompleted) {
-                                await progressTrackerInstance.setCompleted(checkbox.dataset.subtopicId, checkbox.checked);
-                                updateHRUI();
-                            }
+                            const subtopicId = checkbox.dataset.subtopicId;
+                            await progressTrackerInstance.setCompleted(subtopicId, checkbox.checked);
+                            updateHRUI();
                         });
                     });
-
-                    // Event listener for resource links to also mark the main card's checkbox
-                    document.querySelectorAll('a.subtopic-link').forEach(link => {
+                    
+                    // Listener for title links
+                    document.querySelectorAll('.topic-title-hr a.subtopic-link').forEach(link => {
                         link.addEventListener('click', async (e) => {
-                            const subtopicIdForLink = link.dataset.subtopicId;
-                            if (progressTrackerInstance.setCompleted && subtopicIdForLink) {
-                                await progressTrackerInstance.setCompleted(subtopicIdForLink, true);
-                                updateHRUI();
-                                console.log(`Marked link ${subtopicIdForLink} as complete.`);
+                            const card = e.target.closest('.topic-card');
+                            if (card) {
+                                const checkbox = card.querySelector('.hr-interview-checkbox');
+                                if (checkbox && !checkbox.checked) {
+                                    checkbox.checked = true;
+                                    // Manually trigger the change event to save progress
+                                    checkbox.dispatchEvent(new Event('change'));
+                                }
                             }
                         });
                     });
@@ -704,7 +468,7 @@
                 }
             }
             initializeHRPage();
-        }); // End of DOMContentLoaded
+        });
     </script>
 </body>
 </html>
